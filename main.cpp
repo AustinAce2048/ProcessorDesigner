@@ -1,11 +1,8 @@
 #include <GLFW/glfw3.h>
-#include <Windows.h>
 
 const int screenWidth = 1920;
 const int screenHeight = 1080;
 const char windowName[] = "Processor Designer";
-
-const int squareSize = 50;
 
 //Each pixel has a position and 3 values for RGB
 float *pixels = new float[screenWidth * screenHeight * 3];
