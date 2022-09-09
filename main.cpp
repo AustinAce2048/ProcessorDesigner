@@ -12,22 +12,30 @@ float *pixels = new float[screenWidth * screenHeight * 3];
 
 
 
-void draw () {
+void DrawSquare (int xPos, int yPos, int width, float r, float g, float b) {
+    for (int i = yPos - (width / 2); i < yPos + (width / 2); i++) {
+        for (int j = xPos - (width / 2); j < xPos + (width / 2); j++) {
+            pixels[(j + i * screenWidth) * 3] = r;
+            pixels[(j + i * screenWidth) * 3 + 1] = g;
+            pixels[(j + i * screenWidth) * 3 + 2] = b;
+        }
+    }
+}
+
+
+
+void Draw () {
     //Draw centered square and then fill in all other pixels
     //Loop scans from bottom to top, left to right (One row at a time)
     for (int i = 0; i < screenHeight; i++) {
         for (int j = 0; j < screenWidth; j++) {
-            if (i >= (screenHeight / 2) - squareSize && i <= (screenHeight / 2) + squareSize && j >= (screenWidth / 2) - squareSize && j <= (screenWidth / 2) + squareSize) {
-                pixels[(j + i * screenWidth) * 3] = 0.0f;
-                pixels[(j + i * screenWidth) * 3 + 1] = 0.0f;
-                pixels[(j + i * screenWidth) * 3 + 2] = 1.0f;
-            } else {
-                pixels[(j + i * screenWidth) * 3] = 0.0f;
-                pixels[(j + i * screenWidth) * 3 + 1] = 1.0f;
-                pixels[(j + i * screenWidth) * 3 + 2] = 0.0f;
-            }
+            pixels[(j + i * screenWidth) * 3] = 0.0f;
+            pixels[(j + i * screenWidth) * 3 + 1] = 0.0f;
+            pixels[(j + i * screenWidth) * 3 + 2] = 1.0f;
         }
     }
+
+    DrawSquare (960, 540, 50, 0.0f, 1.0f, 0.0f);
 }
 
 
@@ -69,7 +77,7 @@ int main (void) {
         //Render here
         glClear (GL_COLOR_BUFFER_BIT);
 
-        draw ();
+        Draw ();
 
         //Draw pixels to frame buffer (Khronos has amazing documentation)
         glDrawPixels (screenWidth, screenHeight, GL_RGB, GL_FLOAT, pixels);
