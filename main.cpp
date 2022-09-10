@@ -1,11 +1,12 @@
 #include <GLFW/glfw3.h>
 
+//Window doesn't scale, resolution is hardcoded
 const int screenWidth = 1920;
 const int screenHeight = 1080;
 const char windowName[] = "Processor Designer";
 
 //Each pixel has a position and 3 values for RGB
-float *pixels = new float[screenWidth * screenHeight * 3];
+float* pixels = new float[screenWidth * screenHeight * 3];
 
 
 
@@ -54,14 +55,16 @@ int main (void) {
         return -1;
     }
 
-    //Create a window and set the OpenGL context
-    window = glfwCreateWindow (screenWidth, screenHeight, windowName, NULL, NULL);
-    //Force window to be fullscreen on the main monitor
-    glfwSetWindowMonitor (window, glfwGetPrimaryMonitor (), 0, 0, screenWidth, screenHeight, 60);
     if (!window) {
         glfwTerminate ();
         return -1;
     }
+
+    //Create a window and set the OpenGL context
+    window = glfwCreateWindow (screenWidth, screenHeight, windowName, NULL, NULL);
+    
+    //Force window to be fullscreen on the main monitor
+    glfwSetWindowMonitor (window, glfwGetPrimaryMonitor (), 0, 0, screenWidth, screenHeight, 60);
 
     //Set window context to current
     glfwMakeContextCurrent (window);
