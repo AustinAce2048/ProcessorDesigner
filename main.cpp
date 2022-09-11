@@ -1,4 +1,6 @@
 #include <GLFW/glfw3.h>
+#include <cstdlib>
+#include <cmath>
 
 //Window doesn't scale, resolution is hardcoded
 const int screenWidth = 1920;
@@ -10,12 +12,45 @@ float* pixels = new float[screenWidth * screenHeight * 3];
 
 
 
+float DistanceBetween (int p1x, int p1y, int p2x, int p2y) {
+    return sqrt (((p2x - p1x) * 2) + ((p2y - p1y) * 2));
+}
+
+
+
 void DrawSquare (int xPos, int yPos, int width, float r, float g, float b) {
     for (int i = yPos - (width / 2); i < yPos + (width / 2); i++) {
         for (int j = xPos - (width / 2); j < xPos + (width / 2); j++) {
             pixels[(j + i * screenWidth) * 3] = r;
             pixels[(j + i * screenWidth) * 3 + 1] = g;
             pixels[(j + i * screenWidth) * 3 + 2] = b;
+        }
+    }
+}
+
+
+
+/*void DrawTriangle (int xPos, int yPos, int sideLength, float r, float g, float b) {
+    for (int i = yPos - (width / 2); i < yPos + (width / 2); i++) {
+        for (int j = xPos - (width / 2); j < xPos + (width / 2); j++) {
+            pixels[(j + i * screenWidth) * 3] = r;
+            pixels[(j + i * screenWidth) * 3 + 1] = g;
+            +
+            pixels[(j + i * screenWidth) * 3 + 2] = b;
+        }
+    }
+}*/
+
+
+
+void DrawCircle (int xPos, int yPos, int radius, float r, float g, float b) {
+    for (int i = 0; i < screenHeight; i++) {
+        for (int j = 0; j < screenWidth; j++) {
+            if (DistanceBetween (j, i, xPos, yPos) <= radius) {
+                pixels[(j + i * screenWidth) * 3] = r;
+                pixels[(j + i * screenWidth) * 3 + 1] = g;
+                pixels[(j + i * screenWidth) * 3 + 2] = b;
+            }
         }
     }
 }
@@ -34,6 +69,7 @@ void Draw () {
     }
 
     DrawSquare (960, 540, 50, 0.0f, 1.0f, 0.0f);
+    DrawCircle (500, 500, 1, 1.0f, 0.0f, 0.0f);
 }
 
 
