@@ -6,15 +6,11 @@
 const int screenWidth = 1920;
 const int screenHeight = 1080;
 const char windowName[] = "Processor Designer";
+const float pi = 3.141592653598793f;
 
 //Each pixel has a position and 3 values for RGB
+//Position is x + (y * screenWidth)
 float* pixels = new float[screenWidth * screenHeight * 3];
-
-
-
-float DistanceBetween (int p1x, int p1y, int p2x, int p2y) {
-    return sqrt (((p2x - p1x) * 2) + ((p2y - p1y) * 2));
-}
 
 
 
@@ -30,27 +26,25 @@ void DrawSquare (int xPos, int yPos, int width, float r, float g, float b) {
 
 
 
-/*void DrawTriangle (int xPos, int yPos, int sideLength, float r, float g, float b) {
-    for (int i = yPos - (width / 2); i < yPos + (width / 2); i++) {
-        for (int j = xPos - (width / 2); j < xPos + (width / 2); j++) {
-            pixels[(j + i * screenWidth) * 3] = r;
-            pixels[(j + i * screenWidth) * 3 + 1] = g;
-            +
-            pixels[(j + i * screenWidth) * 3 + 2] = b;
-        }
+void SetPixel (int x, int y, float r, float g, float b) {
+    if ((x + y * screenWidth) * 3 < screenWidth * screenHeight * 3) {
+        pixels[(x + y * screenWidth) * 3] = r;
+        pixels[(x + y * screenWidth) * 3 + 1] = g;
+        pixels[(x + y * screenWidth) * 3 + 2] = b;
     }
-}*/
+}
 
 
 
 void DrawCircle (int xPos, int yPos, int radius, float r, float g, float b) {
-    for (int i = 0; i < screenHeight; i++) {
-        for (int j = 0; j < screenWidth; j++) {
-            if (DistanceBetween (j, i, xPos, yPos) <= radius) {
-                pixels[(j + i * screenWidth) * 3] = r;
-                pixels[(j + i * screenWidth) * 3 + 1] = g;
-                pixels[(j + i * screenWidth) * 3 + 2] = b;
-            }
+    float angle, x1, y1, i, rad;
+    for (int j = 0; j < radius; j++) {
+        rad = j;
+        for (i = 0; i < 360; i += 0.1f) {
+            angle = i;
+            x1 = rad * cos (angle * pi / 180.0f);
+            y1 = rad * sin (angle * pi / 180.0f);
+            SetPixel (xPos + x1, yPos + y1, r, g, b);
         }
     }
 }
@@ -68,8 +62,9 @@ void Draw () {
         }
     }
 
+    SetPixel (1200, 800, 1.0f, 1.0f, 1.0f);
     DrawSquare (960, 540, 50, 0.0f, 1.0f, 0.0f);
-    DrawCircle (500, 500, 1, 1.0f, 0.0f, 0.0f);
+    DrawCircle (500, 500, 20, 1.0f, 0.0f, 0.0f);
 }
 
 
@@ -99,8 +94,15 @@ int main (void) {
     //Create a window and set the OpenGL context
     window = glfwCreateWindow (screenWidth, screenHeight, windowName, NULL, NULL);
     
+    /*
+    //Make app work on second monitor only
+    int count;
+    GLFWmonitor** monitors = glfwGetMonitors (&count);
+    glfwSetWindowMonitor (window,  monitors[1], 0, 0, screenWidth, screenHeight, 30);
+    */
+
     //Force window to be fullscreen on the main monitor
-    glfwSetWindowMonitor (window, glfwGetPrimaryMonitor (), 0, 0, screenWidth, screenHeight, 60);
+    glfwSetWindowMonitor (window,  glfwGetPrimaryMonitor (), 0, 0, screenWidth, screenHeight, 60);
 
     //Set window context to current
     glfwMakeContextCurrent (window);
