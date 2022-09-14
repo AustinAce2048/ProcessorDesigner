@@ -1,3 +1,7 @@
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
+
 #include <GLFW/glfw3.h>
 #include <cstdlib>
 #include <cmath>
@@ -50,9 +54,70 @@ void DrawCircle (int xPos, int yPos, int radius, float r, float g, float b) {
 }
 
 
+//Drawing a right triangle
+/*void DrawRightTriangle (int xPos, int yPos, int sideLength, float r, float g, float b) {
+    int k = 0;
+    int l = 1;
+    for (int i = yPos - (sideLength / 2); i < yPos + (sideLength / 2); i++) {
+        for (int j = xPos - (sideLength / 2); j < xPos + (sideLength / 2); j++) {
+            if (k < l) {
+                pixels[(j + i * screenWidth) * 3] = r;
+                pixels[(j + i * screenWidth) * 3 + 1] = g;
+                pixels[(j + i * screenWidth) * 3 + 2] = b;
+            }
+            k++;
+        }
+        l++;
+        k = 0;
+    }
+}*/
+
+
+
+void DrawTriangle (int xPos, int yPos, int sideLength, float r, float g, float b) {
+    int k = 0;
+    int l = 1;
+    bool subtract = false;
+    for (int i = yPos - (sideLength / 2); i < yPos + (sideLength / 2); i++) {
+        for (int j = xPos - (sideLength); j < xPos + (sideLength); j++) {
+            //Bottom row, draw one point, next row draw two points etc...
+            if (k < l * 2) {
+                pixels[(j + i * screenWidth) * 3] = r;
+                pixels[(j + i * screenWidth) * 3 + 1] = g;
+                pixels[(j + i * screenWidth) * 3 + 2] = b;
+            }
+            k++;
+        }
+        if (l == sideLength / 2) {
+            subtract = true;
+        }
+        if (subtract) {
+            l--;
+        } else {
+            l++;
+        }
+        k = 0;
+    }
+}
+
+
+
+void DrawNotGate (int xPos, int yPos, float r, float g, float b) {
+    DrawCircle (xPos, yPos, 10, r, g, b);
+    DrawTriangle (xPos, yPos, 50, r, g, b);
+}
+
+
+
+void DrawAndGate (int xPos, int yPos, float r, float g, float b) {
+    DrawSquare (xPos, yPos, 50, r, g, b);
+    DrawCircle (xPos + 20, yPos, 26, r, g, b);
+}
+
+
 
 void Draw () {
-    //Draw centered square and then fill in all other pixels
+    //Draw background
     //Loop scans from bottom to top, left to right (One row at a time)
     for (int i = 0; i < screenHeight; i++) {
         for (int j = 0; j < screenWidth; j++) {
@@ -62,9 +127,8 @@ void Draw () {
         }
     }
 
-    SetPixel (1200, 800, 1.0f, 1.0f, 1.0f);
-    DrawSquare (960, 540, 50, 0.0f, 1.0f, 0.0f);
-    DrawCircle (500, 500, 20, 1.0f, 0.0f, 0.0f);
+    DrawNotGate (1000, 1000, 0.0f, 1.0f, 1.0f);
+    DrawAndGate (500, 250, 1.0f, 0.0f, 0.0f);
 }
 
 
@@ -94,21 +158,26 @@ int main (void) {
     //Create a window and set the OpenGL context
     window = glfwCreateWindow (screenWidth, screenHeight, windowName, NULL, NULL);
     
-    /*
     //Make app work on second monitor only
     int count;
     GLFWmonitor** monitors = glfwGetMonitors (&count);
     glfwSetWindowMonitor (window,  monitors[1], 0, 0, screenWidth, screenHeight, 30);
-    */
 
     //Force window to be fullscreen on the main monitor
-    glfwSetWindowMonitor (window,  glfwGetPrimaryMonitor (), 0, 0, screenWidth, screenHeight, 60);
+    //glfwSetWindowMonitor (window,  glfwGetPrimaryMonitor (), 0, 0, screenWidth, screenHeight, 60);
 
     //Set window context to current
     glfwMakeContextCurrent (window);
 
     //Grabs the callback set earlier, only runs if pollEvents is running
     glfwSetKeyCallback (window, KeyCallback);
+
+    IMGUI_CHECKVERSION ();
+    ImGui::CreateContext ();
+    ImGuiIO& io = ImGui::GetIO (); (void)io;
+    ImGui::StyleColorsDark ();
+    ImGui_ImplGlfw_InitForOpenGL (window, true);
+    ImGui_ImplOpenGL3_Init ("#version 330");
 
     //Loop until window is closed
     while (!glfwWindowShouldClose (window)) {

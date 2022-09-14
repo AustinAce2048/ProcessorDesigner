@@ -363,6 +363,9 @@ Processor_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 Processor_SOURCE_DIR:STATIC=C:/Projects/ProcessorDesigner
 
+//The directory containing a CMake configuration file for imgui.
+imgui_DIR:PATH=imgui_DIR-NOTFOUND
+
 
 ########################
 # INTERNAL cache entries

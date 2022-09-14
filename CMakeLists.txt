@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.14)
+cmake_minimum_required (VERSION 3.20)
 
 project (ProcessorDesigner)
 
@@ -13,3 +13,6 @@ target_link_libraries (${PROJECT_NAME} glfw)
 
 find_package (OpenGL REQUIRED)
 target_link_libraries (${PROJECT_NAME} OpenGL::GL)
+
+find_package(imgui REQUIRED)
+target_link_libraries (${PROJECT_NAME} imgui::imgui)
