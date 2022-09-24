@@ -2,6 +2,14 @@
     "cmake.configureOnOpen": false,
     "files.associations": {
         "xiosbase": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "image_dxt.h": "c",
+        "soil.h": "c",
+        "stb_image_aug.h": "c",
+        "image_helper.h": "c",
+        "stbi_dds_aug.h": "c",
+        "stdlib.h": "c",
+        "string.h": "c",
+        "cstdlib": "cpp"
     }
 }

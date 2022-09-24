@@ -17,6 +17,9 @@
 //Build shared libraries
 BUILD_SHARED_LIBS:BOOL=OFF
 
+//utilities
+BUILD_UTILS:BOOL=ON
+
 //Path to a program.
 CMAKE_ADDR2LINE:FILEPATH=C:/msys64/mingw64/bin/addr2line.exe
 
@@ -305,6 +308,86 @@ CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 //Doxygen documentation generation tool (http://www.doxygen.org)
 DOXYGEN_EXECUTABLE:FILEPATH=DOXYGEN_EXECUTABLE-NOTFOUND
 
+//Directory under which to collect all populated content
+FETCHCONTENT_BASE_DIR:PATH=C:/Projects/ProcessorDesigner/_deps
+
+//Disables all attempts to download or update content and assumes
+// source dirs already exist
+FETCHCONTENT_FULLY_DISCONNECTED:BOOL=OFF
+
+//Enables QUIET option for all content population
+FETCHCONTENT_QUIET:BOOL=ON
+
+//When not empty, overrides where to find pre-populated content
+// for mahi-util
+FETCHCONTENT_SOURCE_DIR_MAHI-UTIL:PATH=
+
+//Enables UPDATE_DISCONNECTED behavior for all content population
+FETCHCONTENT_UPDATES_DISCONNECTED:BOOL=OFF
+
+//Enables UPDATE_DISCONNECTED behavior just for population of mahi-util
+FETCHCONTENT_UPDATES_DISCONNECTED_MAHI-UTIL:BOOL=OFF
+
+//Value Computed by CMake
+FMT_BINARY_DIR:STATIC=C:/Projects/ProcessorDesigner/_deps/mahi-util-build/3rdparty/fmt
+
+//Generate the cuda-test target.
+FMT_CUDA_TEST:BOOL=OFF
+
+//Generate the doc target.
+FMT_DOC:BOOL=OFF
+
+//Generate the fuzz target.
+FMT_FUZZ:BOOL=OFF
+
+//Generate the install target.
+FMT_INSTALL:BOOL=OFF
+
+//Value Computed by CMake
+FMT_IS_TOP_LEVEL:STATIC=OFF
+
+//Enable extra warnings and expensive tests.
+FMT_PEDANTIC:BOOL=OFF
+
+//Value Computed by CMake
+FMT_SOURCE_DIR:STATIC=C:/Projects/ProcessorDesigner/_deps/mahi-util-src/3rdparty/fmt
+
+//Generate the test target.
+FMT_TEST:BOOL=OFF
+
+//Halt the compilation with an error on compiler warnings.
+FMT_WERROR:BOOL=OFF
+
+//Git command line client
+GIT_EXECUTABLE:FILEPATH=C:/Program Files/Git/cmd/git.exe
+
+//The directory containing a CMake configuration file for GLES.
+GLES_DIR:PATH=GLES_DIR-NOTFOUND
+
+//The directory containing a CMake configuration file for GLEW.
+GLEW_DIR:PATH=GLEW_DIR-NOTFOUND
+
+//Path to a file.
+GLEW_INCLUDE_DIR:PATH=GLEW_INCLUDE_DIR-NOTFOUND
+
+//OSMesa mode
+GLEW_OSMESA:BOOL=OFF
+
+//Regal mode
+GLEW_REGAL:BOOL=OFF
+
+//Path to a library.
+GLEW_SHARED_LIBRARY_DEBUG:FILEPATH=GLEW_SHARED_LIBRARY_DEBUG-NOTFOUND
+
+//Path to a library.
+GLEW_SHARED_LIBRARY_RELEASE:FILEPATH=GLEW_SHARED_LIBRARY_RELEASE-NOTFOUND
+
+//Path to a library.
+GLEW_STATIC_LIBRARY_DEBUG:FILEPATH=GLEW_STATIC_LIBRARY_DEBUG-NOTFOUND
+
+//Path to a library.
+GLEW_STATIC_LIBRARY_RELEASE:FILEPATH=GLEW_STATIC_LIBRARY_RELEASE-NOTFOUND
+
 //Value Computed by CMake
 GLFW_BINARY_DIR:STATIC=C:/Projects/ProcessorDesigner/glfw
 
@@ -336,8 +419,29 @@ GLFW_SOURCE_DIR:STATIC=C:/Projects/ProcessorDesigner/glfw
 //Force use of high-performance GPU on hybrid systems
 GLFW_USE_HYBRID_HPG:BOOL=OFF
 
+//Assume the Vulkan loader is linked with the application
+GLFW_VULKAN_STATIC:BOOL=OFF
+
 //The directory containing a CMake configuration file for ImGui.
 ImGui_DIR:PATH=ImGui_DIR-NOTFOUND
+
+//Turn ON to build mahi-gui example(s)
+MAHI_GUI_EXAMPLES:BOOL=OFF
+
+//Turn ON to build native file dialog support
+MAHI_GUI_NATIVE_DIAGS:BOOL=ON
+
+//Turn ON to build experimental coroutine support
+MAHI_UTIL_COROUTINES:BOOL=ON
+
+//Turn ON to enable a default log output to console/file
+MAHI_UTIL_DEFAULT_LOG:BOOL=ON
+
+//Turn ON to build example executable(s)
+MAHI_UTIL_EXAMPLES:BOOL=OFF
+
+//Turn ON to enable filename capture in logs
+MAHI_UTIL_LOG_CAPTURE_FILE:BOOL=ON
 
 //OpenGL library for win32
 OPENGL_gl_LIBRARY:STRING=opengl32
@@ -363,8 +467,62 @@ Processor_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 Processor_SOURCE_DIR:STATIC=C:/Projects/ProcessorDesigner
 
+//Path to a library.
+SOIL:FILEPATH=SOIL-NOTFOUND
+
+//Path to a library.
+SOIL2:FILEPATH=SOIL2-NOTFOUND
+
+//The directory containing a CMake configuration file for SOIL.
+SOIL_DIR:PATH=SOIL_DIR-NOTFOUND
+
+//Value Computed by CMake
+glew_BINARY_DIR:STATIC=C:/Projects/ProcessorDesigner/glew/build/cmake
+
+//Value Computed by CMake
+glew_IS_TOP_LEVEL:STATIC=OFF
+
+//Dependencies for the target
+glew_LIB_DEPENDS:STATIC=general;-nostdlib;general;opengl32;general;glu32;
+
+//Value Computed by CMake
+glew_SOURCE_DIR:STATIC=C:/Projects/ProcessorDesigner/glew/build/cmake
+
+//Dependencies for the target
+glew_s_LIB_DEPENDS:STATIC=general;opengl32;general;glu32;
+
 //The directory containing a CMake configuration file for imgui.
 imgui_DIR:PATH=imgui_DIR-NOTFOUND
+
+//Value Computed by CMake
+mahi-gui_BINARY_DIR:STATIC=C:/Projects/ProcessorDesigner/mahi
+
+//Value Computed by CMake
+mahi-gui_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+mahi-gui_SOURCE_DIR:STATIC=C:/Projects/ProcessorDesigner/mahi
+
+//Value Computed by CMake
+mahi-util_BINARY_DIR:STATIC=C:/Projects/ProcessorDesigner/_deps/mahi-util-build
+
+//Value Computed by CMake
+mahi-util_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+mahi-util_SOURCE_DIR:STATIC=C:/Projects/ProcessorDesigner/_deps/mahi-util-src
+
+//Value Computed by CMake
+nativefiledialog-extended_BINARY_DIR:STATIC=C:/Projects/ProcessorDesigner/mahi/3rdparty/nativefiledialog-extended
+
+//Value Computed by CMake
+nativefiledialog-extended_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+nativefiledialog-extended_SOURCE_DIR:STATIC=C:/Projects/ProcessorDesigner/mahi/3rdparty/nativefiledialog-extended
+
+//The directory containing a CMake configuration file for skity.
+skity_DIR:PATH=skity_DIR-NOTFOUND
 
 
 ########################
@@ -507,7 +665,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=3
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=4
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
@@ -569,18 +727,46 @@ DOXYGEN_EXECUTABLE-ADVANCED:INTERNAL=1
 FIND_PACKAGE_MESSAGE_DETAILS_OpenGL:INTERNAL=[opengl32][c ][v()]
 //Details about finding Threads
 FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
+//Test FMT_HAS_VARIANT
+FMT_HAS_VARIANT:INTERNAL=1
+//ADVANCED property for variable: GIT_EXECUTABLE
+GIT_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: GLEW_INCLUDE_DIR
+GLEW_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//Include directories for GLEW
+GLEW_INCLUDE_DIRS:INTERNAL=C:/Projects/ProcessorDesigner/glew/include
+//Libraries for GLEW
+GLEW_LIBRARIES:INTERNAL=
+//ADVANCED property for variable: GLEW_SHARED_LIBRARY_DEBUG
+GLEW_SHARED_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: GLEW_SHARED_LIBRARY_RELEASE
+GLEW_SHARED_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: GLEW_STATIC_LIBRARY_DEBUG
+GLEW_STATIC_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: GLEW_STATIC_LIBRARY_RELEASE
+GLEW_STATIC_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 //GLFW pkg-config Libs.private
 GLFW_PKG_CONFIG_LIBS_PRIVATE:INTERNAL= -lgdi32
 //GLFW pkg-config Requires.private
 GLFW_PKG_CONFIG_REQUIRES_PRIVATE:INTERNAL=
+//Have symbol _strtod_l
+HAVE_STRTOD_L:INTERNAL=1
 //ADVANCED property for variable: OPENGL_gl_LIBRARY
 OPENGL_gl_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: OPENGL_glu_LIBRARY
 OPENGL_glu_LIBRARY-ADVANCED:INTERNAL=1
+//Test SUPPORTS_USER_DEFINED_LITERALS
+SUPPORTS_USER_DEFINED_LITERALS:INTERNAL=1
+//Test SUPPORTS_VARIADIC_TEMPLATES
+SUPPORTS_VARIADIC_TEMPLATES:INTERNAL=1
 //Have include xinput.h
 XINPUT_H_FOUND:INTERNAL=1
 //linker supports push/pop state
 _CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED:INTERNAL=TRUE
 //CMAKE_INSTALL_PREFIX during last run
 _GNUInstallDirs_LAST_CMAKE_INSTALL_PREFIX:INTERNAL=C:/Program Files (x86)/Processor
+//Test has_std_0x_flag
+has_std_0x_flag:INTERNAL=1
+//Test has_std_11_flag
+has_std_11_flag:INTERNAL=1
 

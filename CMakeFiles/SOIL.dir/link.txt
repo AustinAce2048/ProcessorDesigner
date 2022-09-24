@@ -1,0 +1,2 @@
+C:\msys64\mingw64\bin\ar.exe qc libSOIL.a CMakeFiles/SOIL.dir/soil/src/soil.c.obj CMakeFiles/SOIL.dir/soil/src/stb_image_aug.c.obj CMakeFiles/SOIL.dir/soil/src/image_helper.c.obj CMakeFiles/SOIL.dir/soil/src/image_dxt.c.obj
+C:\msys64\mingw64\bin\ranlib.exe libSOIL.a

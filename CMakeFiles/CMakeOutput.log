@@ -1122,3 +1122,124 @@ Parsed CXX implicit link information from above output:
   implicit fwks: []
 
 
+Performing C++ SOURCE FILE Test has_std_11_flag succeeded with the following output:
+Change Dir: C:/Projects/ProcessorDesigner/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/msys64/mingw64/bin/mingw32-make.exe -f Makefile cmTC_fc6ca/fast && C:/msys64/mingw64/bin/mingw32-make.exe  -f CMakeFiles\cmTC_fc6ca.dir\build.make CMakeFiles/cmTC_fc6ca.dir/build
+mingw32-make[1]: Entering directory 'C:/Projects/ProcessorDesigner/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_fc6ca.dir/src.cxx.obj
+C:\msys64\mingw64\bin\c++.exe -Dhas_std_11_flag  -Wall -O3 -Wall -O3    -std=c++11 -std=gnu++11 -o CMakeFiles\cmTC_fc6ca.dir\src.cxx.obj -c C:\Projects\ProcessorDesigner\CMakeFiles\CMakeTmp\src.cxx
+Linking CXX executable cmTC_fc6ca.exe
+"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_fc6ca.dir\link.txt --verbose=1
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\cmTC_fc6ca.dir/objects.a
+C:\msys64\mingw64\bin\ar.exe qc CMakeFiles\cmTC_fc6ca.dir/objects.a @CMakeFiles\cmTC_fc6ca.dir\objects1.rsp
+C:\msys64\mingw64\bin\c++.exe  -Wall -O3 -Wall -O3  -Wl,--whole-archive CMakeFiles\cmTC_fc6ca.dir/objects.a -Wl,--no-whole-archive -o cmTC_fc6ca.exe -Wl,--out-implib,libcmTC_fc6ca.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_fc6ca.dir\linklibs.rsp
+mingw32-make[1]: Leaving directory 'C:/Projects/ProcessorDesigner/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test has_std_0x_flag succeeded with the following output:
+Change Dir: C:/Projects/ProcessorDesigner/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/msys64/mingw64/bin/mingw32-make.exe -f Makefile cmTC_e78d5/fast && C:/msys64/mingw64/bin/mingw32-make.exe  -f CMakeFiles\cmTC_e78d5.dir\build.make CMakeFiles/cmTC_e78d5.dir/build
+mingw32-make[1]: Entering directory 'C:/Projects/ProcessorDesigner/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_e78d5.dir/src.cxx.obj
+C:\msys64\mingw64\bin\c++.exe -Dhas_std_0x_flag  -Wall -O3 -Wall -O3    -std=c++0x -std=gnu++11 -o CMakeFiles\cmTC_e78d5.dir\src.cxx.obj -c C:\Projects\ProcessorDesigner\CMakeFiles\CMakeTmp\src.cxx
+Linking CXX executable cmTC_e78d5.exe
+"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_e78d5.dir\link.txt --verbose=1
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\cmTC_e78d5.dir/objects.a
+C:\msys64\mingw64\bin\ar.exe qc CMakeFiles\cmTC_e78d5.dir/objects.a @CMakeFiles\cmTC_e78d5.dir\objects1.rsp
+C:\msys64\mingw64\bin\c++.exe  -Wall -O3 -Wall -O3  -Wl,--whole-archive CMakeFiles\cmTC_e78d5.dir/objects.a -Wl,--no-whole-archive -o cmTC_e78d5.exe -Wl,--out-implib,libcmTC_e78d5.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_e78d5.dir\linklibs.rsp
+mingw32-make[1]: Leaving directory 'C:/Projects/ProcessorDesigner/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test SUPPORTS_VARIADIC_TEMPLATES succeeded with the following output:
+Change Dir: C:/Projects/ProcessorDesigner/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/msys64/mingw64/bin/mingw32-make.exe -f Makefile cmTC_ff322/fast && C:/msys64/mingw64/bin/mingw32-make.exe  -f CMakeFiles\cmTC_ff322.dir\build.make CMakeFiles/cmTC_ff322.dir/build
+mingw32-make[1]: Entering directory 'C:/Projects/ProcessorDesigner/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_ff322.dir/src.cxx.obj
+C:\msys64\mingw64\bin\c++.exe -DSUPPORTS_VARIADIC_TEMPLATES  -Wall -O3 -Wall -O3 -std=c++11 -std=gnu++11 -o CMakeFiles\cmTC_ff322.dir\src.cxx.obj -c C:\Projects\ProcessorDesigner\CMakeFiles\CMakeTmp\src.cxx
+Linking CXX executable cmTC_ff322.exe
+"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_ff322.dir\link.txt --verbose=1
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\cmTC_ff322.dir/objects.a
+C:\msys64\mingw64\bin\ar.exe qc CMakeFiles\cmTC_ff322.dir/objects.a @CMakeFiles\cmTC_ff322.dir\objects1.rsp
+C:\msys64\mingw64\bin\c++.exe  -Wall -O3 -Wall -O3 -std=c++11 -Wl,--whole-archive CMakeFiles\cmTC_ff322.dir/objects.a -Wl,--no-whole-archive -o cmTC_ff322.exe -Wl,--out-implib,libcmTC_ff322.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_ff322.dir\linklibs.rsp
+mingw32-make[1]: Leaving directory 'C:/Projects/ProcessorDesigner/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+
+  template <class T, class ...Types>
+  struct S { typedef typename S<Types...>::type type; };
+  int main() {}
+Performing C++ SOURCE FILE Test SUPPORTS_USER_DEFINED_LITERALS succeeded with the following output:
+Change Dir: C:/Projects/ProcessorDesigner/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/msys64/mingw64/bin/mingw32-make.exe -f Makefile cmTC_b8c99/fast && C:/msys64/mingw64/bin/mingw32-make.exe  -f CMakeFiles\cmTC_b8c99.dir\build.make CMakeFiles/cmTC_b8c99.dir/build
+mingw32-make[1]: Entering directory 'C:/Projects/ProcessorDesigner/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_b8c99.dir/src.cxx.obj
+C:\msys64\mingw64\bin\c++.exe -DSUPPORTS_USER_DEFINED_LITERALS  -Wall -O3 -Wall -O3 -std=c++11 -std=gnu++11 -o CMakeFiles\cmTC_b8c99.dir\src.cxx.obj -c C:\Projects\ProcessorDesigner\CMakeFiles\CMakeTmp\src.cxx
+Linking CXX executable cmTC_b8c99.exe
+"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_b8c99.dir\link.txt --verbose=1
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\cmTC_b8c99.dir/objects.a
+C:\msys64\mingw64\bin\ar.exe qc CMakeFiles\cmTC_b8c99.dir/objects.a @CMakeFiles\cmTC_b8c99.dir\objects1.rsp
+C:\msys64\mingw64\bin\c++.exe  -Wall -O3 -Wall -O3 -std=c++11 -Wl,--whole-archive CMakeFiles\cmTC_b8c99.dir/objects.a -Wl,--no-whole-archive -o cmTC_b8c99.exe -Wl,--out-implib,libcmTC_b8c99.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_b8c99.dir\linklibs.rsp
+mingw32-make[1]: Leaving directory 'C:/Projects/ProcessorDesigner/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+
+  void operator"" _udl(long double);
+  int main() {}
+Performing C++ SOURCE FILE Test FMT_HAS_VARIANT succeeded with the following output:
+Change Dir: C:/Projects/ProcessorDesigner/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/msys64/mingw64/bin/mingw32-make.exe -f Makefile cmTC_26bf7/fast && C:/msys64/mingw64/bin/mingw32-make.exe  -f CMakeFiles\cmTC_26bf7.dir\build.make CMakeFiles/cmTC_26bf7.dir/build
+mingw32-make[1]: Entering directory 'C:/Projects/ProcessorDesigner/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_26bf7.dir/src.cxx.obj
+C:\msys64\mingw64\bin\c++.exe -DFMT_HAS_VARIANT  -Wall -O3 -Wall -O3 -std=c++1z -std=gnu++11 -o CMakeFiles\cmTC_26bf7.dir\src.cxx.obj -c C:\Projects\ProcessorDesigner\CMakeFiles\CMakeTmp\src.cxx
+Linking CXX executable cmTC_26bf7.exe
+"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_26bf7.dir\link.txt --verbose=1
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\cmTC_26bf7.dir/objects.a
+C:\msys64\mingw64\bin\ar.exe qc CMakeFiles\cmTC_26bf7.dir/objects.a @CMakeFiles\cmTC_26bf7.dir\objects1.rsp
+C:\msys64\mingw64\bin\c++.exe  -Wall -O3 -Wall -O3 -std=c++1z -Wl,--whole-archive CMakeFiles\cmTC_26bf7.dir/objects.a -Wl,--no-whole-archive -o cmTC_26bf7.exe -Wl,--out-implib,libcmTC_26bf7.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_26bf7.dir\linklibs.rsp
+mingw32-make[1]: Leaving directory 'C:/Projects/ProcessorDesigner/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+
+  #include <variant>
+  int main() {}
+Determining if the _strtod_l exist passed with the following output:
+Change Dir: C:/Projects/ProcessorDesigner/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/msys64/mingw64/bin/mingw32-make.exe -f Makefile cmTC_f1d92/fast && C:/msys64/mingw64/bin/mingw32-make.exe  -f CMakeFiles\cmTC_f1d92.dir\build.make CMakeFiles/cmTC_f1d92.dir/build
+mingw32-make[1]: Entering directory 'C:/Projects/ProcessorDesigner/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_f1d92.dir/CheckSymbolExists.c.obj
+C:\msys64\mingw64\bin\cc.exe    -o CMakeFiles\cmTC_f1d92.dir\CheckSymbolExists.c.obj -c C:\Projects\ProcessorDesigner\CMakeFiles\CMakeTmp\CheckSymbolExists.c
+Linking C executable cmTC_f1d92.exe
+"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_f1d92.dir\link.txt --verbose=1
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\cmTC_f1d92.dir/objects.a
+C:\msys64\mingw64\bin\ar.exe qc CMakeFiles\cmTC_f1d92.dir/objects.a @CMakeFiles\cmTC_f1d92.dir\objects1.rsp
+C:\msys64\mingw64\bin\cc.exe -Wl,--whole-archive CMakeFiles\cmTC_f1d92.dir/objects.a -Wl,--no-whole-archive -o cmTC_f1d92.exe -Wl,--out-implib,libcmTC_f1d92.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_f1d92.dir\linklibs.rsp
+mingw32-make[1]: Leaving directory 'C:/Projects/ProcessorDesigner/CMakeFiles/CMakeTmp'
+
+
+File C:/Projects/ProcessorDesigner/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdlib.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef _strtod_l
+  return ((int*)(&_strtod_l))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}

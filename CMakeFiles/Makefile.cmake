@@ -46,6 +46,8 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.24.1/CMakeRCCompiler.cmake"
   "CMakeFiles/3.24.1/CMakeSystem.cmake"
   "CMakeLists.txt"
+  "glew/build/cmake/CMakeLists.txt"
+  "glew/glew.pc.in"
   "glfw/CMake/cmake_uninstall.cmake.in"
   "glfw/CMake/glfw3.pc.in"
   "glfw/CMake/glfw3Config.cmake.in"
@@ -68,12 +70,20 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "glfw/CMakeFiles/CMakeDirectoryInformation.cmake"
   "glfw/src/glfw3.pc"
   "glfw/src/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "glew/glew.pc"
+  "glew/build/cmake/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/ProcessorDesigner.dir/DependInfo.cmake"
+  "CMakeFiles/IMGUI.dir/DependInfo.cmake"
+  "CMakeFiles/SOIL.dir/DependInfo.cmake"
   "glfw/CMakeFiles/uninstall.dir/DependInfo.cmake"
   "glfw/src/CMakeFiles/glfw.dir/DependInfo.cmake"
   "glfw/src/CMakeFiles/update_mappings.dir/DependInfo.cmake"
+  "glew/build/cmake/CMakeFiles/glew.dir/DependInfo.cmake"
+  "glew/build/cmake/CMakeFiles/glew_s.dir/DependInfo.cmake"
+  "glew/build/cmake/CMakeFiles/glewinfo.dir/DependInfo.cmake"
+  "glew/build/cmake/CMakeFiles/visualinfo.dir/DependInfo.cmake"
   )

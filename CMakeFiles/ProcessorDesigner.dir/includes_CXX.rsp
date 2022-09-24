@@ -1,1 +1,1 @@
--IC:/Projects/ProcessorDesigner/glfw -IC:/Projects/ProcessorDesigner/glfw/include
+-IC:/Projects/ProcessorDesigner/glfw -IC:/Projects/ProcessorDesigner/glew -IC:/Projects/ProcessorDesigner/glfw/include -IC:/Projects/ProcessorDesigner/imgui -IC:/Projects/ProcessorDesigner/imgui/backends -IC:/Projects/ProcessorDesigner/soil

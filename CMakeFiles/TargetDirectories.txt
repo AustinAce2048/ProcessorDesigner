@@ -1,4 +1,6 @@
 C:/Projects/ProcessorDesigner/CMakeFiles/ProcessorDesigner.dir
+C:/Projects/ProcessorDesigner/CMakeFiles/IMGUI.dir
+C:/Projects/ProcessorDesigner/CMakeFiles/SOIL.dir
 C:/Projects/ProcessorDesigner/CMakeFiles/edit_cache.dir
 C:/Projects/ProcessorDesigner/CMakeFiles/rebuild_cache.dir
 C:/Projects/ProcessorDesigner/CMakeFiles/list_install_components.dir
@@ -20,3 +22,13 @@ C:/Projects/ProcessorDesigner/glfw/src/CMakeFiles/list_install_components.dir
 C:/Projects/ProcessorDesigner/glfw/src/CMakeFiles/install.dir
 C:/Projects/ProcessorDesigner/glfw/src/CMakeFiles/install/local.dir
 C:/Projects/ProcessorDesigner/glfw/src/CMakeFiles/install/strip.dir
+C:/Projects/ProcessorDesigner/glew/build/cmake/CMakeFiles/glew.dir
+C:/Projects/ProcessorDesigner/glew/build/cmake/CMakeFiles/glew_s.dir
+C:/Projects/ProcessorDesigner/glew/build/cmake/CMakeFiles/glewinfo.dir
+C:/Projects/ProcessorDesigner/glew/build/cmake/CMakeFiles/visualinfo.dir
+C:/Projects/ProcessorDesigner/glew/build/cmake/CMakeFiles/edit_cache.dir
+C:/Projects/ProcessorDesigner/glew/build/cmake/CMakeFiles/rebuild_cache.dir
+C:/Projects/ProcessorDesigner/glew/build/cmake/CMakeFiles/list_install_components.dir
+C:/Projects/ProcessorDesigner/glew/build/cmake/CMakeFiles/install.dir
+C:/Projects/ProcessorDesigner/glew/build/cmake/CMakeFiles/install/local.dir
+C:/Projects/ProcessorDesigner/glew/build/cmake/CMakeFiles/install/strip.dir

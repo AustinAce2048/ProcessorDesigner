@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "C:/Projects/ProcessorDesigner/_deps/mahi-util-subbuild/CMakeFiles/mahi-util-populate"
+		},
+		{
+			"file" : "C:/Projects/ProcessorDesigner/_deps/mahi-util-subbuild/CMakeFiles/mahi-util-populate.rule"
+		},
+		{
+			"file" : "C:/Projects/ProcessorDesigner/_deps/mahi-util-subbuild/CMakeFiles/mahi-util-populate-complete.rule"
+		},
+		{
+			"file" : "C:/Projects/ProcessorDesigner/_deps/mahi-util-subbuild/mahi-util-populate-prefix/src/mahi-util-populate-stamp/mahi-util-populate-build.rule"
+		},
+		{
+			"file" : "C:/Projects/ProcessorDesigner/_deps/mahi-util-subbuild/mahi-util-populate-prefix/src/mahi-util-populate-stamp/mahi-util-populate-configure.rule"
+		},
+		{
+			"file" : "C:/Projects/ProcessorDesigner/_deps/mahi-util-subbuild/mahi-util-populate-prefix/src/mahi-util-populate-stamp/mahi-util-populate-download.rule"
+		},
+		{
+			"file" : "C:/Projects/ProcessorDesigner/_deps/mahi-util-subbuild/mahi-util-populate-prefix/src/mahi-util-populate-stamp/mahi-util-populate-install.rule"
+		},
+		{
+			"file" : "C:/Projects/ProcessorDesigner/_deps/mahi-util-subbuild/mahi-util-populate-prefix/src/mahi-util-populate-stamp/mahi-util-populate-mkdir.rule"
+		},
+		{
+			"file" : "C:/Projects/ProcessorDesigner/_deps/mahi-util-subbuild/mahi-util-populate-prefix/src/mahi-util-populate-stamp/mahi-util-populate-patch.rule"
+		},
+		{
+			"file" : "C:/Projects/ProcessorDesigner/_deps/mahi-util-subbuild/mahi-util-populate-prefix/src/mahi-util-populate-stamp/mahi-util-populate-test.rule"
+		},
+		{
+			"file" : "C:/Projects/ProcessorDesigner/_deps/mahi-util-subbuild/mahi-util-populate-prefix/src/mahi-util-populate-stamp/mahi-util-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"mahi-util-populate"
+		],
+		"name" : "mahi-util-populate"
+	}
+}
