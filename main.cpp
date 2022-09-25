@@ -41,84 +41,23 @@ const char *fragmentShader =
     "}\n";
 
 struct Texture {unsigned short width, height; float u1, v1, u2, v2;};
-struct Object  {short x, y; Texture texture;};
+struct Object  {int x, y; Texture texture;};
 
-Texture
-    watermelon = {64, 64, 0.0f,   0.0f,   0.5f,   0.5f},
-    pineapple  = {64, 64, 0.5f,   0.0f,   1.0f,   0.5f},
-    orange     = {32, 32, 0.0f,   0.5f,   0.25f,  0.75f},
-    grapes     = {32, 32, 0.25f,  0.5f,   0.5f,   0.75f},
-    pear       = {32, 32, 0.0f,   0.75f,  0.25f,  1.0f},
-    banana     = {32, 32, 0.25f,  0.75f,  0.5f,   1.0f},
-    strawberry = {16, 16, 0.5f,   0.5f,   0.625f, 0.625f},
-    raspberry  = {16, 16, 0.625f, 0.5f,   0.75f,  0.625f},
-    cherries   = {16, 16, 0.5f,   0.625f, 0.625f, 0.75f};
+//For corners, (u1, v1) is the top left and (u2, v2) is bottom right. (0, 0) is top left corner
+Texture notGate = {200, 100, 0.0f,   0.0f,   1.0f,   0.5f};
+Texture andGate = {200, 100, 0.0f,   0.5f,   1.0f,   1.0f};
 
-Texture textures[9] = {watermelon, pineapple, orange, grapes, pear, banana, strawberry, cherries, raspberry};
+Texture textures[2] = {notGate, andGate};
 
-const unsigned int OBJECT_COUNT = 100;
+const unsigned int OBJECT_COUNT = 2;
 static Object objects[OBJECT_COUNT];
 
 static short vertices[OBJECT_COUNT * 12];
 static float uvs[OBJECT_COUNT * 12];
 
-void updateObject (int i) {
-    //Top right
-    vertices[i * 12] = objects[i].x + objects[i].texture.width;
-    vertices[i * 12 + 1] = objects[i].y;
-
-    //Bottom right
-    vertices[i * 12 + 2] = objects[i].x + objects[i].texture.width;
-    vertices[i * 12 + 3] = objects[i].y + objects[i].texture.height;
-
-    //Top left
-    vertices[i * 12 + 4] = objects[i].x;
-    vertices[i * 12 + 5] = objects[i].y;
-
-    //Bottom right
-    vertices[i * 12 + 6] = objects[i].x + objects[i].texture.width;
-    vertices[i * 12 + 7] = objects[i].y + objects[i].texture.height;
-
-    //Bottom left
-    vertices[i * 12 + 8] = objects[i].x;
-    vertices[i * 12 + 9] = objects[i].y + objects[i].texture.height;
-
-    //Top left
-    vertices[i * 12 + 10] = objects[i].x;
-    vertices[i * 12 + 11] = objects[i].y;
-}
-
-void Update () {
-    //Dancing sprites
-    for (int i = 0; i < OBJECT_COUNT; i++) {
-        objects[i].x += rand () % 5 - 2;
-        objects[i].y += rand () % 5 - 2;
-        updateObject (i);
-    }
-
-    //If you had to unbind VBO bind it again
-    //glBindBuffer (GL_ARRAY_BUFFER, vbo);
-    glBufferSubData (GL_ARRAY_BUFFER, 0, sizeof (vertices), vertices);
-    
-}
-
-//Render function has moved because of window scope
-
 //Each pixel has a position and 3 values for RGB
 //Position is x + (y * screenWidth)
 float* pixels = new float[screenWidth * screenHeight * 3];
-
-
-
-void DrawSquare (int xPos, int yPos, int width, float r, float g, float b) {
-    for (int i = yPos - (width / 2); i < yPos + (width / 2); i++) {
-        for (int j = xPos - (width / 2); j < xPos + (width / 2); j++) {
-            pixels[(j + i * screenWidth) * 3] = r;
-            pixels[(j + i * screenWidth) * 3 + 1] = g;
-            pixels[(j + i * screenWidth) * 3 + 2] = b;
-        }
-    }
-}
 
 
 
@@ -128,82 +67,6 @@ void SetPixel (int x, int y, float r, float g, float b) {
         pixels[(x + y * screenWidth) * 3 + 1] = g;
         pixels[(x + y * screenWidth) * 3 + 2] = b;
     }
-}
-
-
-
-void DrawCircle (int xPos, int yPos, int radius, float r, float g, float b) {
-    float angle, x1, y1, i, rad;
-    for (int j = 0; j < radius; j++) {
-        rad = j;
-        for (i = 0; i < 360; i += 0.1f) {
-            angle = i;
-            x1 = rad * cos (angle * pi / 180.0f);
-            y1 = rad * sin (angle * pi / 180.0f);
-            SetPixel (xPos + x1, yPos + y1, r, g, b);
-        }
-    }
-}
-
-
-//Drawing a right triangle
-/*void DrawRightTriangle (int xPos, int yPos, int sideLength, float r, float g, float b) {
-    int k = 0;
-    int l = 1;
-    for (int i = yPos - (sideLength / 2); i < yPos + (sideLength / 2); i++) {
-        for (int j = xPos - (sideLength / 2); j < xPos + (sideLength / 2); j++) {
-            if (k < l) {
-                pixels[(j + i * screenWidth) * 3] = r;
-                pixels[(j + i * screenWidth) * 3 + 1] = g;
-                pixels[(j + i * screenWidth) * 3 + 2] = b;
-            }
-            k++;
-        }
-        l++;
-        k = 0;
-    }
-}*/
-
-
-
-void DrawTriangle (int xPos, int yPos, int sideLength, float r, float g, float b) {
-    int k = 0;
-    int l = 1;
-    bool subtract = false;
-    for (int i = yPos - (sideLength / 2); i < yPos + (sideLength / 2); i++) {
-        for (int j = xPos - (sideLength); j < xPos + (sideLength); j++) {
-            //Bottom row, draw one point, next row draw two points etc...
-            if (k < l * 2) {
-                pixels[(j + i * screenWidth) * 3] = r;
-                pixels[(j + i * screenWidth) * 3 + 1] = g;
-                pixels[(j + i * screenWidth) * 3 + 2] = b;
-            }
-            k++;
-        }
-        if (l == sideLength / 2) {
-            subtract = true;
-        }
-        if (subtract) {
-            l--;
-        } else {
-            l++;
-        }
-        k = 0;
-    }
-}
-
-
-
-void DrawNotGate (int xPos, int yPos, float r, float g, float b) {
-    DrawCircle (xPos, yPos, 10, r, g, b);
-    DrawTriangle (xPos, yPos, 50, r, g, b);
-}
-
-
-
-void DrawAndGate (int xPos, int yPos, float r, float g, float b) {
-    DrawSquare (xPos, yPos, 50, r, g, b);
-    DrawCircle (xPos + 20, yPos, 26, r, g, b);
 }
 
 
@@ -218,8 +81,6 @@ void Draw () {
             pixels[(j + i * screenWidth) * 3 + 2] = 1.0f;
         }
     }
-    DrawNotGate (1000, 1000, 0.0f, 1.0f, 1.0f);
-    DrawAndGate (500, 250, 1.0f, 0.0f, 0.0f);
 }
 
 
@@ -284,7 +145,7 @@ int main () {
 
     //Load imagemap using SOIL and store it on GPU
     int width, height;
-    unsigned char* image = SOIL_load_image ("texture.png", &width, &height, 0, SOIL_LOAD_RGBA);
+    unsigned char* image = SOIL_load_image ("2gates.png", &width, &height, 0, SOIL_LOAD_RGBA);
     glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
     if (image == 0) {
         exit (1);
@@ -293,56 +154,57 @@ int main () {
     }
 
     for (int i = 0; i < OBJECT_COUNT; i++) {
-        Texture t = textures[rand () % 9];
-        objects[i] = {(short) (rand () % (screenWidth - t.width)), (short) (rand () % (screenHeight - t.height)), t};
+        //Draw one of each gate
+        Texture t = textures[i];
+        objects[i] = {600 + (i * 200), 600 + (i * 200), t};
 
-        // vertices
-        // top right
+        //Vertices
+        //Top right
         vertices[i * 12] = objects[i].x + objects[i].texture.width;
         vertices[i * 12 + 1] = objects[i].y;
 
-        // bottom right
+        //Bottom right
         vertices[i * 12 + 2] = objects[i].x + objects[i].texture.width;
         vertices[i * 12 + 3] = objects[i].y + objects[i].texture.height;
 
-        // top left
+        //Top left
         vertices[i * 12 + 4] = objects[i].x;
         vertices[i * 12 + 5] = objects[i].y;
 
-        // bottom right
+        //Bottom right
         vertices[i * 12 + 6] = objects[i].x + objects[i].texture.width;
         vertices[i * 12 + 7] = objects[i].y + objects[i].texture.height;
 
-        // bottom left
+        //Bottom left
         vertices[i * 12 + 8] = objects[i].x;
         vertices[i * 12 + 9] = objects[i].y + objects[i].texture.height;
 
-        // top left
+        //Top left
         vertices[i * 12 + 10] = objects[i].x;
         vertices[i * 12 + 11] = objects[i].y;
 
-        // uvs
-        // top right
+        //UVs
+        //Top right
         uvs[i * 12] = objects[i].texture.u2;
         uvs[i * 12 + 1] = objects[i].texture.v2;
 
-        // bottom right
+        //Bottom right
         uvs[i * 12 + 2] = objects[i].texture.u2;
         uvs[i * 12 + 3] = objects[i].texture.v1;
 
-        // top left
+        //Top left
         uvs[i * 12 + 4] = objects[i].texture.u1;
         uvs[i * 12 + 5] = objects[i].texture.v2;
 
-        // bottom right
+        //Bottom right
         uvs[i * 12 + 6] = objects[i].texture.u2;
         uvs[i * 12 + 7] = objects[i].texture.v1;
 
-        // bottom left
+        //Bottom left
         uvs[i * 12 + 8] = objects[i].texture.u1;
         uvs[i * 12 + 9] = objects[i].texture.v1;
 
-        // top left
+        //Top left
         uvs[i * 12 + 10] = objects[i].texture.u1;
         uvs[i * 12 + 11] = objects[i].texture.v2;
     }
@@ -389,7 +251,7 @@ int main () {
     */
 
     //Force window to be fullscreen on the main monitor
-    //glfwSetWindowMonitor (window, glfwGetPrimaryMonitor (), 0, 0, screenWidth, screenHeight, 500);
+    glfwSetWindowMonitor (window, glfwGetPrimaryMonitor (), 0, 0, screenWidth, screenHeight, 500);
 
     //Grabs the callback set earlier, only runs if pollEvents is running
     glfwSetKeyCallback (window, KeyCallback);
@@ -397,9 +259,20 @@ int main () {
     //Loop until window is closed
     while (!glfwWindowShouldClose (window)) {
         glfwPollEvents ();
-        Update ();
+        glBufferSubData (GL_ARRAY_BUFFER, 0, sizeof (vertices), vertices);
 
-        /*ImGui_ImplOpenGL3_NewFrame ();
+        //Draw ();
+        //Draw pixels to frame buffer
+        //glDrawPixels (screenWidth, screenHeight, GL_RGB, GL_FLOAT, pixels);
+
+        glClearColor (0.2f, 0.25f, 0.3f, 1.0f);
+        glClear (GL_COLOR_BUFFER_BIT);
+
+        //If you had to unbind VAO bind it again
+        //glBindVertexArray (vao);
+        glDrawArrays (GL_TRIANGLES, 0, OBJECT_COUNT * 6);
+
+        ImGui_ImplOpenGL3_NewFrame ();
         ImGui_ImplGlfw_NewFrame ();
         ImGui::NewFrame ();
 
@@ -407,24 +280,11 @@ int main () {
         static int counter = 0;
 
         ImGui::Begin ("Debug Window");
-        ImGui::Text ("Processor Designer average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO ().Framerate, ImGui::GetIO ().Framerate);
-        ImGui::End ();*/
-
-        //Render here
-
-        //Draw ();
-
-        //Draw pixels to frame buffer
-        //glDrawPixels (screenWidth, screenHeight, GL_RGB, GL_FLOAT, pixels);
-
-        //ImGui::Render ();
-        //ImGui_ImplOpenGL3_RenderDrawData (ImGui::GetDrawData ());
-        glClearColor (0.2f, 0.25f, 0.3f, 1.0f);
-        glClear (GL_COLOR_BUFFER_BIT);
-
-        //If you had to unbind VAO bind it again
-        //glBindVertexArray (vao);
-        glDrawArrays (GL_TRIANGLES, 0, OBJECT_COUNT * 6);
+        ImGui::Text ("Test text");
+        //ImGui::Text ("Processor Designer average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO ().Framerate, ImGui::GetIO ().Framerate);
+        ImGui::End ();
+        ImGui::Render ();
+        ImGui_ImplOpenGL3_RenderDrawData (ImGui::GetDrawData ());
 
         //Swap front and back buffers
         glfwSwapBuffers (window);
