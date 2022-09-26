@@ -49,11 +49,12 @@ Texture andGate = {200, 100, 0.0f,   0.5f,   1.0f,   1.0f};
 
 Texture textures[2] = {notGate, andGate};
 
-const unsigned int OBJECT_COUNT = 2;
-static Object objects[OBJECT_COUNT];
+//For decoding: 0 = NOT, 2 = AND
+int* gatesToDraw = new int[0];
+static Object objects[sizeof (gatesToDraw)];
 
-static short vertices[OBJECT_COUNT * 12];
-static float uvs[OBJECT_COUNT * 12];
+static short vertices[sizeof (gatesToDraw) * 12];
+static float uvs[sizeof (gatesToDraw) * 12];
 
 //Each pixel has a position and 3 values for RGB
 //Position is x + (y * screenWidth)
@@ -153,7 +154,7 @@ int main () {
         SOIL_free_image_data (image);
     }
 
-    for (int i = 0; i < OBJECT_COUNT; i++) {
+    for (int i = 0; i < sizeof (gatesToDraw); i++) {
         //Draw one of each gate
         Texture t = textures[i];
         objects[i] = {600 + (i * 200), 600 + (i * 200), t};
@@ -270,19 +271,24 @@ int main () {
 
         //If you had to unbind VAO bind it again
         //glBindVertexArray (vao);
-        glDrawArrays (GL_TRIANGLES, 0, OBJECT_COUNT * 6);
+        glDrawArrays (GL_TRIANGLES, 0, sizeof (gatesToDraw) * 6);
 
+        //IMGUI runs in here
         ImGui_ImplOpenGL3_NewFrame ();
         ImGui_ImplGlfw_NewFrame ();
         ImGui::NewFrame ();
 
-        static float f = 0.0f;
-        static int counter = 0;
-
         ImGui::Begin ("Debug Window");
-        ImGui::Text ("Test text");
-        //ImGui::Text ("Processor Designer average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO ().Framerate, ImGui::GetIO ().Framerate);
+        ImGui::Text ("Debug and testing data");
         ImGui::End ();
+
+        ImGui::Begin ("Place Gates");
+        ImGui::SetWindowSize (ImVec2 ((float)200.0f, (float)75.0f));
+        if (ImGui::Button ("NOT")) {
+            //
+        }
+        ImGui::End ();
+
         ImGui::Render ();
         ImGui_ImplOpenGL3_RenderDrawData (ImGui::GetDrawData ());
 
