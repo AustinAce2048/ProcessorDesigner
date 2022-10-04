@@ -6,14 +6,18 @@
 #include <GLFW/glfw3.h>
 #include "soil/include/soil/SOIL.h"
 
+#include <iostream>
 #include <cstdlib>
 #include <cmath>
+#include <vector>
 
 //Window doesn't scale, resolution is hardcoded
 int screenWidth = 1920;
 int screenHeight = 1080;
 const char windowName[] = "Processor Designer";
 const float pi = 3.141592653598793f;
+bool trueBool = true;
+bool redrawSprites = true;
 
 GLuint getShaderProgramId (const char *vertexFile, const char *fragmentFile);
 GLuint compileShader (const GLchar *source, GLuint shaderType);
@@ -21,7 +25,7 @@ GLuint compileShader (const GLchar *source, GLuint shaderType);
 GLuint shaderProgramId, vao, vbo, ubo, textureId;
 
 //To stop sending information to shaders, screen resolution is hard coded (half per dimension)
-const char *vertexShader =
+const char* vertexShader =
     "#version 330\n"
     "layout (location = 0) in vec2 vert;\n"
     "layout (location = 1) in vec2 _uv;\n"
@@ -31,7 +35,7 @@ const char *vertexShader =
     "    gl_Position = vec4 (vert.x / 960.0 - 1.0, vert.y / 540.0 - 1.0, 0.0, 1.0);\n"
     "}\n";
 
-const char *fragmentShader =
+const char* fragmentShader =
     "#version 330\n"
     "out vec4 color;\n"
     "in vec2 uv;\n"
@@ -50,11 +54,7 @@ Texture andGate = {200, 100, 0.0f,   0.5f,   1.0f,   1.0f};
 Texture textures[2] = {notGate, andGate};
 
 //For decoding: 0 = NOT, 2 = AND
-int* gatesToDraw = new int[0];
-static Object objects[sizeof (gatesToDraw)];
-
-static short vertices[sizeof (gatesToDraw) * 12];
-static float uvs[sizeof (gatesToDraw) * 12];
+int gatesToDraw = 0;
 
 //Each pixel has a position and 3 values for RGB
 //Position is x + (y * screenWidth)
@@ -94,70 +94,10 @@ void KeyCallback (GLFWwindow* window, int key, int scancode, int action, int mod
 }
 
 
-
-int main () {
-    GLFWwindow* window;
-
-    //Setup GLFW
-    glfwInit ();
-    glfwWindowHint (GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint (GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint (GLFW_RESIZABLE, GL_FALSE);
-
-    if (!window) {
-        glfwTerminate ();
-        return -1;
-    }
-
-    //Create a window and set the OpenGL context (Make it windowed fullscreen)
-    window = glfwCreateWindow (screenWidth, screenHeight, windowName, NULL, NULL);
-
-    //Set window context to current
-    glfwMakeContextCurrent (window);
-
-    //Setup GLEW
-    glewExperimental = GL_TRUE;
-    glewInit ();
-
-    //Setup OpenGL
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable (GL_CULL_FACE);
-    glFrontFace (GL_CCW);
-    glEnable (GL_BLEND);
-    glDisable (GL_DEPTH_TEST);
-    glDisable (GL_SCISSOR_TEST);
-
-    //Setup viewport
-    glfwGetFramebufferSize (window, &screenWidth, &screenHeight);
-    glViewport (0, 0, screenWidth, screenHeight);
-
-    //Setup shader
-    shaderProgramId = getShaderProgramId (vertexShader, fragmentShader);
-
-    //Setup texture
-    glGenTextures (1, &textureId);
-    glBindTexture (GL_TEXTURE_2D, textureId);
-
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-    //Load imagemap using SOIL and store it on GPU
-    int width, height;
-    unsigned char* image = SOIL_load_image ("2gates.png", &width, &height, 0, SOIL_LOAD_RGBA);
-    glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-    if (image == 0) {
-        exit (1);
-    } else {
-        SOIL_free_image_data (image);
-    }
-
-    for (int i = 0; i < sizeof (gatesToDraw); i++) {
-        //Draw one of each gate
-        Texture t = textures[i];
-        objects[i] = {600 + (i * 200), 600 + (i * 200), t};
+void DrawSprites (std::vector<Object> objects, std::vector<short> vertices, std::vector<float> uvs) {
+    for (int i = 0; i < gatesToDraw; i++) {
+        Texture t = textures[0];
+        objects[i] = {600, 600, t};
 
         //Vertices
         //Top right
@@ -209,7 +149,7 @@ int main () {
         uvs[i * 12 + 10] = objects[i].texture.u1;
         uvs[i * 12 + 11] = objects[i].texture.v2;
     }
-    
+
     //Init OpenGL buffers
     glGenVertexArrays (1, &vao);
     glGenBuffers (1, &vbo);
@@ -217,11 +157,11 @@ int main () {
     glBindVertexArray (vao);
 
     glBindBuffer (GL_ARRAY_BUFFER, vbo);
-    glBufferData (GL_ARRAY_BUFFER, sizeof (vertices), vertices, GL_DYNAMIC_DRAW);
+    glBufferData (GL_ARRAY_BUFFER, vertices.size () * sizeof (short), &vertices[0], GL_DYNAMIC_DRAW);
     glVertexAttribPointer (0, 2, GL_SHORT, GL_FALSE, 2 * sizeof (short), 0);
 
     glBindBuffer (GL_ARRAY_BUFFER, ubo);
-    glBufferData (GL_ARRAY_BUFFER, sizeof (uvs), uvs, GL_STATIC_DRAW);
+    glBufferData (GL_ARRAY_BUFFER, uvs.size () * sizeof (float), &uvs[0], GL_STATIC_DRAW);
     glVertexAttribPointer (1, 2, GL_FLOAT, GL_TRUE, 2 * sizeof (GLfloat), 0);
     
     glEnableVertexAttribArray (0);
@@ -235,6 +175,66 @@ int main () {
     glActiveTexture (GL_TEXTURE0);
     glBindTexture (GL_TEXTURE_2D, textureId);
     glBindVertexArray (vao);
+}
+
+int main () {
+    GLFWwindow* window;
+
+    //Setup GLFW
+    glfwInit ();
+    glfwWindowHint (GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint (GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint (GLFW_RESIZABLE, GL_FALSE);
+
+    //Create a window and set the OpenGL context (Make it windowed fullscreen)
+    window = glfwCreateWindow (screenWidth, screenHeight, windowName, NULL, NULL);
+
+    if (!window) {
+        glfwTerminate ();
+        return -1;
+    }
+
+    //Set window context to current
+    glfwMakeContextCurrent (window);
+
+    //Setup GLEW
+    glewExperimental = GL_TRUE;
+    glewInit ();
+
+    //Setup OpenGL
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable (GL_CULL_FACE);
+    glFrontFace (GL_CCW);
+    glEnable (GL_BLEND);
+    glDisable (GL_DEPTH_TEST);
+    glDisable (GL_SCISSOR_TEST);
+
+    //Setup viewport
+    glfwGetFramebufferSize (window, &screenWidth, &screenHeight);
+    glViewport (0, 0, screenWidth, screenHeight);
+
+    //Setup shader
+    shaderProgramId = getShaderProgramId (vertexShader, fragmentShader);
+
+    //Setup texture
+    glGenTextures (1, &textureId);
+    glBindTexture (GL_TEXTURE_2D, textureId);
+
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    //Load imagemap using SOIL and store it on GPU
+    int width, height;
+    unsigned char* image = SOIL_load_image ("2gates.png", &width, &height, 0, SOIL_LOAD_RGBA);
+    glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+    if (image == 0) {
+        exit (1);
+    } else {
+        SOIL_free_image_data (image);
+    }
 
     //Create ImGui environment
     IMGUI_CHECKVERSION ();
@@ -244,23 +244,28 @@ int main () {
     ImGui_ImplGlfw_InitForOpenGL (window, true);
     ImGui_ImplOpenGL3_Init ("#version 130");
 
-    /*
     //Make app work on second monitor only
     int count;
     GLFWmonitor** monitors = glfwGetMonitors (&count);
-    glfwSetWindowMonitor (window,  monitors[1], 0, 0, screenWidth, screenHeight, 500);
-    */
+    glfwSetWindowMonitor (window, monitors[1], 0, 0, screenWidth, screenHeight, 155);
 
     //Force window to be fullscreen on the main monitor
-    glfwSetWindowMonitor (window, glfwGetPrimaryMonitor (), 0, 0, screenWidth, screenHeight, 500);
+    //glfwSetWindowMonitor (window, glfwGetPrimaryMonitor (), 0, 0, screenWidth, screenHeight, 155);
 
     //Grabs the callback set earlier, only runs if pollEvents is running
     glfwSetKeyCallback (window, KeyCallback);
 
     //Loop until window is closed
     while (!glfwWindowShouldClose (window)) {
+        if (redrawSprites) {
+            std::vector<Object> objects (gatesToDraw, {0, 0, 0});
+            std::vector<short> vertices (gatesToDraw * 12, 0);
+            std::vector<float> uvs (gatesToDraw * 12, 0.0f);
+            DrawSprites (objects, vertices, uvs);
+            glBufferSubData (GL_ARRAY_BUFFER, 0, vertices.size () * sizeof (short), &vertices[0]);
+            redrawSprites = false;
+        }
         glfwPollEvents ();
-        glBufferSubData (GL_ARRAY_BUFFER, 0, sizeof (vertices), vertices);
 
         //Draw ();
         //Draw pixels to frame buffer
@@ -271,7 +276,7 @@ int main () {
 
         //If you had to unbind VAO bind it again
         //glBindVertexArray (vao);
-        glDrawArrays (GL_TRIANGLES, 0, sizeof (gatesToDraw) * 6);
+        glDrawArrays (GL_TRIANGLES, 0, gatesToDraw * 6);
 
         //IMGUI runs in here
         ImGui_ImplOpenGL3_NewFrame ();
@@ -282,9 +287,20 @@ int main () {
         ImGui::Text ("Debug and testing data");
         ImGui::End ();
 
-        ImGui::Begin ("Place Gates");
-        ImGui::SetWindowSize (ImVec2 ((float)200.0f, (float)75.0f));
+        ImGui::Begin ("Top Window", &trueBool, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+        ImGui::SetWindowSize (ImVec2 ((float)screenWidth + 10, (float)20.0f));
+        ImGui::SetWindowPos (ImVec2 (-1, -1));
+        ImGui::End ();
+
+        ImGui::Begin ("Place Gates", &trueBool, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+        ImGui::SetWindowSize (ImVec2 ((float)120.0f, (float)90.0f));
+        ImGui::SetWindowPos (ImVec2 (-1, 30));
+        ImGui::Text ("Place Gates");
         if (ImGui::Button ("NOT")) {
+            gatesToDraw = 1;
+            redrawSprites = true;
+        }
+        if (ImGui::Button ("AND")) {
             //
         }
         ImGui::End ();
