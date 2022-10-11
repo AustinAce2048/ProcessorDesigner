@@ -63,17 +63,45 @@ CMAKE_BINARY_DIR = C:\Projects\ProcessorDesigner
 
 # The main recursive "all" target.
 all: CMakeFiles/ProcessorDesigner.dir/all
+all: CMakeFiles/IMGUI.dir/all
+all: CMakeFiles/SOIL.dir/all
 all: glfw/all
+all: glew/build/cmake/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
 preinstall: glfw/preinstall
+preinstall: glew/build/cmake/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
 clean: CMakeFiles/ProcessorDesigner.dir/clean
+clean: CMakeFiles/IMGUI.dir/clean
+clean: CMakeFiles/SOIL.dir/clean
 clean: glfw/clean
+clean: glew/build/cmake/clean
 .PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory glew/build/cmake
+
+# Recursive "all" directory target.
+glew/build/cmake/all: glew/build/cmake/CMakeFiles/glew.dir/all
+glew/build/cmake/all: glew/build/cmake/CMakeFiles/glew_s.dir/all
+glew/build/cmake/all: glew/build/cmake/CMakeFiles/glewinfo.dir/all
+glew/build/cmake/all: glew/build/cmake/CMakeFiles/visualinfo.dir/all
+.PHONY : glew/build/cmake/all
+
+# Recursive "preinstall" directory target.
+glew/build/cmake/preinstall:
+.PHONY : glew/build/cmake/preinstall
+
+# Recursive "clean" directory target.
+glew/build/cmake/clean: glew/build/cmake/CMakeFiles/glew.dir/clean
+glew/build/cmake/clean: glew/build/cmake/CMakeFiles/glew_s.dir/clean
+glew/build/cmake/clean: glew/build/cmake/CMakeFiles/glewinfo.dir/clean
+glew/build/cmake/clean: glew/build/cmake/CMakeFiles/visualinfo.dir/clean
+.PHONY : glew/build/cmake/clean
 
 #=============================================================================
 # Directory level rules for directory glfw
@@ -111,15 +139,18 @@ glfw/src/clean: glfw/src/CMakeFiles/update_mappings.dir/clean
 # Target rules for target CMakeFiles/ProcessorDesigner.dir
 
 # All Build rule for target.
+CMakeFiles/ProcessorDesigner.dir/all: CMakeFiles/IMGUI.dir/all
+CMakeFiles/ProcessorDesigner.dir/all: CMakeFiles/SOIL.dir/all
 CMakeFiles/ProcessorDesigner.dir/all: glfw/src/CMakeFiles/glfw.dir/all
+CMakeFiles/ProcessorDesigner.dir/all: glew/build/cmake/CMakeFiles/glew.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ProcessorDesigner.dir\build.make CMakeFiles/ProcessorDesigner.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ProcessorDesigner.dir\build.make CMakeFiles/ProcessorDesigner.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Projects\ProcessorDesigner\CMakeFiles --progress-num=1,2 "Built target ProcessorDesigner"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Projects\ProcessorDesigner\CMakeFiles --progress-num=9,10 "Built target ProcessorDesigner"
 .PHONY : CMakeFiles/ProcessorDesigner.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/ProcessorDesigner.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Projects\ProcessorDesigner\CMakeFiles 24
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Projects\ProcessorDesigner\CMakeFiles 40
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/ProcessorDesigner.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Projects\ProcessorDesigner\CMakeFiles 0
 .PHONY : CMakeFiles/ProcessorDesigner.dir/rule
@@ -132,6 +163,58 @@ ProcessorDesigner: CMakeFiles/ProcessorDesigner.dir/rule
 CMakeFiles/ProcessorDesigner.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ProcessorDesigner.dir\build.make CMakeFiles/ProcessorDesigner.dir/clean
 .PHONY : CMakeFiles/ProcessorDesigner.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/IMGUI.dir
+
+# All Build rule for target.
+CMakeFiles/IMGUI.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Projects\ProcessorDesigner\CMakeFiles --progress-num=1,2,3,4,5,6,7,8 "Built target IMGUI"
+.PHONY : CMakeFiles/IMGUI.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/IMGUI.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Projects\ProcessorDesigner\CMakeFiles 8
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/IMGUI.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Projects\ProcessorDesigner\CMakeFiles 0
+.PHONY : CMakeFiles/IMGUI.dir/rule
+
+# Convenience name for target.
+IMGUI: CMakeFiles/IMGUI.dir/rule
+.PHONY : IMGUI
+
+# clean rule for target.
+CMakeFiles/IMGUI.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/clean
+.PHONY : CMakeFiles/IMGUI.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/SOIL.dir
+
+# All Build rule for target.
+CMakeFiles/SOIL.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\SOIL.dir\build.make CMakeFiles/SOIL.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\SOIL.dir\build.make CMakeFiles/SOIL.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Projects\ProcessorDesigner\CMakeFiles --progress-num=11,12,13,14,15 "Built target SOIL"
+.PHONY : CMakeFiles/SOIL.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/SOIL.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Projects\ProcessorDesigner\CMakeFiles 5
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/SOIL.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Projects\ProcessorDesigner\CMakeFiles 0
+.PHONY : CMakeFiles/SOIL.dir/rule
+
+# Convenience name for target.
+SOIL: CMakeFiles/SOIL.dir/rule
+.PHONY : SOIL
+
+# clean rule for target.
+CMakeFiles/SOIL.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\SOIL.dir\build.make CMakeFiles/SOIL.dir/clean
+.PHONY : CMakeFiles/SOIL.dir/clean
 
 #=============================================================================
 # Target rules for target glfw/CMakeFiles/uninstall.dir
@@ -166,7 +249,7 @@ glfw/CMakeFiles/uninstall.dir/clean:
 glfw/src/CMakeFiles/glfw.dir/all:
 	$(MAKE) $(MAKESILENT) -f glfw\src\CMakeFiles\glfw.dir\build.make glfw/src/CMakeFiles/glfw.dir/depend
 	$(MAKE) $(MAKESILENT) -f glfw\src\CMakeFiles\glfw.dir\build.make glfw/src/CMakeFiles/glfw.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Projects\ProcessorDesigner\CMakeFiles --progress-num=3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 "Built target glfw"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Projects\ProcessorDesigner\CMakeFiles --progress-num=25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46 "Built target glfw"
 .PHONY : glfw/src/CMakeFiles/glfw.dir/all
 
 # Build rule for subdir invocation for target.
@@ -192,7 +275,7 @@ glfw/src/CMakeFiles/glfw.dir/clean:
 glfw/src/CMakeFiles/update_mappings.dir/all:
 	$(MAKE) $(MAKESILENT) -f glfw\src\CMakeFiles\update_mappings.dir\build.make glfw/src/CMakeFiles/update_mappings.dir/depend
 	$(MAKE) $(MAKESILENT) -f glfw\src\CMakeFiles\update_mappings.dir\build.make glfw/src/CMakeFiles/update_mappings.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Projects\ProcessorDesigner\CMakeFiles --progress-num=25 "Built target update_mappings"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Projects\ProcessorDesigner\CMakeFiles --progress-num=47 "Built target update_mappings"
 .PHONY : glfw/src/CMakeFiles/update_mappings.dir/all
 
 # Build rule for subdir invocation for target.
@@ -210,6 +293,110 @@ update_mappings: glfw/src/CMakeFiles/update_mappings.dir/rule
 glfw/src/CMakeFiles/update_mappings.dir/clean:
 	$(MAKE) $(MAKESILENT) -f glfw\src\CMakeFiles\update_mappings.dir\build.make glfw/src/CMakeFiles/update_mappings.dir/clean
 .PHONY : glfw/src/CMakeFiles/update_mappings.dir/clean
+
+#=============================================================================
+# Target rules for target glew/build/cmake/CMakeFiles/glew.dir
+
+# All Build rule for target.
+glew/build/cmake/CMakeFiles/glew.dir/all:
+	$(MAKE) $(MAKESILENT) -f glew\build\cmake\CMakeFiles\glew.dir\build.make glew/build/cmake/CMakeFiles/glew.dir/depend
+	$(MAKE) $(MAKESILENT) -f glew\build\cmake\CMakeFiles\glew.dir\build.make glew/build/cmake/CMakeFiles/glew.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Projects\ProcessorDesigner\CMakeFiles --progress-num=16,17,18 "Built target glew"
+.PHONY : glew/build/cmake/CMakeFiles/glew.dir/all
+
+# Build rule for subdir invocation for target.
+glew/build/cmake/CMakeFiles/glew.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Projects\ProcessorDesigner\CMakeFiles 3
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 glew/build/cmake/CMakeFiles/glew.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Projects\ProcessorDesigner\CMakeFiles 0
+.PHONY : glew/build/cmake/CMakeFiles/glew.dir/rule
+
+# Convenience name for target.
+glew: glew/build/cmake/CMakeFiles/glew.dir/rule
+.PHONY : glew
+
+# clean rule for target.
+glew/build/cmake/CMakeFiles/glew.dir/clean:
+	$(MAKE) $(MAKESILENT) -f glew\build\cmake\CMakeFiles\glew.dir\build.make glew/build/cmake/CMakeFiles/glew.dir/clean
+.PHONY : glew/build/cmake/CMakeFiles/glew.dir/clean
+
+#=============================================================================
+# Target rules for target glew/build/cmake/CMakeFiles/glew_s.dir
+
+# All Build rule for target.
+glew/build/cmake/CMakeFiles/glew_s.dir/all:
+	$(MAKE) $(MAKESILENT) -f glew\build\cmake\CMakeFiles\glew_s.dir\build.make glew/build/cmake/CMakeFiles/glew_s.dir/depend
+	$(MAKE) $(MAKESILENT) -f glew\build\cmake\CMakeFiles\glew_s.dir\build.make glew/build/cmake/CMakeFiles/glew_s.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Projects\ProcessorDesigner\CMakeFiles --progress-num=19,20,21 "Built target glew_s"
+.PHONY : glew/build/cmake/CMakeFiles/glew_s.dir/all
+
+# Build rule for subdir invocation for target.
+glew/build/cmake/CMakeFiles/glew_s.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Projects\ProcessorDesigner\CMakeFiles 3
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 glew/build/cmake/CMakeFiles/glew_s.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Projects\ProcessorDesigner\CMakeFiles 0
+.PHONY : glew/build/cmake/CMakeFiles/glew_s.dir/rule
+
+# Convenience name for target.
+glew_s: glew/build/cmake/CMakeFiles/glew_s.dir/rule
+.PHONY : glew_s
+
+# clean rule for target.
+glew/build/cmake/CMakeFiles/glew_s.dir/clean:
+	$(MAKE) $(MAKESILENT) -f glew\build\cmake\CMakeFiles\glew_s.dir\build.make glew/build/cmake/CMakeFiles/glew_s.dir/clean
+.PHONY : glew/build/cmake/CMakeFiles/glew_s.dir/clean
+
+#=============================================================================
+# Target rules for target glew/build/cmake/CMakeFiles/glewinfo.dir
+
+# All Build rule for target.
+glew/build/cmake/CMakeFiles/glewinfo.dir/all: glew/build/cmake/CMakeFiles/glew.dir/all
+	$(MAKE) $(MAKESILENT) -f glew\build\cmake\CMakeFiles\glewinfo.dir\build.make glew/build/cmake/CMakeFiles/glewinfo.dir/depend
+	$(MAKE) $(MAKESILENT) -f glew\build\cmake\CMakeFiles\glewinfo.dir\build.make glew/build/cmake/CMakeFiles/glewinfo.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Projects\ProcessorDesigner\CMakeFiles --progress-num=22,23,24 "Built target glewinfo"
+.PHONY : glew/build/cmake/CMakeFiles/glewinfo.dir/all
+
+# Build rule for subdir invocation for target.
+glew/build/cmake/CMakeFiles/glewinfo.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Projects\ProcessorDesigner\CMakeFiles 6
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 glew/build/cmake/CMakeFiles/glewinfo.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Projects\ProcessorDesigner\CMakeFiles 0
+.PHONY : glew/build/cmake/CMakeFiles/glewinfo.dir/rule
+
+# Convenience name for target.
+glewinfo: glew/build/cmake/CMakeFiles/glewinfo.dir/rule
+.PHONY : glewinfo
+
+# clean rule for target.
+glew/build/cmake/CMakeFiles/glewinfo.dir/clean:
+	$(MAKE) $(MAKESILENT) -f glew\build\cmake\CMakeFiles\glewinfo.dir\build.make glew/build/cmake/CMakeFiles/glewinfo.dir/clean
+.PHONY : glew/build/cmake/CMakeFiles/glewinfo.dir/clean
+
+#=============================================================================
+# Target rules for target glew/build/cmake/CMakeFiles/visualinfo.dir
+
+# All Build rule for target.
+glew/build/cmake/CMakeFiles/visualinfo.dir/all: glew/build/cmake/CMakeFiles/glew.dir/all
+	$(MAKE) $(MAKESILENT) -f glew\build\cmake\CMakeFiles\visualinfo.dir\build.make glew/build/cmake/CMakeFiles/visualinfo.dir/depend
+	$(MAKE) $(MAKESILENT) -f glew\build\cmake\CMakeFiles\visualinfo.dir\build.make glew/build/cmake/CMakeFiles/visualinfo.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Projects\ProcessorDesigner\CMakeFiles --progress-num=48,49,50 "Built target visualinfo"
+.PHONY : glew/build/cmake/CMakeFiles/visualinfo.dir/all
+
+# Build rule for subdir invocation for target.
+glew/build/cmake/CMakeFiles/visualinfo.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Projects\ProcessorDesigner\CMakeFiles 6
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 glew/build/cmake/CMakeFiles/visualinfo.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Projects\ProcessorDesigner\CMakeFiles 0
+.PHONY : glew/build/cmake/CMakeFiles/visualinfo.dir/rule
+
+# Convenience name for target.
+visualinfo: glew/build/cmake/CMakeFiles/visualinfo.dir/rule
+.PHONY : visualinfo
+
+# clean rule for target.
+glew/build/cmake/CMakeFiles/visualinfo.dir/clean:
+	$(MAKE) $(MAKESILENT) -f glew\build\cmake\CMakeFiles\visualinfo.dir\build.make glew/build/cmake/CMakeFiles/visualinfo.dir/clean
+.PHONY : glew/build/cmake/CMakeFiles/visualinfo.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

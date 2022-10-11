@@ -93,6 +93,9 @@ ProcessorDesigner_EXTERNAL_OBJECTS =
 ProcessorDesigner.exe: CMakeFiles/ProcessorDesigner.dir/main.cpp.obj
 ProcessorDesigner.exe: CMakeFiles/ProcessorDesigner.dir/build.make
 ProcessorDesigner.exe: glfw/src/libglfw3.a
+ProcessorDesigner.exe: libIMGUI.a
+ProcessorDesigner.exe: lib/libglew32.dll.a
+ProcessorDesigner.exe: libSOIL.a
 ProcessorDesigner.exe: CMakeFiles/ProcessorDesigner.dir/linklibs.rsp
 ProcessorDesigner.exe: CMakeFiles/ProcessorDesigner.dir/objects1.rsp
 ProcessorDesigner.exe: CMakeFiles/ProcessorDesigner.dir/link.txt

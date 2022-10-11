@@ -1,0 +1,3 @@
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\glew.dir/objects.a
+C:\msys64\mingw64\bin\ar.exe qc CMakeFiles\glew.dir/objects.a @CMakeFiles\glew.dir\objects1.rsp
+C:\msys64\mingw64\bin\cc.exe -shared -o ..\..\..\bin\glew32.dll -Wl,--out-implib,..\..\..\lib\libglew32.dll.a -Wl,--major-image-version,2,--minor-image-version,1 -Wl,--whole-archive CMakeFiles\glew.dir/objects.a -Wl,--no-whole-archive @CMakeFiles\glew.dir\linklibs.rsp

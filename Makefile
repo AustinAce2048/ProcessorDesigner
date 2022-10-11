@@ -174,6 +174,32 @@ ProcessorDesigner/fast:
 .PHONY : ProcessorDesigner/fast
 
 #=============================================================================
+# Target rules for targets named IMGUI
+
+# Build rule for target.
+IMGUI: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 IMGUI
+.PHONY : IMGUI
+
+# fast build rule for target.
+IMGUI/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/build
+.PHONY : IMGUI/fast
+
+#=============================================================================
+# Target rules for targets named SOIL
+
+# Build rule for target.
+SOIL: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 SOIL
+.PHONY : SOIL
+
+# fast build rule for target.
+SOIL/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\SOIL.dir\build.make CMakeFiles/SOIL.dir/build
+.PHONY : SOIL/fast
+
+#=============================================================================
 # Target rules for targets named uninstall
 
 # Build rule for target.
@@ -212,6 +238,226 @@ update_mappings/fast:
 	$(MAKE) $(MAKESILENT) -f glfw\src\CMakeFiles\update_mappings.dir\build.make glfw/src/CMakeFiles/update_mappings.dir/build
 .PHONY : update_mappings/fast
 
+#=============================================================================
+# Target rules for targets named glew
+
+# Build rule for target.
+glew: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 glew
+.PHONY : glew
+
+# fast build rule for target.
+glew/fast:
+	$(MAKE) $(MAKESILENT) -f glew\build\cmake\CMakeFiles\glew.dir\build.make glew/build/cmake/CMakeFiles/glew.dir/build
+.PHONY : glew/fast
+
+#=============================================================================
+# Target rules for targets named glew_s
+
+# Build rule for target.
+glew_s: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 glew_s
+.PHONY : glew_s
+
+# fast build rule for target.
+glew_s/fast:
+	$(MAKE) $(MAKESILENT) -f glew\build\cmake\CMakeFiles\glew_s.dir\build.make glew/build/cmake/CMakeFiles/glew_s.dir/build
+.PHONY : glew_s/fast
+
+#=============================================================================
+# Target rules for targets named glewinfo
+
+# Build rule for target.
+glewinfo: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 glewinfo
+.PHONY : glewinfo
+
+# fast build rule for target.
+glewinfo/fast:
+	$(MAKE) $(MAKESILENT) -f glew\build\cmake\CMakeFiles\glewinfo.dir\build.make glew/build/cmake/CMakeFiles/glewinfo.dir/build
+.PHONY : glewinfo/fast
+
+#=============================================================================
+# Target rules for targets named visualinfo
+
+# Build rule for target.
+visualinfo: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 visualinfo
+.PHONY : visualinfo
+
+# fast build rule for target.
+visualinfo/fast:
+	$(MAKE) $(MAKESILENT) -f glew\build\cmake\CMakeFiles\visualinfo.dir\build.make glew/build/cmake/CMakeFiles/visualinfo.dir/build
+.PHONY : visualinfo/fast
+
+imgui/imgui.obj: imgui/imgui.cpp.obj
+.PHONY : imgui/imgui.obj
+
+# target to build an object file
+imgui/imgui.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/imgui/imgui.cpp.obj
+.PHONY : imgui/imgui.cpp.obj
+
+imgui/imgui.i: imgui/imgui.cpp.i
+.PHONY : imgui/imgui.i
+
+# target to preprocess a source file
+imgui/imgui.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/imgui/imgui.cpp.i
+.PHONY : imgui/imgui.cpp.i
+
+imgui/imgui.s: imgui/imgui.cpp.s
+.PHONY : imgui/imgui.s
+
+# target to generate assembly for a file
+imgui/imgui.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/imgui/imgui.cpp.s
+.PHONY : imgui/imgui.cpp.s
+
+imgui/imgui_demo.obj: imgui/imgui_demo.cpp.obj
+.PHONY : imgui/imgui_demo.obj
+
+# target to build an object file
+imgui/imgui_demo.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/imgui/imgui_demo.cpp.obj
+.PHONY : imgui/imgui_demo.cpp.obj
+
+imgui/imgui_demo.i: imgui/imgui_demo.cpp.i
+.PHONY : imgui/imgui_demo.i
+
+# target to preprocess a source file
+imgui/imgui_demo.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/imgui/imgui_demo.cpp.i
+.PHONY : imgui/imgui_demo.cpp.i
+
+imgui/imgui_demo.s: imgui/imgui_demo.cpp.s
+.PHONY : imgui/imgui_demo.s
+
+# target to generate assembly for a file
+imgui/imgui_demo.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/imgui/imgui_demo.cpp.s
+.PHONY : imgui/imgui_demo.cpp.s
+
+imgui/imgui_draw.obj: imgui/imgui_draw.cpp.obj
+.PHONY : imgui/imgui_draw.obj
+
+# target to build an object file
+imgui/imgui_draw.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/imgui/imgui_draw.cpp.obj
+.PHONY : imgui/imgui_draw.cpp.obj
+
+imgui/imgui_draw.i: imgui/imgui_draw.cpp.i
+.PHONY : imgui/imgui_draw.i
+
+# target to preprocess a source file
+imgui/imgui_draw.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/imgui/imgui_draw.cpp.i
+.PHONY : imgui/imgui_draw.cpp.i
+
+imgui/imgui_draw.s: imgui/imgui_draw.cpp.s
+.PHONY : imgui/imgui_draw.s
+
+# target to generate assembly for a file
+imgui/imgui_draw.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/imgui/imgui_draw.cpp.s
+.PHONY : imgui/imgui_draw.cpp.s
+
+imgui/imgui_impl_glfw.obj: imgui/imgui_impl_glfw.cpp.obj
+.PHONY : imgui/imgui_impl_glfw.obj
+
+# target to build an object file
+imgui/imgui_impl_glfw.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/imgui/imgui_impl_glfw.cpp.obj
+.PHONY : imgui/imgui_impl_glfw.cpp.obj
+
+imgui/imgui_impl_glfw.i: imgui/imgui_impl_glfw.cpp.i
+.PHONY : imgui/imgui_impl_glfw.i
+
+# target to preprocess a source file
+imgui/imgui_impl_glfw.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/imgui/imgui_impl_glfw.cpp.i
+.PHONY : imgui/imgui_impl_glfw.cpp.i
+
+imgui/imgui_impl_glfw.s: imgui/imgui_impl_glfw.cpp.s
+.PHONY : imgui/imgui_impl_glfw.s
+
+# target to generate assembly for a file
+imgui/imgui_impl_glfw.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/imgui/imgui_impl_glfw.cpp.s
+.PHONY : imgui/imgui_impl_glfw.cpp.s
+
+imgui/imgui_impl_opengl3.obj: imgui/imgui_impl_opengl3.cpp.obj
+.PHONY : imgui/imgui_impl_opengl3.obj
+
+# target to build an object file
+imgui/imgui_impl_opengl3.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/imgui/imgui_impl_opengl3.cpp.obj
+.PHONY : imgui/imgui_impl_opengl3.cpp.obj
+
+imgui/imgui_impl_opengl3.i: imgui/imgui_impl_opengl3.cpp.i
+.PHONY : imgui/imgui_impl_opengl3.i
+
+# target to preprocess a source file
+imgui/imgui_impl_opengl3.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/imgui/imgui_impl_opengl3.cpp.i
+.PHONY : imgui/imgui_impl_opengl3.cpp.i
+
+imgui/imgui_impl_opengl3.s: imgui/imgui_impl_opengl3.cpp.s
+.PHONY : imgui/imgui_impl_opengl3.s
+
+# target to generate assembly for a file
+imgui/imgui_impl_opengl3.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/imgui/imgui_impl_opengl3.cpp.s
+.PHONY : imgui/imgui_impl_opengl3.cpp.s
+
+imgui/imgui_tables.obj: imgui/imgui_tables.cpp.obj
+.PHONY : imgui/imgui_tables.obj
+
+# target to build an object file
+imgui/imgui_tables.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/imgui/imgui_tables.cpp.obj
+.PHONY : imgui/imgui_tables.cpp.obj
+
+imgui/imgui_tables.i: imgui/imgui_tables.cpp.i
+.PHONY : imgui/imgui_tables.i
+
+# target to preprocess a source file
+imgui/imgui_tables.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/imgui/imgui_tables.cpp.i
+.PHONY : imgui/imgui_tables.cpp.i
+
+imgui/imgui_tables.s: imgui/imgui_tables.cpp.s
+.PHONY : imgui/imgui_tables.s
+
+# target to generate assembly for a file
+imgui/imgui_tables.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/imgui/imgui_tables.cpp.s
+.PHONY : imgui/imgui_tables.cpp.s
+
+imgui/imgui_widgets.obj: imgui/imgui_widgets.cpp.obj
+.PHONY : imgui/imgui_widgets.obj
+
+# target to build an object file
+imgui/imgui_widgets.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/imgui/imgui_widgets.cpp.obj
+.PHONY : imgui/imgui_widgets.cpp.obj
+
+imgui/imgui_widgets.i: imgui/imgui_widgets.cpp.i
+.PHONY : imgui/imgui_widgets.i
+
+# target to preprocess a source file
+imgui/imgui_widgets.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/imgui/imgui_widgets.cpp.i
+.PHONY : imgui/imgui_widgets.cpp.i
+
+imgui/imgui_widgets.s: imgui/imgui_widgets.cpp.s
+.PHONY : imgui/imgui_widgets.s
+
+# target to generate assembly for a file
+imgui/imgui_widgets.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\IMGUI.dir\build.make CMakeFiles/IMGUI.dir/imgui/imgui_widgets.cpp.s
+.PHONY : imgui/imgui_widgets.cpp.s
+
 main.obj: main.cpp.obj
 .PHONY : main.obj
 
@@ -236,6 +482,102 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ProcessorDesigner.dir\build.make CMakeFiles/ProcessorDesigner.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+soil/src/image_dxt.obj: soil/src/image_dxt.c.obj
+.PHONY : soil/src/image_dxt.obj
+
+# target to build an object file
+soil/src/image_dxt.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\SOIL.dir\build.make CMakeFiles/SOIL.dir/soil/src/image_dxt.c.obj
+.PHONY : soil/src/image_dxt.c.obj
+
+soil/src/image_dxt.i: soil/src/image_dxt.c.i
+.PHONY : soil/src/image_dxt.i
+
+# target to preprocess a source file
+soil/src/image_dxt.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\SOIL.dir\build.make CMakeFiles/SOIL.dir/soil/src/image_dxt.c.i
+.PHONY : soil/src/image_dxt.c.i
+
+soil/src/image_dxt.s: soil/src/image_dxt.c.s
+.PHONY : soil/src/image_dxt.s
+
+# target to generate assembly for a file
+soil/src/image_dxt.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\SOIL.dir\build.make CMakeFiles/SOIL.dir/soil/src/image_dxt.c.s
+.PHONY : soil/src/image_dxt.c.s
+
+soil/src/image_helper.obj: soil/src/image_helper.c.obj
+.PHONY : soil/src/image_helper.obj
+
+# target to build an object file
+soil/src/image_helper.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\SOIL.dir\build.make CMakeFiles/SOIL.dir/soil/src/image_helper.c.obj
+.PHONY : soil/src/image_helper.c.obj
+
+soil/src/image_helper.i: soil/src/image_helper.c.i
+.PHONY : soil/src/image_helper.i
+
+# target to preprocess a source file
+soil/src/image_helper.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\SOIL.dir\build.make CMakeFiles/SOIL.dir/soil/src/image_helper.c.i
+.PHONY : soil/src/image_helper.c.i
+
+soil/src/image_helper.s: soil/src/image_helper.c.s
+.PHONY : soil/src/image_helper.s
+
+# target to generate assembly for a file
+soil/src/image_helper.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\SOIL.dir\build.make CMakeFiles/SOIL.dir/soil/src/image_helper.c.s
+.PHONY : soil/src/image_helper.c.s
+
+soil/src/soil.obj: soil/src/soil.c.obj
+.PHONY : soil/src/soil.obj
+
+# target to build an object file
+soil/src/soil.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\SOIL.dir\build.make CMakeFiles/SOIL.dir/soil/src/soil.c.obj
+.PHONY : soil/src/soil.c.obj
+
+soil/src/soil.i: soil/src/soil.c.i
+.PHONY : soil/src/soil.i
+
+# target to preprocess a source file
+soil/src/soil.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\SOIL.dir\build.make CMakeFiles/SOIL.dir/soil/src/soil.c.i
+.PHONY : soil/src/soil.c.i
+
+soil/src/soil.s: soil/src/soil.c.s
+.PHONY : soil/src/soil.s
+
+# target to generate assembly for a file
+soil/src/soil.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\SOIL.dir\build.make CMakeFiles/SOIL.dir/soil/src/soil.c.s
+.PHONY : soil/src/soil.c.s
+
+soil/src/stb_image_aug.obj: soil/src/stb_image_aug.c.obj
+.PHONY : soil/src/stb_image_aug.obj
+
+# target to build an object file
+soil/src/stb_image_aug.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\SOIL.dir\build.make CMakeFiles/SOIL.dir/soil/src/stb_image_aug.c.obj
+.PHONY : soil/src/stb_image_aug.c.obj
+
+soil/src/stb_image_aug.i: soil/src/stb_image_aug.c.i
+.PHONY : soil/src/stb_image_aug.i
+
+# target to preprocess a source file
+soil/src/stb_image_aug.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\SOIL.dir\build.make CMakeFiles/SOIL.dir/soil/src/stb_image_aug.c.i
+.PHONY : soil/src/stb_image_aug.c.i
+
+soil/src/stb_image_aug.s: soil/src/stb_image_aug.c.s
+.PHONY : soil/src/stb_image_aug.s
+
+# target to generate assembly for a file
+soil/src/stb_image_aug.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\SOIL.dir\build.make CMakeFiles/SOIL.dir/soil/src/stb_image_aug.c.s
+.PHONY : soil/src/stb_image_aug.c.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -250,11 +592,50 @@ help:
 	@echo ... rebuild_cache
 	@echo ... uninstall
 	@echo ... update_mappings
+	@echo ... IMGUI
 	@echo ... ProcessorDesigner
+	@echo ... SOIL
+	@echo ... glew
+	@echo ... glew_s
+	@echo ... glewinfo
 	@echo ... glfw
+	@echo ... visualinfo
+	@echo ... imgui/imgui.obj
+	@echo ... imgui/imgui.i
+	@echo ... imgui/imgui.s
+	@echo ... imgui/imgui_demo.obj
+	@echo ... imgui/imgui_demo.i
+	@echo ... imgui/imgui_demo.s
+	@echo ... imgui/imgui_draw.obj
+	@echo ... imgui/imgui_draw.i
+	@echo ... imgui/imgui_draw.s
+	@echo ... imgui/imgui_impl_glfw.obj
+	@echo ... imgui/imgui_impl_glfw.i
+	@echo ... imgui/imgui_impl_glfw.s
+	@echo ... imgui/imgui_impl_opengl3.obj
+	@echo ... imgui/imgui_impl_opengl3.i
+	@echo ... imgui/imgui_impl_opengl3.s
+	@echo ... imgui/imgui_tables.obj
+	@echo ... imgui/imgui_tables.i
+	@echo ... imgui/imgui_tables.s
+	@echo ... imgui/imgui_widgets.obj
+	@echo ... imgui/imgui_widgets.i
+	@echo ... imgui/imgui_widgets.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
+	@echo ... soil/src/image_dxt.obj
+	@echo ... soil/src/image_dxt.i
+	@echo ... soil/src/image_dxt.s
+	@echo ... soil/src/image_helper.obj
+	@echo ... soil/src/image_helper.i
+	@echo ... soil/src/image_helper.s
+	@echo ... soil/src/soil.obj
+	@echo ... soil/src/soil.i
+	@echo ... soil/src/soil.s
+	@echo ... soil/src/stb_image_aug.obj
+	@echo ... soil/src/stb_image_aug.i
+	@echo ... soil/src/stb_image_aug.s
 .PHONY : help
 
 
