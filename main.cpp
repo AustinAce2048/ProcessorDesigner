@@ -1,88 +1,35 @@
 #include "imgui/imgui.h"
+#include "imgui/imgui.cpp"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
-#include "glew/include/GL/glew.h"
-#include <GLFW/glfw3.h>
-#include "soil/include/soil/SOIL.h"
-
-#include <iostream>
-#include <cstdlib>
-#include <cmath>
-#include <vector>
+#ifndef designerHeader
+#define designerHeader
+#endif
+#include "graphics.cpp"
+#include "debug.cpp"
 
 //Window doesn't scale, resolution is hardcoded
 int screenWidth = 1920;
 int screenHeight = 1080;
 const char windowName[] = "Processor Designer";
 const float pi = 3.141592653598793f;
+bool isEscapePressed = false;
 bool trueBool = true;
 bool redrawSprites = true;
-
-GLuint getShaderProgramId (const char *vertexFile, const char *fragmentFile);
-GLuint compileShader (const GLchar *source, GLuint shaderType);
-
-GLuint shaderProgramId, vao, vbo, ubo, textureId;
-
-//To stop sending information to shaders, screen resolution is hard coded (half per dimension)
-const char* vertexShader =
-    "#version 330\n"
-    "layout (location = 0) in vec2 vert;\n"
-    "layout (location = 1) in vec2 _uv;\n"
-    "out vec2 uv;\n"
-    "void main () {\n"
-    "    uv = _uv;\n"
-    "    gl_Position = vec4 (vert.x / 960.0 - 1.0, vert.y / 540.0 - 1.0, 0.0, 1.0);\n"
-    "}\n";
-
-const char* fragmentShader =
-    "#version 330\n"
-    "out vec4 color;\n"
-    "in vec2 uv;\n"
-    "uniform sampler2D tex;\n"
-    "void main () {\n"
-    "    color = texture(tex, uv);\n"
-    "}\n";
-
-struct Texture {unsigned short width, height; float u1, v1, u2, v2;};
-struct Object  {int x, y; Texture texture;};
-
-//For corners, (u1, v1) is the top left and (u2, v2) is bottom right. (0, 0) is top left corner
-Texture notGate = {200, 100, 0.0f,   0.0f,   1.0f,   0.5f};
-Texture andGate = {200, 100, 0.0f,   0.5f,   1.0f,   1.0f};
-
-Texture textures[2] = {notGate, andGate};
-
-//For decoding: 0 = NOT, 2 = AND
+bool placingGate = false;
+int mouseX;
+int mouseY;
+int rawMouseX;
+int rawMouseY;
 int gatesToDraw = 0;
-
-//Each pixel has a position and 3 values for RGB
-//Position is x + (y * screenWidth)
-float* pixels = new float[screenWidth * screenHeight * 3];
-
-
-
-void SetPixel (int x, int y, float r, float g, float b) {
-    if ((x + y * screenWidth) * 3 < screenWidth * screenHeight * 3) {
-        pixels[(x + y * screenWidth) * 3] = r;
-        pixels[(x + y * screenWidth) * 3 + 1] = g;
-        pixels[(x + y * screenWidth) * 3 + 2] = b;
-    }
-}
-
-
-
-void Draw () {
-    //Draw background
-    //Loop scans from bottom to top, left to right (One row at a time)
-    for (int i = 0; i < screenHeight; i++) {
-        for (int j = 0; j < screenWidth; j++) {
-            pixels[(j + i * screenWidth) * 3] = 0.0f;
-            pixels[(j + i * screenWidth) * 3 + 1] = 0.0f;
-            pixels[(j + i * screenWidth) * 3 + 2] = 1.0f;
-        }
-    }
-}
+std::vector<GateData> gateData;
+std::vector<ConnectionData> connectionData;
+bool isConnectingGates = false;
+Point connectionPoint;
+bool isOverGateConnection = false;
+int gateDataHoverIndex;
+int gateConnectionIndex;
 
 
 
@@ -94,138 +41,141 @@ void KeyCallback (GLFWwindow* window, int key, int scancode, int action, int mod
 }
 
 
-void DrawSprites (std::vector<Object> objects, std::vector<short> vertices, std::vector<float> uvs) {
-    for (int i = 0; i < gatesToDraw; i++) {
-        Texture t = textures[0];
-        objects[i] = {600, 600, t};
 
-        //Vertices
-        //Top right
-        vertices[i * 12] = objects[i].x + objects[i].texture.width;
-        vertices[i * 12 + 1] = objects[i].y;
+static void CursorCallback (GLFWwindow* window, double x, double y) {
+    rawMouseX = (int) x;
+    rawMouseY = (int) screenHeight - y;
+    mouseX = (int) x - 100;
+    mouseY = (int) screenHeight - y - 50;
+    isOverGateConnection = false;
+    gateDataHoverIndex = 0;
+    gateConnectionIndex = 0;
 
-        //Bottom right
-        vertices[i * 12 + 2] = objects[i].x + objects[i].texture.width;
-        vertices[i * 12 + 3] = objects[i].y + objects[i].texture.height;
+    for (int i = 0; i < gateData.size (); i++) {
+        switch (gateData[i].gateType) {
+            case NOT:
+                if ((rawMouseX <= gateData[i].position.x + 160 && rawMouseX >= gateData[i].position.x + 130) && (rawMouseY >= gateData[i].position.y + 25 && rawMouseY <= gateData[i].position.y + 75)) {
+                    //Mouse over output
+                    isOverGateConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 1;
+                }
+                if ((rawMouseX <= gateData[i].position.x + 80 && rawMouseX >= gateData[i].position.x + 50) && (rawMouseY >= gateData[i].position.y + 25 && rawMouseY <= gateData[i].position.y + 75)) {
+                    //Mouse over input
+                    isOverGateConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 0;
+                }
+            break;
+            case AND:
+                if ((rawMouseX <= gateData[i].position.x + 70 && rawMouseX >= gateData[i].position.x + 40) && (rawMouseY >= gateData[i].position.y && rawMouseY <= gateData[i].position.y + 50)) {
+                    //Mouse over input A
+                    isOverGateConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 0;
+                }
+                if ((rawMouseX <= gateData[i].position.x + 70 && rawMouseX >= gateData[i].position.x + 40) && (rawMouseY >= gateData[i].position.y + 55 && rawMouseY <= gateData[i].position.y + 105)) {
+                    //Mouse over input B
+                    isOverGateConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 1;
+                }
+                if ((rawMouseX <= gateData[i].position.x + 170 && rawMouseX >= gateData[i].position.x + 140) && (rawMouseY >= gateData[i].position.y + 25 && rawMouseY <= gateData[i].position.y + 75)) {
+                    //Mouse over output
+                    isOverGateConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 2;
+                }
+            break;
+        }
+    }
+}
 
-        //Top left
-        vertices[i * 12 + 4] = objects[i].x;
-        vertices[i * 12 + 5] = objects[i].y;
 
-        //Bottom right
-        vertices[i * 12 + 6] = objects[i].x + objects[i].texture.width;
-        vertices[i * 12 + 7] = objects[i].y + objects[i].texture.height;
 
-        //Bottom left
-        vertices[i * 12 + 8] = objects[i].x;
-        vertices[i * 12 + 9] = objects[i].y + objects[i].texture.height;
+static void MouseButtonCallback (GLFWwindow* window, int button, int action, int mods) {
+    bool registerOneClick = false;
 
-        //Top left
-        vertices[i * 12 + 10] = objects[i].x;
-        vertices[i * 12 + 11] = objects[i].y;
-
-        //UVs
-        //Top right
-        uvs[i * 12] = objects[i].texture.u2;
-        uvs[i * 12 + 1] = objects[i].texture.v2;
-
-        //Bottom right
-        uvs[i * 12 + 2] = objects[i].texture.u2;
-        uvs[i * 12 + 3] = objects[i].texture.v1;
-
-        //Top left
-        uvs[i * 12 + 4] = objects[i].texture.u1;
-        uvs[i * 12 + 5] = objects[i].texture.v2;
-
-        //Bottom right
-        uvs[i * 12 + 6] = objects[i].texture.u2;
-        uvs[i * 12 + 7] = objects[i].texture.v1;
-
-        //Bottom left
-        uvs[i * 12 + 8] = objects[i].texture.u1;
-        uvs[i * 12 + 9] = objects[i].texture.v1;
-
-        //Top left
-        uvs[i * 12 + 10] = objects[i].texture.u1;
-        uvs[i * 12 + 11] = objects[i].texture.v2;
+    //Place the gate
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && placingGate && !registerOneClick) {
+        placingGate = false;
+        //Set connection location data
+        switch (gateData.back ().gateType) {
+            case NOT:
+                gateData.back ().connectionPoints[0].point = {gateData.back ().position.x + 65, gateData.back ().position.y + 50};
+                gateData.back ().connectionPoints[1].point = {gateData.back ().position.x + 145, gateData.back ().position.y + 50};
+            break;
+            case AND:
+                gateData.back ().connectionPoints[0].point = {gateData.back ().position.x + 55, gateData.back ().position.y + 33};
+                gateData.back ().connectionPoints[1].point = {gateData.back ().position.x + 55, gateData.back ().position.y + 64};
+                gateData.back ().connectionPoints[2].point = {gateData.back ().position.x + 155, gateData.back ().position.y + 50};
+            break;
+        }
+        registerOneClick = true;
     }
 
-    //Init OpenGL buffers
-    glGenVertexArrays (1, &vao);
-    glGenBuffers (1, &vbo);
-    glGenBuffers (1, &ubo);
-    glBindVertexArray (vao);
+    //Start a gate connection
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !isConnectingGates && !placingGate && !registerOneClick && isOverGateConnection) {
+        isConnectingGates = true;
+        connectionPoint = gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].point;
+        registerOneClick = true;
+    }
 
-    glBindBuffer (GL_ARRAY_BUFFER, vbo);
-    glBufferData (GL_ARRAY_BUFFER, vertices.size () * sizeof (short), &vertices[0], GL_DYNAMIC_DRAW);
-    glVertexAttribPointer (0, 2, GL_SHORT, GL_FALSE, 2 * sizeof (short), 0);
-
-    glBindBuffer (GL_ARRAY_BUFFER, ubo);
-    glBufferData (GL_ARRAY_BUFFER, uvs.size () * sizeof (float), &uvs[0], GL_STATIC_DRAW);
-    glVertexAttribPointer (1, 2, GL_FLOAT, GL_TRUE, 2 * sizeof (GLfloat), 0);
-    
-    glEnableVertexAttribArray (0);
-    glEnableVertexAttribArray (1);
-
-    glBindBuffer (GL_ARRAY_BUFFER, 0);
-    glBindVertexArray (0);
-
-    //Set OpenGL shader and VAO
-    glUseProgram (shaderProgramId);
-    glActiveTexture (GL_TEXTURE0);
-    glBindTexture (GL_TEXTURE_2D, textureId);
-    glBindVertexArray (vao);
+    //End a gate connection
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && isConnectingGates && !registerOneClick && isOverGateConnection) {
+        isConnectingGates = false;
+        if (!gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].connected) {
+            connectionData.push_back ({{connectionPoint.x, connectionPoint.y}, {gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].point.x, gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].point.y}});
+            gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].connected = true;
+        }
+        registerOneClick = true;
+    } else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && isConnectingGates && !registerOneClick && !isOverGateConnection) {
+        isConnectingGates = false;
+        registerOneClick = true;
+    }
 }
+
+
 
 int main () {
     GLFWwindow* window;
-
     //Setup GLFW
     glfwInit ();
-    glfwWindowHint (GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint (GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint (GLFW_RESIZABLE, GL_FALSE);
-
-    //Create a window and set the OpenGL context (Make it windowed fullscreen)
-    window = glfwCreateWindow (screenWidth, screenHeight, windowName, NULL, NULL);
-
     if (!window) {
         glfwTerminate ();
         return -1;
     }
 
+    window = glfwCreateWindow (screenWidth, screenHeight, windowName, NULL, NULL);
     //Set window context to current
     glfwMakeContextCurrent (window);
-
+    glfwSwapInterval (1);
     //Setup GLEW
     glewExperimental = GL_TRUE;
     glewInit ();
-
     //Setup OpenGL
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable (GL_CULL_FACE);
     glFrontFace (GL_CCW);
     glEnable (GL_BLEND);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDisable (GL_DEPTH_TEST);
     glDisable (GL_SCISSOR_TEST);
-
     //Setup viewport
     glfwGetFramebufferSize (window, &screenWidth, &screenHeight);
     glViewport (0, 0, screenWidth, screenHeight);
-
+    glMatrixMode (GL_PROJECTION);
+	glLoadIdentity ();
+    glOrtho (0, screenWidth, 0, screenHeight, 0, 1);
     //Setup shader
     shaderProgramId = getShaderProgramId (vertexShader, fragmentShader);
-
     //Setup texture
     glGenTextures (1, &textureId);
     glBindTexture (GL_TEXTURE_2D, textureId);
-
     glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
     //Load imagemap using SOIL and store it on GPU
     int width, height;
     unsigned char* image = SOIL_load_image ("2gates.png", &width, &height, 0, SOIL_LOAD_RGBA);
@@ -236,6 +186,21 @@ int main () {
         SOIL_free_image_data (image);
     }
 
+    /*
+    //Make app work on second monitor only
+    int count;
+    GLFWmonitor** monitors = glfwGetMonitors (&count);
+    glfwSetWindowMonitor (window, monitors[1], 0, 0, screenWidth, screenHeight, 155);
+    */
+
+    //Force window to be fullscreen on the main monitor
+    glfwSetWindowMonitor (window, glfwGetPrimaryMonitor (), 0, 0, screenWidth, screenHeight, 155);
+
+    //Setup callbacks
+    glfwSetKeyCallback (window, KeyCallback);
+    glfwSetMouseButtonCallback (window, MouseButtonCallback);
+    glfwSetCursorPosCallback (window, CursorCallback);
+
     //Create ImGui environment
     IMGUI_CHECKVERSION ();
     ImGui::CreateContext ();
@@ -244,47 +209,76 @@ int main () {
     ImGui_ImplGlfw_InitForOpenGL (window, true);
     ImGui_ImplOpenGL3_Init ("#version 130");
 
-    //Make app work on second monitor only
-    int count;
-    GLFWmonitor** monitors = glfwGetMonitors (&count);
-    glfwSetWindowMonitor (window, monitors[1], 0, 0, screenWidth, screenHeight, 155);
-
-    //Force window to be fullscreen on the main monitor
-    //glfwSetWindowMonitor (window, glfwGetPrimaryMonitor (), 0, 0, screenWidth, screenHeight, 155);
-
-    //Grabs the callback set earlier, only runs if pollEvents is running
-    glfwSetKeyCallback (window, KeyCallback);
-
     //Loop until window is closed
     while (!glfwWindowShouldClose (window)) {
+        glEnable (GL_BLEND);
         if (redrawSprites) {
             std::vector<Object> objects (gatesToDraw, {0, 0, 0});
             std::vector<short> vertices (gatesToDraw * 12, 0);
             std::vector<float> uvs (gatesToDraw * 12, 0.0f);
-            DrawSprites (objects, vertices, uvs);
+            DrawSprites (objects, vertices, uvs, gateData, gatesToDraw);
             glBufferSubData (GL_ARRAY_BUFFER, 0, vertices.size () * sizeof (short), &vertices[0]);
             redrawSprites = false;
         }
-        glfwPollEvents ();
 
-        //Draw ();
-        //Draw pixels to frame buffer
-        //glDrawPixels (screenWidth, screenHeight, GL_RGB, GL_FLOAT, pixels);
+        if (placingGate) {
+            gateData.back () = {mouseX, mouseY, gateData.back ().gateType, gateData.back ().connectionPoints};
+            redrawSprites = true;
+        }
 
+        //Set background
         glClearColor (0.2f, 0.25f, 0.3f, 1.0f);
-        glClear (GL_COLOR_BUFFER_BIT);
+        glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         //If you had to unbind VAO bind it again
         //glBindVertexArray (vao);
         glDrawArrays (GL_TRIANGLES, 0, gatesToDraw * 6);
+        //Note, line drawing doesn't work when blending is enabled
+        glDisable (GL_BLEND);
+        glPointSize (10);
+        glLineWidth (3); 
+        glColor3f (1, 0, 0);
 
-        //IMGUI runs in here
+        //Show existing connections
+        for (int i = 0; i < connectionData.size (); i++) {
+            glBegin (GL_LINES);
+            glVertex3f (connectionData[i].start.x, connectionData[i].start.y, 0);
+            glVertex3f (connectionData[i].start.x + abs (connectionData[i].start.x - connectionData[i].end.x) / 2, connectionData[i].start.y, 0);
+            glVertex3f (connectionData[i].start.x + abs (connectionData[i].start.x - connectionData[i].end.x) / 2, connectionData[i].start.y, 0);
+            glVertex3f (connectionData[i].start.x + abs (connectionData[i].start.x - connectionData[i].end.x) / 2, connectionData[i].end.y, 0);
+            glVertex3f (connectionData[i].start.x + abs (connectionData[i].start.x - connectionData[i].end.x) / 2, connectionData[i].end.y, 0);
+            glVertex3f (connectionData[i].end.x, connectionData[i].end.y, 0);
+            glEnd ();
+        }
+
+        //Starting a connection, draw straight line from point to cursor
+        if (isConnectingGates) {
+            glBegin (GL_LINES);
+            glVertex3f (connectionPoint.x, connectionPoint.y, 0);
+            glVertex3f (rawMouseX, rawMouseY, 0);
+            glEnd ();
+        }
+
+        if (showGateConnectionBoxes) {
+            DrawConnectionBoxes (gateData);
+        }
+
+        //IMGUI runs here
         ImGui_ImplOpenGL3_NewFrame ();
         ImGui_ImplGlfw_NewFrame ();
         ImGui::NewFrame ();
 
         ImGui::Begin ("Debug Window");
-        ImGui::Text ("Debug and testing data");
+        ImGui::Text ("Debug and Testing Data");
+        if (showGateConnectionBoxes) {
+            if (ImGui::Button ("Hide clickable area over gate connections")) {
+                showGateConnectionBoxes = false;
+            }
+        } else {
+            if (ImGui::Button ("Show clickable area over gate connections")) {
+                showGateConnectionBoxes = true;
+            }
+        }
         ImGui::End ();
 
         ImGui::Begin ("Top Window", &trueBool, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
@@ -297,11 +291,16 @@ int main () {
         ImGui::SetWindowPos (ImVec2 (-1, 30));
         ImGui::Text ("Place Gates");
         if (ImGui::Button ("NOT")) {
-            gatesToDraw = 1;
+            gateData.push_back ({0, -100, NOT, std::vector<ConnectorData> {{{0, 0}, true, false}, {{0, 0}, false, false}}});
+            gatesToDraw++;
+            placingGate = true;
             redrawSprites = true;
         }
         if (ImGui::Button ("AND")) {
-            //
+            gateData.push_back ({0, -100, AND, std::vector<ConnectorData> {{{0, 0}, true, false}, {{0, 0}, true, false}, {{0, 0}, false, false}}});
+            gatesToDraw++;
+            placingGate = true;
+            redrawSprites = true;
         }
         ImGui::End ();
 
@@ -310,6 +309,7 @@ int main () {
 
         //Swap front and back buffers
         glfwSwapBuffers (window);
+        glfwPollEvents ();
     }
 
     //Memory cleanup
@@ -325,54 +325,6 @@ int main () {
 
     glfwDestroyWindow (window);
     glfwTerminate ();
-    delete[] pixels;
 
     return 0;
-}
-
-
-
-GLuint getShaderProgramId (const char *vertexFile, const char *fragmentFile) {
-    GLuint programId, vertexHandler, fragmentHandler;
-
-    vertexHandler = compileShader (vertexFile, GL_VERTEX_SHADER);
-    fragmentHandler = compileShader (fragmentFile, GL_FRAGMENT_SHADER);
-
-    programId = glCreateProgram ();
-    glAttachShader (programId, vertexHandler);
-    glAttachShader (programId, fragmentHandler);
-    glLinkProgram (programId);
-
-    GLint success;
-    GLchar infoLog[512];
-    glGetProgramiv (programId, GL_LINK_STATUS, &success);
-    if (!success) {
-        glGetProgramInfoLog (programId, 512, 0, infoLog);
-        exit (1);
-    }
-
-    glDeleteShader (vertexHandler);
-    glDeleteShader (fragmentHandler);
-
-    return programId;
-}
-
-
-
-GLuint compileShader (const GLchar *source, GLuint shaderType) {
-    GLuint shaderHandler;
-
-    shaderHandler = glCreateShader (shaderType);
-    glShaderSource (shaderHandler, 1, &source, 0);
-    glCompileShader (shaderHandler);
-
-    GLint success;
-    GLchar infoLog[512];
-    glGetShaderiv (shaderHandler, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        glGetShaderInfoLog (shaderHandler, 512, 0, infoLog);
-        exit (1);
-    };
-
-    return shaderHandler;
 }

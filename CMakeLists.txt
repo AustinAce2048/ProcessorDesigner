@@ -3,6 +3,8 @@ cmake_minimum_required (VERSION 3.20)
 project (ProcessorDesigner)
 
 add_executable (${PROJECT_NAME} main.cpp)
+SET (TARGET_H designerHeader.h)
+SET (TARGET_SRC graphics.cpp debug.cpp)
 
 set (GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set (GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
