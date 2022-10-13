@@ -25,16 +25,25 @@ const char* fragmentShader =
     "}\n";
 
 //For corners, (u1, v1) is the top left and (u2, v2) is bottom right. (0, 0) is top left corner
-Texture notGate = {200, 100, 0.0f, 0.0f, 1.0f, 0.5f};
-Texture andGate = {200, 100, 0.0f, 0.5f, 1.0f, 1.0f};
+Texture notGate = {200, 100, 0.0f, 0.0f, 1.0f, 0.3268f};
+Texture andGate = {200, 100, 0.0f, 0.3268f, 1.0f, 0.6437f};
+Texture manualInputOff = {200, 53, 0.0f, 0.647f, 1.0f, 0.8202f};
+Texture manualInputOn = {200, 53, 0.0f, 0.8235f, 1.0f, 0.9967f};
 
-Texture textures[2] = {notGate, andGate};
+Texture textures[4] = {notGate, andGate, manualInputOff, manualInputOn};
 
 
 
 void DrawSprites (std::vector<Object> objects, std::vector<short> vertices, std::vector<float> uvs, std::vector<GateData> gateData, int gatesToDraw) {
     for (int i = 0; i < gatesToDraw; i++) {
-        Texture t = textures[gateData[i].gateType];
+        Texture t;
+        if (gateData[i].gateType == OUTPUTGATE) {
+            t = textures[2];
+        } else if (gateData[i].gateType == OUTPUTGATEON) {
+            t = textures[3];
+        } else {
+            t = textures[gateData[i].gateType];
+        }
         objects[i] = {gateData[i].position.x, gateData[i].position.y, t};
 
         //Vertices
@@ -63,29 +72,56 @@ void DrawSprites (std::vector<Object> objects, std::vector<short> vertices, std:
         vertices[i * 12 + 11] = objects[i].y;
 
         //UVs
-        //Top right
-        uvs[i * 12] = objects[i].texture.u2;
-        uvs[i * 12 + 1] = objects[i].texture.v2;
+        //First check if sprite should be flipped
+        if (gateData[i].gateType == OUTPUTGATE || gateData[i].gateType == OUTPUTGATEON) {
+            //Top right
+            uvs[i * 12] = objects[i].texture.u1;
+            uvs[i * 12 + 1] = objects[i].texture.v1;
 
-        //Bottom right
-        uvs[i * 12 + 2] = objects[i].texture.u2;
-        uvs[i * 12 + 3] = objects[i].texture.v1;
+            //Bottom right
+            uvs[i * 12 + 2] = objects[i].texture.u1;
+            uvs[i * 12 + 3] = objects[i].texture.v2;
 
-        //Top left
-        uvs[i * 12 + 4] = objects[i].texture.u1;
-        uvs[i * 12 + 5] = objects[i].texture.v2;
+            //Top left
+            uvs[i * 12 + 4] = objects[i].texture.u2;
+            uvs[i * 12 + 5] = objects[i].texture.v1;
 
-        //Bottom right
-        uvs[i * 12 + 6] = objects[i].texture.u2;
-        uvs[i * 12 + 7] = objects[i].texture.v1;
+            //Bottom right
+            uvs[i * 12 + 6] = objects[i].texture.u1;
+            uvs[i * 12 + 7] = objects[i].texture.v2;
 
-        //Bottom left
-        uvs[i * 12 + 8] = objects[i].texture.u1;
-        uvs[i * 12 + 9] = objects[i].texture.v1;
+            //Bottom left
+            uvs[i * 12 + 8] = objects[i].texture.u2;
+            uvs[i * 12 + 9] = objects[i].texture.v2;
 
-        //Top left
-        uvs[i * 12 + 10] = objects[i].texture.u1;
-        uvs[i * 12 + 11] = objects[i].texture.v2;
+            //Top left
+            uvs[i * 12 + 10] = objects[i].texture.u2;
+            uvs[i * 12 + 11] = objects[i].texture.v1;
+        } else {
+            //Top right
+            uvs[i * 12] = objects[i].texture.u2;
+            uvs[i * 12 + 1] = objects[i].texture.v2;
+
+            //Bottom right
+            uvs[i * 12 + 2] = objects[i].texture.u2;
+            uvs[i * 12 + 3] = objects[i].texture.v1;
+
+            //Top left
+            uvs[i * 12 + 4] = objects[i].texture.u1;
+            uvs[i * 12 + 5] = objects[i].texture.v2;
+
+            //Bottom right
+            uvs[i * 12 + 6] = objects[i].texture.u2;
+            uvs[i * 12 + 7] = objects[i].texture.v1;
+
+            //Bottom left
+            uvs[i * 12 + 8] = objects[i].texture.u1;
+            uvs[i * 12 + 9] = objects[i].texture.v1;
+
+            //Top left
+            uvs[i * 12 + 10] = objects[i].texture.u1;
+            uvs[i * 12 + 11] = objects[i].texture.v2;
+        }
     }
 
     //Init OpenGL buffers
@@ -113,6 +149,14 @@ void DrawSprites (std::vector<Object> objects, std::vector<short> vertices, std:
     glActiveTexture (GL_TEXTURE0);
     glBindTexture (GL_TEXTURE_2D, textureId);
     glBindVertexArray (vao);
+}
+
+
+
+//Turn on specific output gate
+void TurnOnOutputGate (std::vector<GateData>& gateData, bool& redrawSprites, int gateIndex) {
+    gateData[gateIndex].gateType = OUTPUTGATEON;
+    redrawSprites = true;
 }
 
 

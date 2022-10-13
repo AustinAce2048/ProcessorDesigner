@@ -15,7 +15,6 @@ int screenHeight = 1080;
 const char windowName[] = "Processor Designer";
 const float pi = 3.141592653598793f;
 bool isEscapePressed = false;
-bool trueBool = true;
 bool redrawSprites = true;
 bool placingGate = false;
 int mouseX;
@@ -28,7 +27,10 @@ std::vector<ConnectionData> connectionData;
 bool isConnectingGates = false;
 Point connectionPoint;
 bool isOverGateConnection = false;
+bool isOverInputConnection = false;
+bool isOverManualInput = false;
 int gateDataHoverIndex;
+int gateDataConnectionStartIndex;
 int gateConnectionIndex;
 
 
@@ -45,9 +47,11 @@ void KeyCallback (GLFWwindow* window, int key, int scancode, int action, int mod
 static void CursorCallback (GLFWwindow* window, double x, double y) {
     rawMouseX = (int) x;
     rawMouseY = (int) screenHeight - y;
-    mouseX = (int) x - 100;
-    mouseY = (int) screenHeight - y - 50;
+    mouseX = (int) x;
+    mouseY = (int) screenHeight - y;
     isOverGateConnection = false;
+    isOverInputConnection = false;
+    isOverManualInput = false;
     gateDataHoverIndex = 0;
     gateConnectionIndex = 0;
 
@@ -63,6 +67,7 @@ static void CursorCallback (GLFWwindow* window, double x, double y) {
                 if ((rawMouseX <= gateData[i].position.x + 80 && rawMouseX >= gateData[i].position.x + 50) && (rawMouseY >= gateData[i].position.y + 25 && rawMouseY <= gateData[i].position.y + 75)) {
                     //Mouse over input
                     isOverGateConnection = true;
+                    isOverInputConnection = true;
                     gateDataHoverIndex = i;
                     gateConnectionIndex = 0;
                 }
@@ -71,12 +76,14 @@ static void CursorCallback (GLFWwindow* window, double x, double y) {
                 if ((rawMouseX <= gateData[i].position.x + 70 && rawMouseX >= gateData[i].position.x + 40) && (rawMouseY >= gateData[i].position.y && rawMouseY <= gateData[i].position.y + 50)) {
                     //Mouse over input A
                     isOverGateConnection = true;
+                    isOverInputConnection = true;
                     gateDataHoverIndex = i;
                     gateConnectionIndex = 0;
                 }
                 if ((rawMouseX <= gateData[i].position.x + 70 && rawMouseX >= gateData[i].position.x + 40) && (rawMouseY >= gateData[i].position.y + 55 && rawMouseY <= gateData[i].position.y + 105)) {
                     //Mouse over input B
                     isOverGateConnection = true;
+                    isOverInputConnection = true;
                     gateDataHoverIndex = i;
                     gateConnectionIndex = 1;
                 }
@@ -85,6 +92,28 @@ static void CursorCallback (GLFWwindow* window, double x, double y) {
                     isOverGateConnection = true;
                     gateDataHoverIndex = i;
                     gateConnectionIndex = 2;
+                }
+            break;
+            case INPUTGATE: case INPUTGATEON:
+                if ((rawMouseX <= gateData[i].position.x + 140 && rawMouseX >= gateData[i].position.x + 110) && (rawMouseY >= gateData[i].position.y && rawMouseY <= gateData[i].position.y + 50)) {
+                    //Mouse over output
+                    isOverGateConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 0;
+                }
+                if ((rawMouseX <= gateData[i].position.x + 110 && rawMouseX >= gateData[i].position.x + 75) && (rawMouseY >= gateData[i].position.y && rawMouseY <= gateData[i].position.y + 50)) {
+                    //Mouse over gate
+                    isOverManualInput = true;
+                    gateDataHoverIndex = i;
+                }
+            break;
+            case OUTPUTGATE: case OUTPUTGATEON:
+                if ((rawMouseX <= gateData[i].position.x + 90 && rawMouseX >= gateData[i].position.x + 60) && (rawMouseY >= gateData[i].position.y && rawMouseY <= gateData[i].position.y + 50)) {
+                    //Mouse over output
+                    isOverGateConnection = true;
+                    isOverInputConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 0;
                 }
             break;
         }
@@ -106,32 +135,51 @@ static void MouseButtonCallback (GLFWwindow* window, int button, int action, int
                 gateData.back ().connectionPoints[1].point = {gateData.back ().position.x + 145, gateData.back ().position.y + 50};
             break;
             case AND:
-                gateData.back ().connectionPoints[0].point = {gateData.back ().position.x + 55, gateData.back ().position.y + 33};
-                gateData.back ().connectionPoints[1].point = {gateData.back ().position.x + 55, gateData.back ().position.y + 64};
-                gateData.back ().connectionPoints[2].point = {gateData.back ().position.x + 155, gateData.back ().position.y + 50};
+                gateData.back ().connectionPoints[0].point = {gateData.back ().position.x + 55, gateData.back ().position.y + 32};
+                gateData.back ().connectionPoints[1].point = {gateData.back ().position.x + 55, gateData.back ().position.y + 63};
+                gateData.back ().connectionPoints[2].point = {gateData.back ().position.x + 155, gateData.back ().position.y + 49};
+            break;
+            case INPUTGATE:
+                gateData.back ().connectionPoints[0].point = {gateData.back ().position.x + 130, gateData.back ().position.y + 25};
+            break;
+            case OUTPUTGATE:
+                gateData.back ().connectionPoints[0].point = {gateData.back ().position.x + 75, gateData.back ().position.y + 28};
             break;
         }
         registerOneClick = true;
     }
 
     //Start a gate connection
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !isConnectingGates && !placingGate && !registerOneClick && isOverGateConnection) {
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !isConnectingGates && !placingGate && !registerOneClick && isOverGateConnection && !isOverInputConnection) {
         isConnectingGates = true;
         connectionPoint = gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].point;
+        //Store gate index to prevent connecting to yourself
+        gateDataConnectionStartIndex = gateDataHoverIndex;
         registerOneClick = true;
     }
 
     //End a gate connection
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && isConnectingGates && !registerOneClick && isOverGateConnection) {
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && isConnectingGates && !registerOneClick && isOverGateConnection && isOverInputConnection) {
         isConnectingGates = false;
-        if (!gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].connected) {
+        if (!gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].connected && gateDataHoverIndex != gateDataConnectionStartIndex) {
             connectionData.push_back ({{connectionPoint.x, connectionPoint.y}, {gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].point.x, gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].point.y}});
             gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].connected = true;
         }
         registerOneClick = true;
-    } else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && isConnectingGates && !registerOneClick && !isOverGateConnection) {
+    } else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && isConnectingGates && !registerOneClick && (!isOverGateConnection || !isOverInputConnection)) {
         isConnectingGates = false;
         registerOneClick = true;
+    }
+
+    //Toggling a manual input
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !isConnectingGates && !placingGate && !registerOneClick && isOverManualInput) {
+        if (gateData[gateDataHoverIndex].gateType == INPUTGATE) {
+            gateData[gateDataHoverIndex].gateType = INPUTGATEON;
+            redrawSprites = true;
+        } else if (gateData[gateDataHoverIndex].gateType == INPUTGATEON) {
+            gateData[gateDataHoverIndex].gateType = INPUTGATE;
+            redrawSprites = true;
+        }
     }
 }
 
@@ -222,7 +270,15 @@ int main () {
         }
 
         if (placingGate) {
-            gateData.back () = {mouseX, mouseY, gateData.back ().gateType, gateData.back ().connectionPoints};
+            //Account for offest due to different size sprites
+            switch (gateData.back ().gateType) {
+                case NOT: case AND:
+                    gateData.back () = {mouseX - 100, mouseY - 50, gateData.back ().gateType, gateData.back ().connectionPoints};
+                break;
+                case INPUTGATE: case OUTPUTGATE:
+                    gateData.back () = {mouseX - 100, mouseY - 27, gateData.back ().gateType, gateData.back ().connectionPoints};
+                break;
+            }
             redrawSprites = true;
         }
 
@@ -236,7 +292,7 @@ int main () {
         //Note, line drawing doesn't work when blending is enabled
         glDisable (GL_BLEND);
         glPointSize (10);
-        glLineWidth (3); 
+        glLineWidth (4); 
         glColor3f (1, 0, 0);
 
         //Show existing connections
@@ -268,39 +324,48 @@ int main () {
         ImGui_ImplGlfw_NewFrame ();
         ImGui::NewFrame ();
 
-        ImGui::Begin ("Debug Window");
-        ImGui::Text ("Debug and Testing Data");
-        if (showGateConnectionBoxes) {
-            if (ImGui::Button ("Hide clickable area over gate connections")) {
-                showGateConnectionBoxes = false;
-            }
-        } else {
-            if (ImGui::Button ("Show clickable area over gate connections")) {
-                showGateConnectionBoxes = true;
-            }
-        }
-        ImGui::End ();
-
-        ImGui::Begin ("Top Window", &trueBool, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-        ImGui::SetWindowSize (ImVec2 ((float)screenWidth + 10, (float)20.0f));
-        ImGui::SetWindowPos (ImVec2 (-1, -1));
-        ImGui::End ();
+        DebugWindow (gateData, redrawSprites);
 
         ImGui::Begin ("Place Gates", &trueBool, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-        ImGui::SetWindowSize (ImVec2 ((float)120.0f, (float)90.0f));
-        ImGui::SetWindowPos (ImVec2 (-1, 30));
+        ImGui::SetWindowSize (ImVec2 ((float)150.0f, (float)130.0f));
+        ImGui::SetWindowPos (ImVec2 (-1, 0));
         ImGui::Text ("Place Gates");
         if (ImGui::Button ("NOT")) {
-            gateData.push_back ({0, -100, NOT, std::vector<ConnectorData> {{{0, 0}, true, false}, {{0, 0}, false, false}}});
+            gateData.push_back ({0, -100, NOT, std::vector<ConnectorData> {{{0, 0}, true, false}, {{0, 0}, false, false}}, false});
             gatesToDraw++;
             placingGate = true;
             redrawSprites = true;
         }
         if (ImGui::Button ("AND")) {
-            gateData.push_back ({0, -100, AND, std::vector<ConnectorData> {{{0, 0}, true, false}, {{0, 0}, true, false}, {{0, 0}, false, false}}});
+            gateData.push_back ({0, -100, AND, std::vector<ConnectorData> {{{0, 0}, true, false}, {{0, 0}, true, false}, {{0, 0}, false, false}}, false});
             gatesToDraw++;
             placingGate = true;
             redrawSprites = true;
+        }
+        if (ImGui::Button ("MANUAL INPUT LINE")) {
+            gateData.push_back ({0, -100, INPUTGATE, std::vector<ConnectorData> {{{0, 0}, false, false}}, false});
+            gatesToDraw++;
+            placingGate = true;
+            redrawSprites = true;
+        }
+        if (ImGui::Button ("READ OUTPUT LINE")) {
+            gateData.push_back ({0, -100, OUTPUTGATE, std::vector<ConnectorData> {{{0, 0}, true, false}}, false});
+            gatesToDraw++;
+            placingGate = true;
+            redrawSprites = true;
+        }
+        ImGui::End ();
+
+        ImGui::Begin ("Control Deck", &trueBool, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+        ImGui::SetWindowSize (ImVec2 ((float)210.0f, (float)60.0f));
+        ImGui::SetWindowPos (ImVec2 ((screenWidth / 2) - 105.0f, 0));
+        ImGui::Text ("Simulate");
+        if (ImGui::Button ("Run One Cycle")) {
+            //Connect to gate logic
+        }
+        ImGui::SameLine ();
+        if (ImGui::Button ("Reset Board")) {
+            ResetOutputs (gateData, redrawSprites);
         }
         ImGui::End ();
 
