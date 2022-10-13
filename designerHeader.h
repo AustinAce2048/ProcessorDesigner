@@ -14,8 +14,12 @@ struct Object  {int x, y; Texture texture;};
 enum gateType {   
     NOT = 0, 
     AND = 1, 
-    OR = 2,
-    XOR = 3
+    INPUTGATE = 2,
+    INPUTGATEON = 3,
+    OUTPUTGATE = 4,
+    OUTPUTGATEON = 5,
+    OR = 6
 };
+//Point, input, connected
 struct ConnectorData {Point point; bool input, connected;};
-struct GateData {Point position; gateType gateType; std::vector<ConnectorData> connectionPoints;};
+struct GateData {Point position; gateType gateType; std::vector<ConnectorData> connectionPoints; bool isOn;};

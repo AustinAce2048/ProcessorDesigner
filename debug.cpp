@@ -4,10 +4,87 @@
 
 bool showDebugLine = false;
 bool showGateConnectionBoxes = false;
+bool turnOnInputs = false;
+bool turnOnOutputs = false;
 std::vector<Point> clickableAreaBoxes;
+bool trueBool = true;
 
 
 
+//Handles debug window logic and layout
+void DebugWindow (std::vector<GateData>& gateData, bool& redrawSprites) {
+    ImGui::Begin ("Debug Window");
+    ImGui::Text ("Debug and Testing Data");
+    if (showGateConnectionBoxes) {
+        if (ImGui::Button ("Hide clickable area over gate connections")) {
+            showGateConnectionBoxes = false;
+        }
+    } else {
+        if (ImGui::Button ("Show clickable area over gate connections")) {
+            showGateConnectionBoxes = true;
+        }
+    }
+    if (turnOnInputs) {
+        if (ImGui::Button ("Turn off every manual input")) {
+            turnOnInputs = false;
+            for (int i = 0; i < gateData.size (); i++) {
+                if (gateData[i].gateType == INPUTGATEON) {
+                    gateData[i].gateType = INPUTGATE;
+                    redrawSprites = true;
+                }
+            }
+        }
+    } else {
+        if (ImGui::Button ("Turn on every manual input")) {
+            turnOnInputs = true;
+            for (int i = 0; i < gateData.size (); i++) {
+                if (gateData[i].gateType == INPUTGATE) {
+                    gateData[i].gateType = INPUTGATEON;
+                    redrawSprites = true;
+                }
+            }
+        }
+    }
+    if (turnOnOutputs) {
+        if (ImGui::Button ("Turn off every manual output")) {
+            turnOnOutputs = false;
+            for (int i = 0; i < gateData.size (); i++) {
+                if (gateData[i].gateType == OUTPUTGATEON) {
+                    gateData[i].gateType = OUTPUTGATE;
+                    redrawSprites = true;
+                }
+            }
+        }
+    } else {
+        if (ImGui::Button ("Turn on every manual output")) {
+            turnOnOutputs = true;
+            for (int i = 0; i < gateData.size (); i++) {
+                if (gateData[i].gateType == OUTPUTGATE) {
+                    gateData[i].gateType = OUTPUTGATEON;
+                    redrawSprites = true;
+                }
+            }
+        }
+    }
+    ImGui::End ();
+}
+
+
+
+//Sets all outputs to off
+void ResetOutputs (std::vector<GateData>& gateData, bool& redrawSprites) {
+    for (int i = 0; i < gateData.size (); i++) {
+        if (gateData[i].gateType == OUTPUTGATEON) {
+            gateData[i].gateType = OUTPUTGATE;
+            redrawSprites = true;
+        }
+    }
+    turnOnOutputs = false;
+}
+
+
+
+//Draw clickable areas
 void DrawConnectionBoxes (std::vector<GateData> gateData) {
     glPointSize (10);
     glLineWidth (2.5);
@@ -64,6 +141,28 @@ void DrawConnectionBoxes (std::vector<GateData> gateData) {
                 clickableAreaBoxes.push_back ({gateData[i].position.x + 140, gateData[i].position.y + 25});
                 clickableAreaBoxes.push_back ({gateData[i].position.x + 140, gateData[i].position.y + 25});
                 clickableAreaBoxes.push_back ({gateData[i].position.x + 140, gateData[i].position.y + 75});
+            break;
+            case INPUTGATE:
+                //INPUT output
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 110, gateData[i].position.y + 50});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 140, gateData[i].position.y + 50});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 140, gateData[i].position.y + 50});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 140, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 140, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 110, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 110, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 110, gateData[i].position.y + 50});
+            break;
+            case OUTPUTGATE:
+                //INPUT output
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 60, gateData[i].position.y + 50});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 90, gateData[i].position.y + 50});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 90, gateData[i].position.y + 50});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 90, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 90, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 60, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 60, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 60, gateData[i].position.y + 50});
             break;
         }
     }
