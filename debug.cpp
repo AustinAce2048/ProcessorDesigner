@@ -12,7 +12,7 @@ bool trueBool = true;
 
 
 //Handles debug window logic and layout
-void DebugWindow (std::vector<GateData>& gateData, bool& redrawSprites) {
+void DebugWindow (std::vector<Gate>& gateData, bool& redrawSprites) {
     ImGui::Begin ("Debug Window");
     ImGui::Text ("Debug and Testing Data");
     if (showGateConnectionBoxes) {
@@ -72,7 +72,7 @@ void DebugWindow (std::vector<GateData>& gateData, bool& redrawSprites) {
 
 
 //Sets all outputs to off
-void ResetOutputs (std::vector<GateData>& gateData, bool& redrawSprites) {
+void ResetOutputs (std::vector<Gate>& gateData, bool& redrawSprites) {
     for (int i = 0; i < gateData.size (); i++) {
         if (gateData[i].gateType == OUTPUTGATEON) {
             gateData[i].gateType = OUTPUTGATE;
@@ -85,7 +85,7 @@ void ResetOutputs (std::vector<GateData>& gateData, bool& redrawSprites) {
 
 
 //Draw clickable areas
-void DrawConnectionBoxes (std::vector<GateData> gateData) {
+void DrawConnectionBoxes (std::vector<Gate> gateData) {
     glPointSize (10);
     glLineWidth (2.5);
     glColor3f (1, 1, 0);
@@ -103,6 +103,7 @@ void DrawConnectionBoxes (std::vector<GateData> gateData) {
                 clickableAreaBoxes.push_back ({gateData[i].position.x + 50, gateData[i].position.y + 25});
                 clickableAreaBoxes.push_back ({gateData[i].position.x + 50, gateData[i].position.y + 25});
                 clickableAreaBoxes.push_back ({gateData[i].position.x + 50, gateData[i].position.y + 75});
+
                 //NOT output
                 clickableAreaBoxes.push_back ({gateData[i].position.x + 130, gateData[i].position.y + 75});
                 clickableAreaBoxes.push_back ({gateData[i].position.x + 160, gateData[i].position.y + 75});

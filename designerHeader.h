@@ -8,9 +8,8 @@
 #include <vector>
 
 struct Point {int x, y;};
-struct ConnectionData {Point start, end;};
-struct Texture {unsigned short width, height; float u1, v1, u2, v2;};
-struct Object  {int x, y; Texture texture;};
+//Actual connection position, x index of connected gate | y is connectionIndex of gate, input, connected
+struct ConnectorData {Point point, connectedGateData; bool input, connected;};
 enum gateType {   
     NOT = 0, 
     AND = 1, 
@@ -20,6 +19,7 @@ enum gateType {
     OUTPUTGATEON = 5,
     OR = 6
 };
-//Point, input, connected
-struct ConnectorData {Point point; bool input, connected;};
-struct GateData {Point position; gateType gateType; std::vector<ConnectorData> connectionPoints; bool isOn;};
+//ConnectorData is ordered inputs first, then ordered outputs
+struct Gate {Point position; gateType gateType; std::vector<ConnectorData> connectionPoints; bool isOn;};
+struct Texture {unsigned short width, height; float u1, v1, u2, v2;};
+struct Object  {int x, y; Texture texture;};

@@ -139,8 +139,8 @@ glfw/src/clean: glfw/src/CMakeFiles/update_mappings.dir/clean
 # Target rules for target CMakeFiles/ProcessorDesigner.dir
 
 # All Build rule for target.
-CMakeFiles/ProcessorDesigner.dir/all: CMakeFiles/IMGUI.dir/all
 CMakeFiles/ProcessorDesigner.dir/all: CMakeFiles/SOIL.dir/all
+CMakeFiles/ProcessorDesigner.dir/all: CMakeFiles/IMGUI.dir/all
 CMakeFiles/ProcessorDesigner.dir/all: glfw/src/CMakeFiles/glfw.dir/all
 CMakeFiles/ProcessorDesigner.dir/all: glew/build/cmake/CMakeFiles/glew.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ProcessorDesigner.dir\build.make CMakeFiles/ProcessorDesigner.dir/depend
