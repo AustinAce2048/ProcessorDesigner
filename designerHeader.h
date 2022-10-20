@@ -7,6 +7,10 @@
 #include <cmath>
 #include <vector>
 
+//Used for debugging
+#include <sstream>
+#include <string.h>
+
 struct Point {int x, y;};
 //Actual connection position, x index of connected gate | y is connectionIndex of gate, input, connected
 struct ConnectorData {Point point, connectedGateData; bool input, connected;};
@@ -20,6 +24,6 @@ enum gateType {
     OR = 6
 };
 //ConnectorData is ordered inputs first, then ordered outputs
-struct Gate {Point position; gateType gateType; std::vector<ConnectorData> connectionPoints; bool isOn;};
+struct Gate {Point position; gateType gateType; std::vector<ConnectorData> connectionPoints; bool isOn; int initialConnections;};
 struct Texture {unsigned short width, height; float u1, v1, u2, v2;};
 struct Object  {int x, y; Texture texture;};

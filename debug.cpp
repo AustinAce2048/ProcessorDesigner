@@ -15,6 +15,15 @@ bool trueBool = true;
 void DebugWindow (std::vector<Gate>& gateData, bool& redrawSprites) {
     ImGui::Begin ("Debug Window");
     ImGui::Text ("Debug and Testing Data");
+    //Show something in gateData
+    /*if (gateData.size () > 0) {
+        std::stringstream strs;
+        //Its reading from the extra connection point
+        strs << gateData[0].connectionPoints[1].input;
+        std::string temp_str = strs.str ();
+        char* char_type = (char*) temp_str.c_str ();
+        ImGui::Text (char_type);
+    }*/
     if (showGateConnectionBoxes) {
         if (ImGui::Button ("Hide clickable area over gate connections")) {
             showGateConnectionBoxes = false;
