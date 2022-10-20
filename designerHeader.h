@@ -21,5 +21,5 @@ enum gateType {
     OR = 6
 };
 //Point, input, connected
-struct ConnectorData {Point point; bool input, connected;};
+struct ConnectorData {Point point; int index; bool input, connected;};
 struct GateData {Point position; gateType gateType; std::vector<ConnectorData> connectionPoints; bool isOn;};

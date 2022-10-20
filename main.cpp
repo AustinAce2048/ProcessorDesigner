@@ -35,6 +35,58 @@ int gateConnectionIndex;
 
 
 
+void OrderGates (int dependent, int independent) {
+    //Already in the right order
+    if (dependent > independent || independent >= gateData.size()) return;
+
+    //Look through the elements between the new connection made
+    for (int n = 0; n < independent - dependent + 1; ++n) {
+        //Swap the first element in the sequence until it's not dependent on anything ahead of it
+        for (int i = dependent; i < independent; ++i) {
+            //Look at all the input connections; look if any one is dependent on an element ahead of it
+            for (int k = 0; k < gateData[i].connectionPoints.size(); ++k) {
+                bool swapped = false;
+                if (gateData[i].connectionPoints[k].input == true && i < gateData[i].connectionPoints[k].index) {
+                    //Update all elements with the new indeces after swapping
+                    for (int j = i; j < gateData.size(); ++j) {
+                        for (k = 0; k < gateData[j].connectionPoints.size(); ++k) {
+                            if (gateData[j].connectionPoints[k].index == i) gateData[j].connectionPoints[k].index = i + 1;
+                            if (gateData[j].connectionPoints[k].index == i + 1) gateData[j].connectionPoints[k].index = i;
+                        }
+                    }
+                    std::swap(gateData[i], gateData[i + 1]);
+                    swapped = true;
+                    break;
+                }
+                if (swapped == true) break;
+            }
+        }
+    }
+}
+
+
+
+void OneSimulation () {
+    for (int i = 0; i < gateData.size(); ++i) {
+        switch (gateData[i].gateType) {
+            case NOT:
+                gateData[i].isOn = !gateData[gateData[i].connectionPoints[0].index].isOn;
+            break;
+            case AND:
+                gateData[i].isOn = gateData[gateData[i].connectionPoints[0].index].isOn && gateData[gateData[i].connectionPoints[1].index].isOn;
+            break;
+            case OUTPUTGATE: case OUTPUTGATEON:
+                gateData[i].isOn = gateData[gateData[i].connectionPoints[0].index].isOn;
+                if (gateData[i].isOn == true) gateData[i].gateType = OUTPUTGATEON;
+                else gateData[i].gateType = OUTPUTGATE;
+            break;
+        }
+    }
+    redrawSprites = true;
+}
+
+
+
 //Creates a callback to listen for the escape key, it will work on press down or up (down in this case)
 void KeyCallback (GLFWwindow* window, int key, int scancode, int action, int mods) {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
@@ -164,6 +216,8 @@ static void MouseButtonCallback (GLFWwindow* window, int button, int action, int
         if (!gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].connected && gateDataHoverIndex != gateDataConnectionStartIndex) {
             connectionData.push_back ({{connectionPoint.x, connectionPoint.y}, {gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].point.x, gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].point.y}});
             gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].connected = true;
+            gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].index = gateDataConnectionStartIndex;
+            OrderGates(gateDataHoverIndex, gateDataConnectionStartIndex);
         }
         registerOneClick = true;
     } else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && isConnectingGates && !registerOneClick && (!isOverGateConnection || !isOverInputConnection)) {
@@ -175,9 +229,11 @@ static void MouseButtonCallback (GLFWwindow* window, int button, int action, int
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !isConnectingGates && !placingGate && !registerOneClick && isOverManualInput) {
         if (gateData[gateDataHoverIndex].gateType == INPUTGATE) {
             gateData[gateDataHoverIndex].gateType = INPUTGATEON;
+            gateData[gateDataHoverIndex].isOn = true;
             redrawSprites = true;
         } else if (gateData[gateDataHoverIndex].gateType == INPUTGATEON) {
             gateData[gateDataHoverIndex].gateType = INPUTGATE;
+            gateData[gateDataHoverIndex].isOn = false;
             redrawSprites = true;
         }
     }
@@ -331,25 +387,25 @@ int main () {
         ImGui::SetWindowPos (ImVec2 (-1, 0));
         ImGui::Text ("Place Gates");
         if (ImGui::Button ("NOT")) {
-            gateData.push_back ({0, -100, NOT, std::vector<ConnectorData> {{{0, 0}, true, false}, {{0, 0}, false, false}}, false});
+            gateData.push_back ({0, -100, NOT, std::vector<ConnectorData> {{{0, 0}, -1, true, false}, {{0, 0}, -1, false, false}}, false});
             gatesToDraw++;
             placingGate = true;
             redrawSprites = true;
         }
         if (ImGui::Button ("AND")) {
-            gateData.push_back ({0, -100, AND, std::vector<ConnectorData> {{{0, 0}, true, false}, {{0, 0}, true, false}, {{0, 0}, false, false}}, false});
+            gateData.push_back ({0, -100, AND, std::vector<ConnectorData> {{{0, 0}, -1, true, false}, {{0, 0}, -1, true, false}, {{0, 0}, -1, false, false}}, false});
             gatesToDraw++;
             placingGate = true;
             redrawSprites = true;
         }
         if (ImGui::Button ("MANUAL INPUT LINE")) {
-            gateData.push_back ({0, -100, INPUTGATE, std::vector<ConnectorData> {{{0, 0}, false, false}}, false});
+            gateData.push_back ({0, -100, INPUTGATE, std::vector<ConnectorData> {{{0, 0}, -1, false, false}}, false});
             gatesToDraw++;
             placingGate = true;
             redrawSprites = true;
         }
         if (ImGui::Button ("READ OUTPUT LINE")) {
-            gateData.push_back ({0, -100, OUTPUTGATE, std::vector<ConnectorData> {{{0, 0}, true, false}}, false});
+            gateData.push_back ({0, -100, OUTPUTGATE, std::vector<ConnectorData> {{{0, 0}, -1, true, false}}, false});
             gatesToDraw++;
             placingGate = true;
             redrawSprites = true;
@@ -362,6 +418,7 @@ int main () {
         ImGui::Text ("Simulate");
         if (ImGui::Button ("Run One Cycle")) {
             //Connect to gate logic
+            OneSimulation();
         }
         ImGui::SameLine ();
         if (ImGui::Button ("Reset Board")) {
