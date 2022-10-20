@@ -351,6 +351,8 @@ CMakeFiles/ProcessorDesigner.dir/main.cpp.obj: main.cpp \
   C:/msys64/mingw64/include/c++/12.2.0/bits/stl_vector.h \
   C:/msys64/mingw64/include/c++/12.2.0/bits/stl_bvector.h \
   C:/msys64/mingw64/include/c++/12.2.0/bits/vector.tcc \
+  C:/msys64/mingw64/include/c++/12.2.0/sstream \
+  C:/msys64/mingw64/include/c++/12.2.0/bits/sstream.tcc \
   debug.cpp
 
 
@@ -557,6 +559,8 @@ C:/msys64/mingw64/include/c++/12.2.0/string_view:
 C:/msys64/mingw64/include/c++/12.2.0/tr1/gamma.tcc:
 
 C:/msys64/mingw64/include/c++/12.2.0/tr1/special_function_util.h:
+
+C:/msys64/mingw64/include/c++/12.2.0/sstream:
 
 C:/msys64/mingw64/include/windows.h:
 
@@ -819,6 +823,8 @@ C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/xopintrin.h:
 C:/msys64/mingw64/include/pshpack4.h:
 
 C:/msys64/mingw64/include/pshpack2.h:
+
+C:/msys64/mingw64/include/c++/12.2.0/bits/sstream.tcc:
 
 C:/msys64/mingw64/include/c++/12.2.0/bits/locale_facets.h:
 
