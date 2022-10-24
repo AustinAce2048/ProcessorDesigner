@@ -39,30 +39,33 @@ int oldGateDragIndex;
 
 
 
-void OrderGates (int dependent, int independent) {
+void OrderGates(int dependent, int independent) {
     //Already in the right order
-    if (dependent > independent || independent >= gateData.size()) return;
+    if (dependent > independent) return;
 
-    //Look through the elements between the new connection made
-    for (int n = 0; n < independent - dependent + 1; ++n) {
-        //Swap the first element in the sequence until it's not dependent on anything ahead of it
-        for (int i = dependent; i < independent; ++i) {
-            //Look at all the input connections; look if any one is dependent on an element ahead of it
+    //Only change the order of elements between dependent and independent
+    for (int n = 0; n < dependent - independent + 1; ++n) {
+        //The element may move to the end of the sequence
+        for (int i = independent; i < dependent; ++i) {
+            //Check if element's index is less than other elements it's dependent on
             for (int k = 0; k < gateData[i].connectionPoints.size(); ++k) {
-                bool swapped = false;
-                if (gateData[i].connectionPoints[k].input == true && i < gateData[i].connectionPoints[k].index) {
-                    //Update all elements with the new indeces after swapping
-                    for (int j = i; j < gateData.size(); ++j) {
-                        for (k = 0; k < gateData[j].connectionPoints.size(); ++k) {
-                            if (gateData[j].connectionPoints[k].index == i) gateData[j].connectionPoints[k].index = i + 1;
-                            if (gateData[j].connectionPoints[k].index == i + 1) gateData[j].connectionPoints[k].index = i;
-                        }
+                if (gateData[i].connectionPoints[k].input == true && i < gateData[i].connectionPoints[k].connectedGateData.x) {
+                    //Update all connected elements with new index before swapping
+                    for (k = 0; k < gateData[i].connectionPoints.size(); ++k) {
+                        gateData[gateData[i].connectionPoints[k].connectedGateData.x].connectionPoints[gateData[i].connectionPoints[k].connectedGateData.y].connectedGateData.x = i + 1;
                     }
+                    for (k = 0; k < gateData[i + 1].connectionPoints.size(); ++k) {
+                        gateData[gateData[i + 1].connectionPoints[k].connectedGateData.x].connectionPoints[gateData[i + 1].connectionPoints[k].connectedGateData.y].connectedGateData.x = i;
+                    }
+                    // for (int j = 0; j < gateData.size(); ++j) {
+                    //     for (k = 0; k < gateData[j].connectionPoints.size(); ++k) {
+                    //         if (gateData[j].connectionPoints[k].connectedGateData.x == i) gateData[j].connectionPoints[k].connectedGateData.x = i + 1;
+                    //         else if (gateData[j].connectionPoints[k].connectedGateData.x == i + 1) gateData[j].connectionPoints[k].connectedGateData.x = i;
+                    //     }
+                    // }
                     std::swap(gateData[i], gateData[i + 1]);
-                    swapped = true;
                     break;
                 }
-                if (swapped == true) break;
             }
         }
     }
@@ -74,16 +77,18 @@ void OneSimulation () {
     for (int i = 0; i < gateData.size(); ++i) {
         switch (gateData[i].gateType) {
             case NOT:
-                gateData[i].isOn = !gateData[gateData[i].connectionPoints[0].index].isOn;
+                gateData[i].isOn = !gateData[gateData[i].connectionPoints[0].connectedGateData.x].isOn;
             break;
             case AND:
-                gateData[i].isOn = gateData[gateData[i].connectionPoints[0].index].isOn && gateData[gateData[i].connectionPoints[1].index].isOn;
+                gateData[i].isOn = gateData[gateData[i].connectionPoints[0].connectedGateData.x].isOn && gateData[gateData[i].connectionPoints[1].connectedGateData.x].isOn;
             break;
             case OUTPUTGATE: case OUTPUTGATEON:
-                gateData[i].isOn = gateData[gateData[i].connectionPoints[0].index].isOn;
+                gateData[i].isOn = gateData[gateData[i].connectionPoints[0].connectedGateData.x].isOn;
                 if (gateData[i].isOn == true) gateData[i].gateType = OUTPUTGATEON;
                 else gateData[i].gateType = OUTPUTGATE;
             break;
+            default:
+                gateData[i].isOn = gateData[i].isOn;
         }
     }
     redrawSprites = true;
@@ -259,7 +264,7 @@ static void MouseButtonCallback (GLFWwindow* window, int button, int action, int
                 gateData[connectionPoint.x].connectionPoints.push_back ({gateData[connectionPoint.x].connectionPoints[connectionPoint.y].point, {gateDataHoverIndex, gateConnectionIndex}, false, true});
             }
             gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex] = {gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].point, {connectionPoint.x, connectionPoint.y}, true, true};
-            gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].index = gateDataConnectionStartIndex;
+            //gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].index = gateDataConnectionStartIndex;
             OrderGates(gateDataHoverIndex, gateDataConnectionStartIndex);
         }
         registerOneClick = true;
@@ -381,7 +386,7 @@ int main () {
     //Make app work on second monitor only
     int count;
     GLFWmonitor** monitors = glfwGetMonitors (&count);
-    glfwSetWindowMonitor (window, monitors[1], 0, 0, screenWidth, screenHeight, 155);
+    //glfwSetWindowMonitor (window, monitors[1], 0, 0, screenWidth, screenHeight, 155);
     
 
     //Force window to be fullscreen on the main monitor

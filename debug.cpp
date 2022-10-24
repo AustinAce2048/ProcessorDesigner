@@ -39,6 +39,7 @@ void DebugWindow (std::vector<Gate>& gateData, bool& redrawSprites) {
             for (int i = 0; i < gateData.size (); i++) {
                 if (gateData[i].gateType == INPUTGATEON) {
                     gateData[i].gateType = INPUTGATE;
+                    gateData[i].isOn = false;
                     redrawSprites = true;
                 }
             }
@@ -49,6 +50,7 @@ void DebugWindow (std::vector<Gate>& gateData, bool& redrawSprites) {
             for (int i = 0; i < gateData.size (); i++) {
                 if (gateData[i].gateType == INPUTGATE) {
                     gateData[i].gateType = INPUTGATEON;
+                    gateData[i].isOn = true;
                     redrawSprites = true;
                 }
             }

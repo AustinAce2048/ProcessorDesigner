@@ -141,8 +141,8 @@ glfw/src/clean: glfw/src/CMakeFiles/update_mappings.dir/clean
 # All Build rule for target.
 CMakeFiles/ProcessorDesigner.dir/all: CMakeFiles/IMGUI.dir/all
 CMakeFiles/ProcessorDesigner.dir/all: CMakeFiles/SOIL.dir/all
-CMakeFiles/ProcessorDesigner.dir/all: glfw/src/CMakeFiles/glfw.dir/all
 CMakeFiles/ProcessorDesigner.dir/all: glew/build/cmake/CMakeFiles/glew.dir/all
+CMakeFiles/ProcessorDesigner.dir/all: glfw/src/CMakeFiles/glfw.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ProcessorDesigner.dir\build.make CMakeFiles/ProcessorDesigner.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ProcessorDesigner.dir\build.make CMakeFiles/ProcessorDesigner.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Projects\ProcessorDesigner\CMakeFiles --progress-num=9,10 "Built target ProcessorDesigner"

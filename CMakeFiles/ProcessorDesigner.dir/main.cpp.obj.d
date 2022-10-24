@@ -317,7 +317,6 @@ CMakeFiles/ProcessorDesigner.dir/main.cpp.obj: \
  C:/msys64/mingw64/include/c++/12.1.0/bits/locale_facets.h \
  C:/msys64/mingw64/include/c++/12.1.0/cwctype \
  C:/msys64/mingw64/include/wctype.h \
-<<<<<<< HEAD
  C:/msys64/mingw64/include/c++/12.1.0/x86_64-w64-mingw32/bits/ctype_base.h \
  C:/msys64/mingw64/include/c++/12.1.0/bits/streambuf_iterator.h \
  C:/msys64/mingw64/include/c++/12.1.0/x86_64-w64-mingw32/bits/ctype_inline.h \
@@ -331,21 +330,6 @@ CMakeFiles/ProcessorDesigner.dir/main.cpp.obj: \
  C:/msys64/mingw64/include/c++/12.1.0/bits/stl_vector.h \
  C:/msys64/mingw64/include/c++/12.1.0/bits/stl_bvector.h \
  C:/msys64/mingw64/include/c++/12.1.0/bits/vector.tcc \
-=======
- C:/msys64/mingw64/include/c++/12.2.0/x86_64-w64-mingw32/bits/ctype_base.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/streambuf_iterator.h \
- C:/msys64/mingw64/include/c++/12.2.0/x86_64-w64-mingw32/bits/ctype_inline.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/locale_facets.tcc \
- C:/msys64/mingw64/include/c++/12.2.0/bits/basic_ios.tcc \
- C:/msys64/mingw64/include/c++/12.2.0/bits/ostream.tcc \
- C:/msys64/mingw64/include/c++/12.2.0/istream \
- C:/msys64/mingw64/include/c++/12.2.0/bits/istream.tcc \
- C:/msys64/mingw64/include/c++/12.2.0/vector \
- C:/msys64/mingw64/include/c++/12.2.0/bits/stl_uninitialized.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/stl_vector.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/stl_bvector.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/vector.tcc \
- C:/msys64/mingw64/include/c++/12.2.0/sstream \
- C:/msys64/mingw64/include/c++/12.2.0/bits/sstream.tcc \
->>>>>>> main
+ C:/msys64/mingw64/include/c++/12.1.0/sstream \
+ C:/msys64/mingw64/include/c++/12.1.0/bits/sstream.tcc \
  C:\Projects\ProcessorDesigner\debug.cpp
