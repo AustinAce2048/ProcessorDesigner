@@ -34,7 +34,7 @@ Texture textures[4] = {notGate, andGate, manualInputOff, manualInputOn};
 
 
 
-void DrawSprites (std::vector<Object> objects, std::vector<short> vertices, std::vector<float> uvs, std::vector<Gate> gateData, int gatesToDraw) {
+void DrawSprites (std::vector<Object>& objects, std::vector<short>& vertices, std::vector<float>& uvs, std::vector<Gate>& gateData) {
     for (int i = 0; i < gateData.size (); i++) {
         Texture t;
         if (gateData[i].gateType == OUTPUTGATE) {

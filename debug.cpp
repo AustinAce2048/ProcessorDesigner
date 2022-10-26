@@ -16,14 +16,14 @@ void DebugWindow (std::vector<Gate>& gateData, bool& redrawSprites) {
     ImGui::Begin ("Debug Window");
     ImGui::Text ("Debug and Testing Data");
     //Show something in gateData
-    /*if (gateData.size () > 0) {
+    /*if (gateData.size () > 2) {
         std::stringstream strs;
-        //Its reading from the extra connection point
-        strs << gateData[0].connectionPoints[1].input;
+        strs << gateData[2].connectionPoints[0].connectedGateData.y;
         std::string temp_str = strs.str ();
         char* char_type = (char*) temp_str.c_str ();
         ImGui::Text (char_type);
     }*/
+    //std::cout << "test1" << std::endl;
     if (showGateConnectionBoxes) {
         if (ImGui::Button ("Hide clickable area over gate connections")) {
             showGateConnectionBoxes = false;

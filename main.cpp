@@ -21,7 +21,6 @@ int mouseX;
 int mouseY;
 int rawMouseX;
 int rawMouseY;
-int gatesToDraw = 0;
 std::vector<Gate> gateData;
 bool isConnectingGates = false;
 //x is gateIndex, y is connectionIndex
@@ -141,7 +140,22 @@ void KeyCallback (GLFWwindow* window, int key, int scancode, int action, int mod
 
     //Deleting a gate
     if ((key == GLFW_KEY_DELETE || key == GLFW_KEY_BACKSPACE) && action == GLFW_PRESS && isOverGate && !isDraggingGate) {
+        //Remove connection for gates that connect to it
+        for (int i = 0; i < gateData[gateDragIndex].connectionPoints.size (); i++) {
+            //Get gate connected to this gate and remove the connection, either delete it or clear it
+            if (gateData[gateDragIndex].connectionPoints[i].connectedGateData.x > -1) {
+                if (gateData[gateDragIndex].connectionPoints[i].connectedGateData.y > gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].initialConnections - 1) {
+                    gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].connectionPoints.erase (gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].connectionPoints.begin () + gateData[gateDragIndex].connectionPoints[i].connectedGateData.y);
+                } else {
+                    //NOTICE deleting specifically the input gate when connected to an AND gate, it doesn't matter what's happening to it
+                    //gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].connectionPoints[gateData[gateDragIndex].connectionPoints[i].connectedGateData.y].connectedGateData = {-1, 0};
+                    //gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].connectionPoints[gateData[gateDragIndex].connectionPoints[i].connectedGateData.y].connected = false;
+                }
+            }
+        }
         gateData.erase (gateData.begin () + gateDragIndex);
+        //Update connection points (You do need to update gateData for some reason, not sure why but it prevents hanging connections)
+        UpdateConnectionPoints (0);
         redrawSprites = true;
     }
 }
@@ -386,7 +400,7 @@ int main () {
     //Make app work on second monitor only
     int count;
     GLFWmonitor** monitors = glfwGetMonitors (&count);
-    //glfwSetWindowMonitor (window, monitors[1], 0, 0, screenWidth, screenHeight, 155);
+    glfwSetWindowMonitor (window, monitors[1], 0, 0, screenWidth, screenHeight, 155);
     
 
     //Force window to be fullscreen on the main monitor
@@ -409,10 +423,10 @@ int main () {
     while (!glfwWindowShouldClose (window)) {
         glEnable (GL_BLEND);
         if (redrawSprites) {
-            std::vector<Object> objects (gatesToDraw, {0, 0, 0});
-            std::vector<short> vertices (gatesToDraw * 12, 0);
-            std::vector<float> uvs (gatesToDraw * 12, 0.0f);
-            DrawSprites (objects, vertices, uvs, gateData, gatesToDraw);
+            std::vector<Object> objects (gateData.size (), {0, 0, 0});
+            std::vector<short> vertices (gateData.size () * 12, 0);
+            std::vector<float> uvs (gateData.size () * 12, 0.0f);
+            DrawSprites (objects, vertices, uvs, gateData);
             glBufferSubData (GL_ARRAY_BUFFER, 0, vertices.size () * sizeof (short), &vertices[0]);
             redrawSprites = false;
         }
@@ -436,7 +450,7 @@ int main () {
 
         //If you had to unbind VAO bind it again
         //glBindVertexArray (vao);
-        glDrawArrays (GL_TRIANGLES, 0, gatesToDraw * 6);
+        glDrawArrays (GL_TRIANGLES, 0, gateData.size () * 6);
         //Note, line drawing doesn't work when blending is enabled
         glDisable (GL_BLEND);
         glPointSize (10);
@@ -528,25 +542,21 @@ int main () {
         ImGui::Text ("Place Gates");
         if (ImGui::Button ("NOT")) {
             gateData.push_back ({{0, -100}, NOT, std::vector<ConnectorData> {{{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, false, false}}, false, 2});
-            gatesToDraw++;
             placingGate = true;
             redrawSprites = true;
         }
         if (ImGui::Button ("AND")) {
             gateData.push_back ({{0, -100}, AND, std::vector<ConnectorData> {{{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, false, false}}, false, 3});
-            gatesToDraw++;
             placingGate = true;
             redrawSprites = true;
         }
         if (ImGui::Button ("MANUAL INPUT LINE")) {
             gateData.push_back ({{0, -100}, INPUTGATE, std::vector<ConnectorData> {{{0, 0}, {-1, 0}, false, false}}, false, 1});
-            gatesToDraw++;
             placingGate = true;
             redrawSprites = true;
         }
         if (ImGui::Button ("READ OUTPUT LINE")) {
             gateData.push_back ({{0, -100}, OUTPUTGATE, std::vector<ConnectorData> {{{0, 0}, {-1, 0}, true, false}}, false, 1});
-            gatesToDraw++;
             placingGate = true;
             redrawSprites = true;
         }
