@@ -145,18 +145,42 @@ void KeyCallback (GLFWwindow* window, int key, int scancode, int action, int mod
             //Get gate connected to this gate and remove the connection, either delete it or clear it
             if (gateData[gateDragIndex].connectionPoints[i].connectedGateData.x > -1) {
                 if (gateData[gateDragIndex].connectionPoints[i].connectedGateData.y > gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].initialConnections - 1) {
+                    if (gateData[gateDragIndex].connectionPoints[i].connectedGateData.y == gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].connectionPoints.size() - 1) {
+                        int connectorIndex = gateData[gateDragIndex].connectionPoints[i].connectedGateData.y;
+                        for (int g = 0; g < gateData.size (); g++) {
+                            for (int j = 0; j < gateData[i].connectionPoints.size (); j++) {
+                                if (gateData[g].connectionPoints[j].connectedGateData.x == -1) {
+                                    continue;
+                                }
+                                if (gateData[g].connectionPoints[j].connectedGateData.y >= connectorIndex - 1) {
+                                    gateData[g].connectionPoints[j].connectedGateData.y--;
+                                }
+                            }
+                        }
+                    }
                     gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].connectionPoints.erase (gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].connectionPoints.begin () + gateData[gateDragIndex].connectionPoints[i].connectedGateData.y);
                 } else {
                     //NOTICE deleting specifically the input gate when connected to an AND gate, it doesn't matter what's happening to it
-                    //gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].connectionPoints[gateData[gateDragIndex].connectionPoints[i].connectedGateData.y].connectedGateData = {-1, 0};
-                    //gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].connectionPoints[gateData[gateDragIndex].connectionPoints[i].connectedGateData.y].connected = false;
+                    gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].connectionPoints[gateData[gateDragIndex].connectionPoints[i].connectedGateData.y].connectedGateData = {-1, 0};
+                    gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].connectionPoints[gateData[gateDragIndex].connectionPoints[i].connectedGateData.y].connected = false;
                 }
             }
         }
         gateData.erase (gateData.begin () + gateDragIndex);
-        //Update connection points (You do need to update gateData for some reason, not sure why but it prevents hanging connections)
-        UpdateConnectionPoints (0);
         redrawSprites = true;
+        if (gateData.size () == gateDragIndex) {
+            return;
+        }
+        for (int i = 0; i < gateData.size (); i++) {
+            for (int j = 0; j < gateData[i].connectionPoints.size (); j++) {
+                if (gateData[i].connectionPoints[j].connectedGateData.x == -1) {
+                    continue;
+                }
+                if (gateData[i].connectionPoints[j].connectedGateData.x >= gateDragIndex - 1) {
+                    gateData[i].connectionPoints[j].connectedGateData.x--;
+                }
+            }
+        }
     }
 }
 
@@ -279,7 +303,7 @@ static void MouseButtonCallback (GLFWwindow* window, int button, int action, int
             }
             gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex] = {gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].point, {connectionPoint.x, connectionPoint.y}, true, true};
             //gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].index = gateDataConnectionStartIndex;
-            OrderGates(gateDataHoverIndex, gateDataConnectionStartIndex);
+            //OrderGates(gateDataHoverIndex, gateDataConnectionStartIndex);
         }
         registerOneClick = true;
     } else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && isConnectingGates && !registerOneClick && (!isOverGateConnection || !isOverInputConnection)) {
@@ -400,7 +424,7 @@ int main () {
     //Make app work on second monitor only
     int count;
     GLFWmonitor** monitors = glfwGetMonitors (&count);
-    glfwSetWindowMonitor (window, monitors[1], 0, 0, screenWidth, screenHeight, 155);
+    //glfwSetWindowMonitor (window, monitors[1], 0, 0, screenWidth, screenHeight, 155);
     
 
     //Force window to be fullscreen on the main monitor

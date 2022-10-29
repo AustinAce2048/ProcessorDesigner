@@ -19,10 +19,10 @@ CMakeFiles/SOIL.dir/soil/src/stb_image_aug.c.obj: \
  C:/msys64/mingw64/include/limits.h \
  C:/msys64/mingw64/include/sec_api/stdlib_s.h \
  C:/msys64/mingw64/include/malloc.h \
- C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/mm_malloc.h \
+ C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/12.1.0/include/mm_malloc.h \
  C:/msys64/mingw64/include/errno.h C:/msys64/mingw64/include/memory.h \
  C:/msys64/mingw64/include/assert.h \
- C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/stdarg.h \
+ C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/12.1.0/include/stdarg.h \
  C:/msys64/mingw64/include/stdarg.h \
  C:/msys64/mingw64/include/_mingw_stdarg.h \
  C:/Projects/ProcessorDesigner/soil/include/SOIL/stbi_dds_aug.h \
