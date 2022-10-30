@@ -43,25 +43,38 @@ void OrderGates(int dependent, int independent) {
     if (dependent > independent) return;
 
     //Only change the order of elements between dependent and independent
-    for (int n = 0; n < dependent - independent + 1; ++n) {
-        //The element may move to the end of the sequence
-        for (int i = independent; i < dependent; ++i) {
-            //Check if element's index is less than other elements it's dependent on
+    for (int n = 0; n < independent - dependent + 1; ++n) {
+        //The element might move to the end of the sequence
+        for (int i = dependent; i < independent; ++i) {
+            //Check if the current element's index is less than other elements that it's dependent on
             for (int k = 0; k < gateData[i].connectionPoints.size(); ++k) {
                 if (gateData[i].connectionPoints[k].input == true && i < gateData[i].connectionPoints[k].connectedGateData.x) {
-                    //Update all connected elements with new index before swapping
+                    //Update all elements connected to the i-th element with new index (i + 1) before swapping
                     for (k = 0; k < gateData[i].connectionPoints.size(); ++k) {
-                        gateData[gateData[i].connectionPoints[k].connectedGateData.x].connectionPoints[gateData[i].connectionPoints[k].connectedGateData.y].connectedGateData.x = i + 1;
+                        //Check that this is a connected gate point
+                        if (gateData[i].connectionPoints[k].connectedGateData.x > -1) {
+                            if (gateData[i].connectionPoints[k].connectedGateData.x == i) {
+                                gateData[i].connectionPoints[k].connectedGateData.x = i + 1;
+                            } else if (gateData[i].connectionPoints[k].connectedGateData.x == i + 1) {
+                                gateData[i].connectionPoints[k].connectedGateData.x = i;
+                            } else {
+                                gateData[gateData[i].connectionPoints[k].connectedGateData.x].connectionPoints[gateData[i].connectionPoints[k].connectedGateData.y].connectedGateData.x = i + 1;
+                            }
+                        }
                     }
+                    //Update all elements connected to the (i + 1)-th element with new index (i) before swapping
                     for (k = 0; k < gateData[i + 1].connectionPoints.size(); ++k) {
-                        gateData[gateData[i + 1].connectionPoints[k].connectedGateData.x].connectionPoints[gateData[i + 1].connectionPoints[k].connectedGateData.y].connectedGateData.x = i;
+                        //Check that this is a connected gate point
+                        if (gateData[i + 1].connectionPoints[k].connectedGateData.x > -1) {
+                            if (gateData[i + 1].connectionPoints[k].connectedGateData.x == i) {
+                                gateData[i + 1].connectionPoints[k].connectedGateData.x = i + 1;
+                            } else if (gateData[i + 1].connectionPoints[k].connectedGateData.x == i + 1) {
+                                gateData[i + 1].connectionPoints[k].connectedGateData.x = i;
+                            } else {
+                                gateData[gateData[i + 1].connectionPoints[k].connectedGateData.x].connectionPoints[gateData[i + 1].connectionPoints[k].connectedGateData.y].connectedGateData.x = i;
+                            }
+                        }
                     }
-                    // for (int j = 0; j < gateData.size(); ++j) {
-                    //     for (k = 0; k < gateData[j].connectionPoints.size(); ++k) {
-                    //         if (gateData[j].connectionPoints[k].connectedGateData.x == i) gateData[j].connectionPoints[k].connectedGateData.x = i + 1;
-                    //         else if (gateData[j].connectionPoints[k].connectedGateData.x == i + 1) gateData[j].connectionPoints[k].connectedGateData.x = i;
-                    //     }
-                    // }
                     std::swap(gateData[i], gateData[i + 1]);
                     break;
                 }
@@ -303,7 +316,7 @@ static void MouseButtonCallback (GLFWwindow* window, int button, int action, int
             }
             gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex] = {gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].point, {connectionPoint.x, connectionPoint.y}, true, true};
             //gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].index = gateDataConnectionStartIndex;
-            //OrderGates(gateDataHoverIndex, gateDataConnectionStartIndex);
+            OrderGates(gateDataHoverIndex, gateDataConnectionStartIndex);
         }
         registerOneClick = true;
     } else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && isConnectingGates && !registerOneClick && (!isOverGateConnection || !isOverInputConnection)) {
