@@ -21,7 +21,6 @@ int mouseX;
 int mouseY;
 int rawMouseX;
 int rawMouseY;
-int gatesToDraw = 0;
 std::vector<Gate> gateData;
 bool isConnectingGates = false;
 //x is gateIndex, y is connectionIndex
@@ -36,6 +35,76 @@ bool isOverGate = false;
 bool isDraggingGate = false;
 int gateDragIndex;
 int oldGateDragIndex;
+
+
+
+void OrderGates(int dependent, int independent) {
+    //Already in the right order
+    if (dependent > independent) return;
+
+    //Only change the order of elements between dependent and independent
+    for (int n = 0; n < independent - dependent + 1; ++n) {
+        //The element might move to the end of the sequence
+        for (int i = dependent; i < independent; ++i) {
+            //Check if the current element's index is less than other elements that it's dependent on
+            for (int k = 0; k < gateData[i].connectionPoints.size(); ++k) {
+                if (gateData[i].connectionPoints[k].input == true && i < gateData[i].connectionPoints[k].connectedGateData.x) {
+                    //Update all elements connected to the i-th element with new index (i + 1) before swapping
+                    for (k = 0; k < gateData[i].connectionPoints.size(); ++k) {
+                        //Check that this is a connected gate point
+                        if (gateData[i].connectionPoints[k].connectedGateData.x > -1) {
+                            if (gateData[i].connectionPoints[k].connectedGateData.x == i) {
+                                gateData[i].connectionPoints[k].connectedGateData.x = i + 1;
+                            } else if (gateData[i].connectionPoints[k].connectedGateData.x == i + 1) {
+                                gateData[i].connectionPoints[k].connectedGateData.x = i;
+                            } else {
+                                gateData[gateData[i].connectionPoints[k].connectedGateData.x].connectionPoints[gateData[i].connectionPoints[k].connectedGateData.y].connectedGateData.x = i + 1;
+                            }
+                        }
+                    }
+                    //Update all elements connected to the (i + 1)-th element with new index (i) before swapping
+                    for (k = 0; k < gateData[i + 1].connectionPoints.size(); ++k) {
+                        //Check that this is a connected gate point
+                        if (gateData[i + 1].connectionPoints[k].connectedGateData.x > -1) {
+                            if (gateData[i + 1].connectionPoints[k].connectedGateData.x == i) {
+                                gateData[i + 1].connectionPoints[k].connectedGateData.x = i + 1;
+                            } else if (gateData[i + 1].connectionPoints[k].connectedGateData.x == i + 1) {
+                                gateData[i + 1].connectionPoints[k].connectedGateData.x = i;
+                            } else {
+                                gateData[gateData[i + 1].connectionPoints[k].connectedGateData.x].connectionPoints[gateData[i + 1].connectionPoints[k].connectedGateData.y].connectedGateData.x = i;
+                            }
+                        }
+                    }
+                    std::swap(gateData[i], gateData[i + 1]);
+                    break;
+                }
+            }
+        }
+    }
+}
+
+
+
+void OneSimulation () {
+    for (int i = 0; i < gateData.size(); ++i) {
+        switch (gateData[i].gateType) {
+            case NOT:
+                gateData[i].isOn = !gateData[gateData[i].connectionPoints[0].connectedGateData.x].isOn;
+            break;
+            case AND:
+                gateData[i].isOn = gateData[gateData[i].connectionPoints[0].connectedGateData.x].isOn && gateData[gateData[i].connectionPoints[1].connectedGateData.x].isOn;
+            break;
+            case OUTPUTGATE: case OUTPUTGATEON:
+                gateData[i].isOn = gateData[gateData[i].connectionPoints[0].connectedGateData.x].isOn;
+                if (gateData[i].isOn == true) gateData[i].gateType = OUTPUTGATEON;
+                else gateData[i].gateType = OUTPUTGATE;
+            break;
+            default:
+                gateData[i].isOn = gateData[i].isOn;
+        }
+    }
+    redrawSprites = true;
+}
 
 
 
@@ -84,8 +153,47 @@ void KeyCallback (GLFWwindow* window, int key, int scancode, int action, int mod
 
     //Deleting a gate
     if ((key == GLFW_KEY_DELETE || key == GLFW_KEY_BACKSPACE) && action == GLFW_PRESS && isOverGate && !isDraggingGate) {
+        //Remove connection for gates that connect to it
+        for (int i = 0; i < gateData[gateDragIndex].connectionPoints.size (); i++) {
+            //Get gate connected to this gate and remove the connection, either delete it or clear it
+            if (gateData[gateDragIndex].connectionPoints[i].connectedGateData.x > -1) {
+                if (gateData[gateDragIndex].connectionPoints[i].connectedGateData.y > gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].initialConnections - 1) {
+                    if (gateData[gateDragIndex].connectionPoints[i].connectedGateData.y == gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].connectionPoints.size() - 1) {
+                        int connectorIndex = gateData[gateDragIndex].connectionPoints[i].connectedGateData.y;
+                        for (int g = 0; g < gateData.size (); g++) {
+                            for (int j = 0; j < gateData[i].connectionPoints.size (); j++) {
+                                if (gateData[g].connectionPoints[j].connectedGateData.x == -1) {
+                                    continue;
+                                }
+                                if (gateData[g].connectionPoints[j].connectedGateData.y >= connectorIndex - 1) {
+                                    gateData[g].connectionPoints[j].connectedGateData.y--;
+                                }
+                            }
+                        }
+                    }
+                    gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].connectionPoints.erase (gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].connectionPoints.begin () + gateData[gateDragIndex].connectionPoints[i].connectedGateData.y);
+                } else {
+                    //NOTICE deleting specifically the input gate when connected to an AND gate, it doesn't matter what's happening to it
+                    gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].connectionPoints[gateData[gateDragIndex].connectionPoints[i].connectedGateData.y].connectedGateData = {-1, 0};
+                    gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].connectionPoints[gateData[gateDragIndex].connectionPoints[i].connectedGateData.y].connected = false;
+                }
+            }
+        }
         gateData.erase (gateData.begin () + gateDragIndex);
         redrawSprites = true;
+        if (gateData.size () == gateDragIndex) {
+            return;
+        }
+        for (int i = 0; i < gateData.size (); i++) {
+            for (int j = 0; j < gateData[i].connectionPoints.size (); j++) {
+                if (gateData[i].connectionPoints[j].connectedGateData.x == -1) {
+                    continue;
+                }
+                if (gateData[i].connectionPoints[j].connectedGateData.x >= gateDragIndex - 1) {
+                    gateData[i].connectionPoints[j].connectedGateData.x--;
+                }
+            }
+        }
     }
 }
 
@@ -207,6 +315,8 @@ static void MouseButtonCallback (GLFWwindow* window, int button, int action, int
                 gateData[connectionPoint.x].connectionPoints.push_back ({gateData[connectionPoint.x].connectionPoints[connectionPoint.y].point, {gateDataHoverIndex, gateConnectionIndex}, false, true});
             }
             gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex] = {gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].point, {connectionPoint.x, connectionPoint.y}, true, true};
+            //gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].index = gateDataConnectionStartIndex;
+            OrderGates(gateDataHoverIndex, gateDataConnectionStartIndex);
         }
         registerOneClick = true;
     } else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && isConnectingGates && !registerOneClick && (!isOverGateConnection || !isOverInputConnection)) {
@@ -218,9 +328,11 @@ static void MouseButtonCallback (GLFWwindow* window, int button, int action, int
     if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS && !isConnectingGates && !placingGate && !registerOneClick && isOverManualInput && !isDraggingGate) {
         if (gateData[gateDataHoverIndex].gateType == INPUTGATE) {
             gateData[gateDataHoverIndex].gateType = INPUTGATEON;
+            gateData[gateDataHoverIndex].isOn = true;
             redrawSprites = true;
         } else if (gateData[gateDataHoverIndex].gateType == INPUTGATEON) {
             gateData[gateDataHoverIndex].gateType = INPUTGATE;
+            gateData[gateDataHoverIndex].isOn = false;
             redrawSprites = true;
         }
     }
@@ -321,15 +433,15 @@ int main () {
         SOIL_free_image_data (image);
     }
 
-    
+    /*
     //Make app work on second monitor only
     int count;
     GLFWmonitor** monitors = glfwGetMonitors (&count);
-    glfwSetWindowMonitor (window, monitors[1], 0, 0, screenWidth, screenHeight, 155);
-    
+    //glfwSetWindowMonitor (window, monitors[1], 0, 0, screenWidth, screenHeight, 155);
+    */
 
     //Force window to be fullscreen on the main monitor
-    //glfwSetWindowMonitor (window, glfwGetPrimaryMonitor (), 0, 0, screenWidth, screenHeight, 155);
+    glfwSetWindowMonitor (window, glfwGetPrimaryMonitor (), 0, 0, screenWidth, screenHeight, 155);
 
     //Setup callbacks
     glfwSetKeyCallback (window, KeyCallback);
@@ -348,10 +460,10 @@ int main () {
     while (!glfwWindowShouldClose (window)) {
         glEnable (GL_BLEND);
         if (redrawSprites) {
-            std::vector<Object> objects (gatesToDraw, {0, 0, 0});
-            std::vector<short> vertices (gatesToDraw * 12, 0);
-            std::vector<float> uvs (gatesToDraw * 12, 0.0f);
-            DrawSprites (objects, vertices, uvs, gateData, gatesToDraw);
+            std::vector<Object> objects (gateData.size (), {0, 0, 0});
+            std::vector<short> vertices (gateData.size () * 12, 0);
+            std::vector<float> uvs (gateData.size () * 12, 0.0f);
+            DrawSprites (objects, vertices, uvs, gateData);
             glBufferSubData (GL_ARRAY_BUFFER, 0, vertices.size () * sizeof (short), &vertices[0]);
             redrawSprites = false;
         }
@@ -375,7 +487,7 @@ int main () {
 
         //If you had to unbind VAO bind it again
         //glBindVertexArray (vao);
-        glDrawArrays (GL_TRIANGLES, 0, gatesToDraw * 6);
+        glDrawArrays (GL_TRIANGLES, 0, gateData.size () * 6);
         //Note, line drawing doesn't work when blending is enabled
         glDisable (GL_BLEND);
         glPointSize (10);
@@ -467,25 +579,21 @@ int main () {
         ImGui::Text ("Place Gates");
         if (ImGui::Button ("NOT")) {
             gateData.push_back ({{0, -100}, NOT, std::vector<ConnectorData> {{{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, false, false}}, false, 2});
-            gatesToDraw++;
             placingGate = true;
             redrawSprites = true;
         }
         if (ImGui::Button ("AND")) {
             gateData.push_back ({{0, -100}, AND, std::vector<ConnectorData> {{{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, false, false}}, false, 3});
-            gatesToDraw++;
             placingGate = true;
             redrawSprites = true;
         }
         if (ImGui::Button ("MANUAL INPUT LINE")) {
             gateData.push_back ({{0, -100}, INPUTGATE, std::vector<ConnectorData> {{{0, 0}, {-1, 0}, false, false}}, false, 1});
-            gatesToDraw++;
             placingGate = true;
             redrawSprites = true;
         }
         if (ImGui::Button ("READ OUTPUT LINE")) {
             gateData.push_back ({{0, -100}, OUTPUTGATE, std::vector<ConnectorData> {{{0, 0}, {-1, 0}, true, false}}, false, 1});
-            gatesToDraw++;
             placingGate = true;
             redrawSprites = true;
         }
@@ -497,6 +605,7 @@ int main () {
         ImGui::Text ("Simulate");
         if (ImGui::Button ("Run One Cycle")) {
             //Connect to gate logic
+            OneSimulation();
         }
         ImGui::SameLine ();
         if (ImGui::Button ("Reset Board")) {

@@ -13,7 +13,7 @@
 
 struct Point {int x, y;};
 //Actual connection position, x index of connected gate | y is connectionIndex of gate, input, connected
-struct ConnectorData {Point point, connectedGateData; bool input, connected;};
+struct ConnectorData {Point point, connectedGateData; bool input, connected;}; // int index;
 enum gateType {   
     NOT = 0, 
     AND = 1, 
