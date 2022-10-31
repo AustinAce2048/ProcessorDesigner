@@ -437,18 +437,8 @@ int main () {
     //Make app work on second monitor only
     int count;
     GLFWmonitor** monitors = glfwGetMonitors (&count);
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
     //glfwSetWindowMonitor (window, monitors[1], 0, 0, screenWidth, screenHeight, 155);
-    
-=======
-    glfwSetWindowMonitor (window, monitors[1], 0, 0, screenWidth, screenHeight, 155);
     */
->>>>>>> Stashed changes
-=======
-    glfwSetWindowMonitor (window, monitors[1], 0, 0, screenWidth, screenHeight, 155);
-    */
->>>>>>> Stashed changes
 
     //Force window to be fullscreen on the main monitor
     glfwSetWindowMonitor (window, glfwGetPrimaryMonitor (), 0, 0, screenWidth, screenHeight, 155);
