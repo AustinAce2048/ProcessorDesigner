@@ -438,8 +438,13 @@ int main () {
     int count;
     GLFWmonitor** monitors = glfwGetMonitors (&count);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     //glfwSetWindowMonitor (window, monitors[1], 0, 0, screenWidth, screenHeight, 155);
     
+=======
+    glfwSetWindowMonitor (window, monitors[1], 0, 0, screenWidth, screenHeight, 155);
+    */
+>>>>>>> Stashed changes
 =======
     glfwSetWindowMonitor (window, monitors[1], 0, 0, screenWidth, screenHeight, 155);
     */
