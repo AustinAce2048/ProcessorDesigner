@@ -433,15 +433,20 @@ int main () {
         SOIL_free_image_data (image);
     }
 
-    
+    /*
     //Make app work on second monitor only
     int count;
     GLFWmonitor** monitors = glfwGetMonitors (&count);
+<<<<<<< Updated upstream
     //glfwSetWindowMonitor (window, monitors[1], 0, 0, screenWidth, screenHeight, 155);
     
+=======
+    glfwSetWindowMonitor (window, monitors[1], 0, 0, screenWidth, screenHeight, 155);
+    */
+>>>>>>> Stashed changes
 
     //Force window to be fullscreen on the main monitor
-    //glfwSetWindowMonitor (window, glfwGetPrimaryMonitor (), 0, 0, screenWidth, screenHeight, 155);
+    glfwSetWindowMonitor (window, glfwGetPrimaryMonitor (), 0, 0, screenWidth, screenHeight, 155);
 
     //Setup callbacks
     glfwSetKeyCallback (window, KeyCallback);
