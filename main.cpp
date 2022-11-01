@@ -13,7 +13,6 @@
 int screenWidth = 1920;
 int screenHeight = 1080;
 const char windowName[] = "Processor Designer";
-const float pi = 3.141592653598793f;
 bool isEscapePressed = false;
 bool redrawSprites = true;
 bool placingGate = false;
@@ -35,6 +34,14 @@ bool isOverGate = false;
 bool isDraggingGate = false;
 int gateDragIndex;
 int oldGateDragIndex;
+bool isPanningScreen = false;
+int xPanOffset = 0;
+int yPanOffset = 0;
+int masterXPanOffset = 0;
+int masterYPanOffset = 0;
+Point mousePositionOnStartDrag;
+bool isResetPanning = false;
+float scaleFactor = 1.0f;
 
 
 
@@ -144,6 +151,37 @@ void UpdateConnectionPoints (int gateIndex) {
 
 
 
+void UpdatePanningPosition () {
+    if (isResetPanning) {
+        for (int i = 0; i < gateData.size (); i++) {
+            gateData[i].position.x = gateData[i].position.x - masterXPanOffset;
+            gateData[i].position.y = gateData[i].position.y - masterYPanOffset;
+            UpdateConnectionPoints (i);
+        }
+        masterXPanOffset = 0;
+        masterYPanOffset = 0;
+        xPanOffset = 0;
+        yPanOffset = 0;
+        redrawSprites = true;
+    } else {
+        xPanOffset = mouseX - mousePositionOnStartDrag.x;
+        yPanOffset = mouseY - mousePositionOnStartDrag.y;
+        masterXPanOffset = masterXPanOffset + xPanOffset;
+        masterYPanOffset = masterYPanOffset + yPanOffset;
+
+        for (int i = 0; i < gateData.size (); i++) {
+            gateData[i].position.x = gateData[i].position.x + xPanOffset;
+            gateData[i].position.y = gateData[i].position.y + yPanOffset;
+            mousePositionOnStartDrag = {mouseX, mouseY};
+            UpdateConnectionPoints (i);
+        }
+        redrawSprites = true;
+    }
+    isResetPanning = false;
+}
+
+
+
 //Creates a callback to listen for the escape key, it will work on press down or up (down in this case)
 void KeyCallback (GLFWwindow* window, int key, int scancode, int action, int mods) {
     //Closing the program
@@ -194,6 +232,12 @@ void KeyCallback (GLFWwindow* window, int key, int scancode, int action, int mod
                 }
             }
         }
+    }
+
+    //Recenter the screen
+    if (key == GLFW_KEY_C && action == GLFW_PRESS) {
+        isResetPanning = true;
+        UpdatePanningPosition ();
     }
 }
 
@@ -380,6 +424,24 @@ static void MouseButtonCallback (GLFWwindow* window, int button, int action, int
         gateDataConnectionStartIndex = gateDataHoverIndex;
         registerOneClick = true;
     }
+
+    //Starting to pan screen
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !isOverGate && !registerOneClick && !isPanningScreen) {
+        isPanningScreen = true;
+        mousePositionOnStartDrag = {mouseX, mouseY};
+    }
+
+    //Stop panning screen
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE && !registerOneClick && isPanningScreen) {
+        isPanningScreen = false;
+    }
+}
+
+
+
+void ScrollCallback (GLFWwindow* window, double xOffset, double yOffset) {
+    scaleFactor -= yOffset * 3;
+    redrawSprites = true;
 }
 
 
@@ -433,20 +495,21 @@ int main () {
         SOIL_free_image_data (image);
     }
 
-    /*
+    
     //Make app work on second monitor only
     int count;
     GLFWmonitor** monitors = glfwGetMonitors (&count);
-    //glfwSetWindowMonitor (window, monitors[1], 0, 0, screenWidth, screenHeight, 155);
-    */
+    glfwSetWindowMonitor (window, monitors[1], 0, 0, screenWidth, screenHeight, 155);
+
 
     //Force window to be fullscreen on the main monitor
-    glfwSetWindowMonitor (window, glfwGetPrimaryMonitor (), 0, 0, screenWidth, screenHeight, 155);
+    //glfwSetWindowMonitor (window, glfwGetPrimaryMonitor (), 0, 0, screenWidth, screenHeight, 155);
 
     //Setup callbacks
     glfwSetKeyCallback (window, KeyCallback);
     glfwSetMouseButtonCallback (window, MouseButtonCallback);
     glfwSetCursorPosCallback (window, CursorCallback);
+    glfwSetScrollCallback (window, ScrollCallback);
 
     //Create ImGui environment
     IMGUI_CHECKVERSION ();
@@ -463,7 +526,7 @@ int main () {
             std::vector<Object> objects (gateData.size (), {0, 0, 0});
             std::vector<short> vertices (gateData.size () * 12, 0);
             std::vector<float> uvs (gateData.size () * 12, 0.0f);
-            DrawSprites (objects, vertices, uvs, gateData);
+            DrawSprites (objects, vertices, uvs, gateData, scaleFactor);
             glBufferSubData (GL_ARRAY_BUFFER, 0, vertices.size () * sizeof (short), &vertices[0]);
             redrawSprites = false;
         }
@@ -564,6 +627,10 @@ int main () {
             }
             UpdateConnectionPoints (gateDragIndex);
             redrawSprites = true;
+        }
+
+        if (isPanningScreen) {
+            UpdatePanningPosition ();
         }
 
         //IMGUI runs here

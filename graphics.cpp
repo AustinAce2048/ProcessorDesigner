@@ -34,7 +34,7 @@ Texture textures[4] = {notGate, andGate, manualInputOff, manualInputOn};
 
 
 
-void DrawSprites (std::vector<Object>& objects, std::vector<short>& vertices, std::vector<float>& uvs, std::vector<Gate>& gateData) {
+void DrawSprites (std::vector<Object>& objects, std::vector<short>& vertices, std::vector<float>& uvs, std::vector<Gate>& gateData, float scaleFactor) {
     for (int i = 0; i < gateData.size (); i++) {
         Texture t;
         if (gateData[i].gateType == OUTPUTGATE) {
@@ -48,24 +48,24 @@ void DrawSprites (std::vector<Object>& objects, std::vector<short>& vertices, st
 
         //Vertices
         //Top right
-        vertices[i * 12] = objects[i].x + objects[i].texture.width;
+        vertices[i * 12] = objects[i].x + objects[i].texture.width * scaleFactor;
         vertices[i * 12 + 1] = objects[i].y;
 
         //Bottom right
-        vertices[i * 12 + 2] = objects[i].x + objects[i].texture.width;
-        vertices[i * 12 + 3] = objects[i].y + objects[i].texture.height;
+        vertices[i * 12 + 2] = objects[i].x + objects[i].texture.width * scaleFactor;
+        vertices[i * 12 + 3] = objects[i].y + objects[i].texture.height * scaleFactor;
 
         //Top left
         vertices[i * 12 + 4] = objects[i].x;
         vertices[i * 12 + 5] = objects[i].y;
 
         //Bottom right
-        vertices[i * 12 + 6] = objects[i].x + objects[i].texture.width;
-        vertices[i * 12 + 7] = objects[i].y + objects[i].texture.height;
+        vertices[i * 12 + 6] = objects[i].x + objects[i].texture.width * scaleFactor;
+        vertices[i * 12 + 7] = objects[i].y + objects[i].texture.height * scaleFactor;
 
         //Bottom left
         vertices[i * 12 + 8] = objects[i].x;
-        vertices[i * 12 + 9] = objects[i].y + objects[i].texture.height;
+        vertices[i * 12 + 9] = objects[i].y + objects[i].texture.height * scaleFactor;
 
         //Top left
         vertices[i * 12 + 10] = objects[i].x;
