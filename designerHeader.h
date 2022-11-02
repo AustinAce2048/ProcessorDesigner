@@ -1,6 +1,7 @@
 #include "glew/include/GL/glew.h"
 #include <GLFW/glfw3.h>
 #include "soil/include/soil/SOIL.h"
+#pragma GCC diagnostic ignored "-Wnarrowing"
 
 #include <iostream>
 #include <cstdlib>

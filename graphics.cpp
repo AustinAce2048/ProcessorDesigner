@@ -25,47 +25,56 @@ const char* fragmentShader =
     "}\n";
 
 //For corners, (u1, v1) is the top left and (u2, v2) is bottom right. (0, 0) is top left corner
-Texture notGate = {200, 100, 0.0f, 0.0f, 1.0f, 0.3268f};
-Texture andGate = {200, 100, 0.0f, 0.3268f, 1.0f, 0.6437f};
-Texture manualInputOff = {200, 53, 0.0f, 0.647f, 1.0f, 0.8202f};
-Texture manualInputOn = {200, 53, 0.0f, 0.8235f, 1.0f, 0.9967f};
+Texture notGate = {200, 100, 0.0f, 0.0f, 1.0f, 0.2463f};
+Texture andGate = {200, 100, 0.0f, 0.2463f, 1.0f, 0.4879f};
+Texture manualInputOff = {200, 53, 0.0f, 0.4879f, 1.0f, 0.6232f};
+Texture manualInputOn = {200, 53, 0.0f, 0.6232f, 1.0f, 0.7562f};
+Texture orGate = {200, 100, 0.0f, 0.7537f, 1.0f, 1.0f};
 
-Texture textures[4] = {notGate, andGate, manualInputOff, manualInputOn};
+Texture textures[5] = {notGate, andGate, manualInputOff, manualInputOn, orGate};
 
 
 
-void DrawSprites (std::vector<Object>& objects, std::vector<short>& vertices, std::vector<float>& uvs, std::vector<Gate>& gateData) {
+void DrawSprites (std::vector<Object>& objects, std::vector<short>& vertices, std::vector<float>& uvs, std::vector<Gate>& gateData, float scaleFactor) {
     for (int i = 0; i < gateData.size (); i++) {
         Texture t;
         if (gateData[i].gateType == OUTPUTGATE) {
             t = textures[2];
         } else if (gateData[i].gateType == OUTPUTGATEON) {
             t = textures[3];
+        } else if (gateData[i].gateType == NOT) {
+            t = textures[0];
+        } else if (gateData[i].gateType == AND) {
+            t = textures[1];
+        } else if (gateData[i].gateType == INPUTGATE) {
+            t = textures[2];
+        } else if (gateData[i].gateType == INPUTGATEON) {
+            t = textures[3];
         } else {
-            t = textures[gateData[i].gateType];
+            t = textures[gateData[i].gateType - 2];
         }
         objects[i] = {gateData[i].position.x, gateData[i].position.y, t};
 
         //Vertices
         //Top right
-        vertices[i * 12] = objects[i].x + objects[i].texture.width;
+        vertices[i * 12] = objects[i].x + objects[i].texture.width * scaleFactor;
         vertices[i * 12 + 1] = objects[i].y;
 
         //Bottom right
-        vertices[i * 12 + 2] = objects[i].x + objects[i].texture.width;
-        vertices[i * 12 + 3] = objects[i].y + objects[i].texture.height;
+        vertices[i * 12 + 2] = objects[i].x + objects[i].texture.width * scaleFactor;
+        vertices[i * 12 + 3] = objects[i].y + objects[i].texture.height * scaleFactor;
 
         //Top left
         vertices[i * 12 + 4] = objects[i].x;
         vertices[i * 12 + 5] = objects[i].y;
 
         //Bottom right
-        vertices[i * 12 + 6] = objects[i].x + objects[i].texture.width;
-        vertices[i * 12 + 7] = objects[i].y + objects[i].texture.height;
+        vertices[i * 12 + 6] = objects[i].x + objects[i].texture.width * scaleFactor;
+        vertices[i * 12 + 7] = objects[i].y + objects[i].texture.height * scaleFactor;
 
         //Bottom left
         vertices[i * 12 + 8] = objects[i].x;
-        vertices[i * 12 + 9] = objects[i].y + objects[i].texture.height;
+        vertices[i * 12 + 9] = objects[i].y + objects[i].texture.height * scaleFactor;
 
         //Top left
         vertices[i * 12 + 10] = objects[i].x;

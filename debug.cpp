@@ -96,7 +96,7 @@ void ResetOutputs (std::vector<Gate>& gateData, bool& redrawSprites) {
 
 
 //Draw clickable areas
-void DrawConnectionBoxes (std::vector<Gate> gateData) {
+void DrawConnectionBoxes (std::vector<Gate> gateData, float scaleFactor) {
     glPointSize (10);
     glLineWidth (2.5);
     glColor3f (1, 1, 0);
@@ -106,75 +106,104 @@ void DrawConnectionBoxes (std::vector<Gate> gateData) {
         switch (gateData[i].gateType) {
             case NOT:
                 //NOT input
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 50, gateData[i].position.y + 75});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 80, gateData[i].position.y + 75});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 80, gateData[i].position.y + 75});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 80, gateData[i].position.y + 25});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 80, gateData[i].position.y + 25});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 50, gateData[i].position.y + 25});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 50, gateData[i].position.y + 25});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 50, gateData[i].position.y + 75});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 50 * scaleFactor, gateData[i].position.y + 75 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 80 * scaleFactor, gateData[i].position.y + 75 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 80 * scaleFactor, gateData[i].position.y + 75 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 80 * scaleFactor, gateData[i].position.y + 25 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 80 * scaleFactor, gateData[i].position.y + 25 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 50 * scaleFactor, gateData[i].position.y + 25 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 50 * scaleFactor, gateData[i].position.y + 25 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 50 * scaleFactor, gateData[i].position.y + 75 * scaleFactor});
 
                 //NOT output
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 130, gateData[i].position.y + 75});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 160, gateData[i].position.y + 75});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 160, gateData[i].position.y + 75});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 160, gateData[i].position.y + 25});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 160, gateData[i].position.y + 25});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 130, gateData[i].position.y + 25});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 130, gateData[i].position.y + 25});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 130, gateData[i].position.y + 75});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 130 * scaleFactor, gateData[i].position.y + 75 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 160 * scaleFactor, gateData[i].position.y + 75 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 160 * scaleFactor, gateData[i].position.y + 75 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 160 * scaleFactor, gateData[i].position.y + 25 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 160 * scaleFactor, gateData[i].position.y + 25 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 130 * scaleFactor, gateData[i].position.y + 25 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 130 * scaleFactor, gateData[i].position.y + 25 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 130 * scaleFactor, gateData[i].position.y + 75 * scaleFactor});
             break;
             case AND:
                 //AND A input
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 40, gateData[i].position.y + 50});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 70, gateData[i].position.y + 50});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 70, gateData[i].position.y + 50});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 70, gateData[i].position.y});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 70, gateData[i].position.y});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 40, gateData[i].position.y});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 40, gateData[i].position.y});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 40, gateData[i].position.y + 50});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 40 * scaleFactor, gateData[i].position.y + 50 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y + 50 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y + 50 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 40 * scaleFactor, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 40 * scaleFactor, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 40 * scaleFactor, gateData[i].position.y + 50 * scaleFactor});
                 //AND B input
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 40, gateData[i].position.y + 105});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 70, gateData[i].position.y + 105});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 70, gateData[i].position.y + 105});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 70, gateData[i].position.y + 55});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 70, gateData[i].position.y + 55});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 40, gateData[i].position.y + 55});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 40, gateData[i].position.y + 55});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 40, gateData[i].position.y + 105});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 40 * scaleFactor, gateData[i].position.y + 105 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y + 105 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y + 105 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y + 55 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y + 55 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 40 * scaleFactor, gateData[i].position.y + 55 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 40 * scaleFactor, gateData[i].position.y + 55 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 40 * scaleFactor, gateData[i].position.y + 105 * scaleFactor});
                 //AND output
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 140, gateData[i].position.y + 75});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 170, gateData[i].position.y + 75});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 170, gateData[i].position.y + 75});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 170, gateData[i].position.y + 25});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 170, gateData[i].position.y + 25});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 140, gateData[i].position.y + 25});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 140, gateData[i].position.y + 25});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 140, gateData[i].position.y + 75});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 140 * scaleFactor, gateData[i].position.y + 75 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 170 * scaleFactor, gateData[i].position.y + 75 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 170 * scaleFactor, gateData[i].position.y + 75 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 170 * scaleFactor, gateData[i].position.y + 25 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 170 * scaleFactor, gateData[i].position.y + 25 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 140 * scaleFactor, gateData[i].position.y + 25 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 140 * scaleFactor, gateData[i].position.y + 25 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 140 * scaleFactor, gateData[i].position.y + 75 * scaleFactor});
             break;
             case INPUTGATE:
                 //INPUT output
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 110, gateData[i].position.y + 50});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 140, gateData[i].position.y + 50});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 140, gateData[i].position.y + 50});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 140, gateData[i].position.y});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 140, gateData[i].position.y});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 110, gateData[i].position.y});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 110, gateData[i].position.y});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 110, gateData[i].position.y + 50});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 110 * scaleFactor, gateData[i].position.y + 50 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 140 * scaleFactor, gateData[i].position.y + 50 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 140 * scaleFactor, gateData[i].position.y + 50 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 140 * scaleFactor, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 140 * scaleFactor, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 110 * scaleFactor, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 110 * scaleFactor, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 110 * scaleFactor, gateData[i].position.y + 50 * scaleFactor});
             break;
             case OUTPUTGATE:
                 //INPUT output
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 60, gateData[i].position.y + 50});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 90, gateData[i].position.y + 50});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 90, gateData[i].position.y + 50});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 90, gateData[i].position.y});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 90, gateData[i].position.y});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 60, gateData[i].position.y});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 60, gateData[i].position.y});
-                clickableAreaBoxes.push_back ({gateData[i].position.x + 60, gateData[i].position.y + 50});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 60 * scaleFactor, gateData[i].position.y + 50 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 90 * scaleFactor, gateData[i].position.y + 50 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 90 * scaleFactor, gateData[i].position.y + 50 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 90 * scaleFactor, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 90 * scaleFactor, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 60 * scaleFactor, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 60 * scaleFactor, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 60 * scaleFactor, gateData[i].position.y + 50 * scaleFactor});
+            break;
+            case OR:
+                //OR A input
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 40 * scaleFactor, gateData[i].position.y + 50 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y + 50 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y + 50 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 40 * scaleFactor, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 40 * scaleFactor, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 40 * scaleFactor, gateData[i].position.y + 50 * scaleFactor});
+                //OR B input
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 40 * scaleFactor, gateData[i].position.y + 105 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y + 105 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y + 105 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y + 55 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y + 55 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 40 * scaleFactor, gateData[i].position.y + 55 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 40 * scaleFactor, gateData[i].position.y + 55 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 40 * scaleFactor, gateData[i].position.y + 105 * scaleFactor});
+                //OR output
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 140 * scaleFactor, gateData[i].position.y + 75 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 170 * scaleFactor, gateData[i].position.y + 75 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 170 * scaleFactor, gateData[i].position.y + 75 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 170 * scaleFactor, gateData[i].position.y + 25 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 170 * scaleFactor, gateData[i].position.y + 25 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 140 * scaleFactor, gateData[i].position.y + 25 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 140 * scaleFactor, gateData[i].position.y + 25 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 140 * scaleFactor, gateData[i].position.y + 75 * scaleFactor});
             break;
         }
     }

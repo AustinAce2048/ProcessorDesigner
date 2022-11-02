@@ -353,6 +353,7 @@ CMakeFiles/ProcessorDesigner.dir/main.cpp.obj: main.cpp \
   C:/msys64/mingw64/include/c++/12.1.0/bits/vector.tcc \
   C:/msys64/mingw64/include/c++/12.1.0/sstream \
   C:/msys64/mingw64/include/c++/12.1.0/bits/sstream.tcc \
+  callbacks.cpp \
   debug.cpp
 
 
@@ -1051,5 +1052,7 @@ C:/msys64/mingw64/include/c++/12.1.0/bits/vector.tcc:
 C:/msys64/mingw64/include/c++/12.1.0/sstream:
 
 C:/msys64/mingw64/include/c++/12.1.0/bits/sstream.tcc:
+
+callbacks.cpp:
 
 debug.cpp:
