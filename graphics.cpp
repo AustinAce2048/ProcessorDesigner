@@ -25,12 +25,13 @@ const char* fragmentShader =
     "}\n";
 
 //For corners, (u1, v1) is the top left and (u2, v2) is bottom right. (0, 0) is top left corner
-Texture notGate = {200, 100, 0.0f, 0.0f, 1.0f, 0.3268f};
-Texture andGate = {200, 100, 0.0f, 0.3268f, 1.0f, 0.6437f};
-Texture manualInputOff = {200, 53, 0.0f, 0.647f, 1.0f, 0.8202f};
-Texture manualInputOn = {200, 53, 0.0f, 0.8235f, 1.0f, 0.9967f};
+Texture notGate = {200, 100, 0.0f, 0.0f, 1.0f, 0.2463f};
+Texture andGate = {200, 100, 0.0f, 0.2463f, 1.0f, 0.4879f};
+Texture manualInputOff = {200, 53, 0.0f, 0.4879f, 1.0f, 0.6232f};
+Texture manualInputOn = {200, 53, 0.0f, 0.6232f, 1.0f, 0.7562f};
+Texture orGate = {200, 100, 0.0f, 0.7537f, 1.0f, 1.0f};
 
-Texture textures[4] = {notGate, andGate, manualInputOff, manualInputOn};
+Texture textures[5] = {notGate, andGate, manualInputOff, manualInputOn, orGate};
 
 
 
@@ -41,8 +42,16 @@ void DrawSprites (std::vector<Object>& objects, std::vector<short>& vertices, st
             t = textures[2];
         } else if (gateData[i].gateType == OUTPUTGATEON) {
             t = textures[3];
+        } else if (gateData[i].gateType == NOT) {
+            t = textures[0];
+        } else if (gateData[i].gateType == AND) {
+            t = textures[1];
+        } else if (gateData[i].gateType == INPUTGATE) {
+            t = textures[2];
+        } else if (gateData[i].gateType == INPUTGATEON) {
+            t = textures[3];
         } else {
-            t = textures[gateData[i].gateType];
+            t = textures[gateData[i].gateType - 2];
         }
         objects[i] = {gateData[i].position.x, gateData[i].position.y, t};
 
