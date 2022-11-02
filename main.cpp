@@ -447,7 +447,7 @@ int main () {
         DebugWindow (gateData, redrawSprites);
 
         ImGui::Begin ("Place Gates", &trueBool, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-        ImGui::SetWindowSize (ImVec2 ((float)150.0f, (float)130.0f));
+        ImGui::SetWindowSize (ImVec2 ((float)150.0f, (float)150.0f));
         ImGui::SetWindowPos (ImVec2 (-1, 0));
         ImGui::Text ("Place Gates");
         if (ImGui::Button ("NOT")) {
