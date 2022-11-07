@@ -17,20 +17,21 @@ void KeyboardCallback (GLFWwindow* window, int key, int action, bool isOverGate,
             //Get gate connected to this gate and remove the connection, either delete it or clear it
             if (gateData[gateDragIndex].connectionPoints[i].connectedGateData.x > -1) {
                 if (gateData[gateDragIndex].connectionPoints[i].connectedGateData.y > gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].initialConnections - 1) {
-                    if (gateData[gateDragIndex].connectionPoints[i].connectedGateData.y == gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].connectionPoints.size() - 1) {
+                    gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].connectionPoints.erase (gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].connectionPoints.begin () + gateData[gateDragIndex].connectionPoints[i].connectedGateData.y);
+
+                    if (gateData[gateDragIndex].connectionPoints[i].connectedGateData.y < gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].connectionPoints.size()) {
                         int connectorIndex = gateData[gateDragIndex].connectionPoints[i].connectedGateData.y;
                         for (int g = 0; g < gateData.size (); g++) {
-                            for (int j = 0; j < gateData[i].connectionPoints.size (); j++) {
+                            for (int j = 0; j < gateData[g].connectionPoints.size (); j++) {
                                 if (gateData[g].connectionPoints[j].connectedGateData.x == -1) {
                                     continue;
                                 }
-                                if (gateData[g].connectionPoints[j].connectedGateData.y >= connectorIndex - 1) {
+                                if (gateData[g].connectionPoints[j].connectedGateData.x == gateData[gateDragIndex].connectionPoints[i].connectedGateData.x && gateData[g].connectionPoints[j].connectedGateData.y > connectorIndex) {
                                     gateData[g].connectionPoints[j].connectedGateData.y--;
                                 }
                             }
                         }
                     }
-                    gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].connectionPoints.erase (gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].connectionPoints.begin () + gateData[gateDragIndex].connectionPoints[i].connectedGateData.y);
                 } else {
                     //NOTICE deleting specifically the input gate when connected to an AND gate, it doesn't matter what's happening to it
                     gateData[gateData[gateDragIndex].connectionPoints[i].connectedGateData.x].connectionPoints[gateData[gateDragIndex].connectionPoints[i].connectedGateData.y].connectedGateData = {-1, 0};
@@ -48,7 +49,7 @@ void KeyboardCallback (GLFWwindow* window, int key, int action, bool isOverGate,
                 if (gateData[i].connectionPoints[j].connectedGateData.x == -1) {
                     continue;
                 }
-                if (gateData[i].connectionPoints[j].connectedGateData.x >= gateDragIndex - 1) {
+                if (gateData[i].connectionPoints[j].connectedGateData.x > gateDragIndex) {
                     gateData[i].connectionPoints[j].connectedGateData.x--;
                 }
             }
@@ -140,7 +141,7 @@ void MouseCallback (double x, double y, int& rawMouseX, int& rawMouseY, int& mou
         }
 
         //Check for gate hover
-        if ((rawMouseX <= gateData[i].position.x + 125 * scaleFactor && rawMouseX >= gateData[i].position.x + 75 * scaleFactor) && (rawMouseY >= gateData[i].position.y + 15 * scaleFactor && rawMouseY <= gateData[i].position.y + 85 * scaleFactor) && !placingGate) {
+        if ((rawMouseX <= gateData[i].position.x + 125 * scaleFactor && rawMouseX >= gateData[i].position.x + 75 * scaleFactor) && (rawMouseY >= gateData[i].position.y - 10 * scaleFactor && rawMouseY <= gateData[i].position.y + 60 * scaleFactor) && !placingGate) {
             isOverGate = true;
             gateDragIndex = i;
         }
@@ -149,7 +150,7 @@ void MouseCallback (double x, double y, int& rawMouseX, int& rawMouseY, int& mou
 
 
 
-void MouseButtonsCallback (int button, int action, bool& placingGate, bool& isConnectingGates, bool& isOverGateConnection, bool& isOverInputConnection, Point& connectionPoint, int& gateDataConnectionStartIndex, int& gateDataHoverIndex, int& gateConnectionIndex, bool isOverManualInput, bool& isDraggingGate, bool& redrawSprites, bool& isOverGate, int& oldGateDragIndex, int& gateDragIndex, bool& isPanningScreen, Point& mousePositionOnStartDrag, int& updateConnectionPointIndex, std::vector<Gate>& gateData, int& isOrderGatesIndex, int& secondOrderGates, int mouseX, int mouseY) {
+void MouseButtonsCallback (int button, int action, bool& placingGate, bool& isConnectingGates, bool& isOverGateConnection, bool& isOverInputConnection, Point& connectionPoint, int& gateDataConnectionStartIndex, int& gateDataHoverIndex, int& gateConnectionIndex, bool isOverManualInput, bool& isDraggingGate, bool& redrawSprites, bool& isOverGate, int& oldGateDragIndex, int& gateDragIndex, bool& isPanningScreen, Point& mousePositionOnStartDrag, int& updateConnectionPointIndex, std::vector<Gate>& gateData, int mouseX, int mouseY) {
     bool registerOneClick = false;
 
     //Place the gate
@@ -179,10 +180,7 @@ void MouseButtonsCallback (int button, int action, bool& placingGate, bool& isCo
             } else {
                 gateData[connectionPoint.x].connectionPoints.push_back ({gateData[connectionPoint.x].connectionPoints[connectionPoint.y].point, {gateDataHoverIndex, gateConnectionIndex}, false, true});
             }
-            gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex] = {gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].point, {connectionPoint.x, connectionPoint.y}, true, true};
-            //gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].index = gateDataConnectionStartIndex;
-            isOrderGatesIndex = gateDataHoverIndex;
-            secondOrderGates = gateDataConnectionStartIndex;
+            gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex] = {gateData[gateDataHoverIndex].connectionPoints[gateConnectionIndex].point, {connectionPoint.x, gateData[connectionPoint.x].connectionPoints.size() - 1}, true, true};
         }
         registerOneClick = true;
     } else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && isConnectingGates && !registerOneClick && (!isOverGateConnection || !isOverInputConnection)) {
