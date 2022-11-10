@@ -149,7 +149,7 @@ void MouseCallback (double x, double y, int& rawMouseX, int& rawMouseY, int& mou
 
 
 
-void MouseButtonsCallback (int button, int action, bool& placingGate, bool& isConnectingGates, bool& isOverGateConnection, bool& isOverInputConnection, Point& connectionPoint, int& gateDataConnectionStartIndex, int& gateDataHoverIndex, int& gateConnectionIndex, bool isOverManualInput, bool& isDraggingGate, bool& redrawSprites, bool& isOverGate, int& oldGateDragIndex, int& gateDragIndex, bool& isPanningScreen, Point& mousePositionOnStartDrag, int& updateConnectionPointIndex, std::vector<Gate>& gateData, int& isOrderGatesIndex, int& secondOrderGates, int mouseX, int mouseY) {
+void MouseButtonsCallback (int button, int action, bool& placingGate, bool& isConnectingGates, bool& isOverGateConnection, bool& isOverInputConnection, Point& connectionPoint, int& gateDataConnectionStartIndex, int& gateDataHoverIndex, int& gateConnectionIndex, bool isOverManualInput, bool& isDraggingGate, bool& redrawSprites, bool& isOverGate, int& oldGateDragIndex, int& gateDragIndex, bool& isPanningScreen, Point& mousePositionOnStartDrag, int& updateConnectionPointIndex, std::vector<Gate>& gateData, int& isOrderGatesIndex, int& secondOrderGates, int mouseX, int mouseY, bool isCreatingFunction, Point& functionPointA, Point& functionPointB, bool& placingFunction) {
     bool registerOneClick = false;
 
     //Place the gate
@@ -157,6 +157,12 @@ void MouseButtonsCallback (int button, int action, bool& placingGate, bool& isCo
         placingGate = false;
         //Set connection location data
         updateConnectionPointIndex = gateData.size () - 1;
+        registerOneClick = true;
+    }
+
+    //Place the function
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && placingFunction && !registerOneClick) {
+        placingFunction = false;
         registerOneClick = true;
     }
 
@@ -247,15 +253,29 @@ void MouseButtonsCallback (int button, int action, bool& placingGate, bool& isCo
         registerOneClick = true;
     }
 
+    //Set first function point
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE && !registerOneClick && isCreatingFunction && functionPointA.x == -1) {
+        functionPointA = {mouseX, mouseY};
+        registerOneClick = true;
+    }
+
+    //Set second function point
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE && !registerOneClick && isCreatingFunction && functionPointA.x != -1) {
+        functionPointB = {mouseX, mouseY};
+        registerOneClick = true;
+    }
+
     //Starting to pan screen
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !isOverGate && !registerOneClick && !isPanningScreen && gateData.size () > 0) {
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !isOverGate && !registerOneClick && !isPanningScreen && gateData.size () > 0 && !isCreatingFunction) {
         isPanningScreen = true;
         mousePositionOnStartDrag = {mouseX, mouseY};
+        registerOneClick = true;
     }
 
     //Stop panning screen
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE && !registerOneClick && isPanningScreen) {
         isPanningScreen = false;
+        registerOneClick = true;
     }
 }
 

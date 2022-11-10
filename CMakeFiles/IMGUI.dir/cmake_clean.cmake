@@ -13,6 +13,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/IMGUI.dir/imgui/imgui_tables.cpp.obj.d"
   "CMakeFiles/IMGUI.dir/imgui/imgui_widgets.cpp.obj"
   "CMakeFiles/IMGUI.dir/imgui/imgui_widgets.cpp.obj.d"
+  "CMakeFiles/IMGUI.dir/imgui/misc/cpp/imgui_stdlib.cpp.obj"
+  "CMakeFiles/IMGUI.dir/imgui/misc/cpp/imgui_stdlib.cpp.obj.d"
   "libIMGUI.a"
   "libIMGUI.pdb"
 )

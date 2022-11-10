@@ -2,6 +2,7 @@
 #include "imgui/imgui.cpp"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
+#include "imgui/misc/cpp/imgui_stdlib.h"
 
 #ifndef designerHeader
 #define designerHeader
@@ -21,6 +22,8 @@ int mouseX;
 int mouseY;
 int rawMouseX;
 int rawMouseY;
+bool isMouseHoveringUI = false;
+bool isTypingInUI = false;
 std::vector<Gate> gateData;
 bool isConnectingGates = false;
 //x is gateIndex, y is connectionIndex
@@ -46,6 +49,15 @@ float scaleFactor = 1.0f;
 int updateConnectionPointIndex = -1;
 int isOrderGatesIndex = -1;
 int secondOrderGates = -1;
+bool isCreatingFunction = false;
+Point functionPointA;
+Point functionPointB;
+std::string functionName;
+std::vector<Function> functions;
+bool placingFunction = false;
+int functionLength;
+int functionID;
+std::vector<Point> oldGatePositions;
 
 
 
@@ -122,41 +134,41 @@ void OneSimulation () {
 void UpdateConnectionPoints (int gateIndex) {
     switch (gateData[gateIndex].gateType) {
         case NOT:
-            gateData[gateIndex].connectionPoints[0].point = {gateData[gateIndex].position.x + 65 * scaleFactor, gateData[gateIndex].position.y + 50 * scaleFactor};
+            gateData[gateIndex].connectionPoints[0].point = {(int)(gateData[gateIndex].position.x + 65 * scaleFactor), (int)(gateData[gateIndex].position.y + 50 * scaleFactor)};
             //For every output connection
             for (int i = 1; i < gateData[gateIndex].connectionPoints.size (); i++) {
-                gateData[gateIndex].connectionPoints[i].point = {gateData[gateIndex].position.x + 145 * scaleFactor, gateData[gateIndex].position.y + 50 * scaleFactor};
+                gateData[gateIndex].connectionPoints[i].point = {(int)(gateData[gateIndex].position.x + 145 * scaleFactor), (int)(gateData[gateIndex].position.y + 50 * scaleFactor)};
             }
             gateData[gateIndex].initialConnections = 2;
         break;
         case AND:
-            gateData[gateIndex].connectionPoints[0].point = {gateData[gateIndex].position.x + 55 * scaleFactor, gateData[gateIndex].position.y + 32 * scaleFactor};
-            gateData[gateIndex].connectionPoints[1].point = {gateData[gateIndex].position.x + 55 * scaleFactor, gateData[gateIndex].position.y + 63 * scaleFactor};
+            gateData[gateIndex].connectionPoints[0].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 32 * scaleFactor)};
+            gateData[gateIndex].connectionPoints[1].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 63 * scaleFactor)};
             //For every output connection
             for (int i = 2; i < gateData[gateIndex].connectionPoints.size (); i++) {
-                gateData[gateIndex].connectionPoints[i].point = {gateData[gateIndex].position.x + 145 * scaleFactor, gateData[gateIndex].position.y + 49 * scaleFactor};
+                gateData[gateIndex].connectionPoints[i].point = {(int)(gateData[gateIndex].position.x + 145 * scaleFactor), (int)(gateData[gateIndex].position.y + 49 * scaleFactor)};
             }
             gateData[gateIndex].initialConnections = 3;
         break;
         case OR:
-            gateData[gateIndex].connectionPoints[0].point = {gateData[gateIndex].position.x + 60 * scaleFactor, gateData[gateIndex].position.y + 25 * scaleFactor};
-            gateData[gateIndex].connectionPoints[1].point = {gateData[gateIndex].position.x + 60 * scaleFactor, gateData[gateIndex].position.y + 75 * scaleFactor};
+            gateData[gateIndex].connectionPoints[0].point = {(int)(gateData[gateIndex].position.x + 60 * scaleFactor), (int)(gateData[gateIndex].position.y + 25 * scaleFactor)};
+            gateData[gateIndex].connectionPoints[1].point = {(int)(gateData[gateIndex].position.x + 60 * scaleFactor), (int)(gateData[gateIndex].position.y + 75 * scaleFactor)};
             //For every output connection
             for (int i = 2; i < gateData[gateIndex].connectionPoints.size (); i++) {
-                gateData[gateIndex].connectionPoints[i].point = {gateData[gateIndex].position.x + 150 * scaleFactor, gateData[gateIndex].position.y + 49 * scaleFactor};
+                gateData[gateIndex].connectionPoints[i].point = {(int)(gateData[gateIndex].position.x + 150 * scaleFactor), (int)(gateData[gateIndex].position.y + 49 * scaleFactor)};
             }
             gateData[gateIndex].initialConnections = 3;
         break;
         case INPUTGATE: case INPUTGATEON:
-            gateData[gateIndex].connectionPoints[0].point = {gateData[gateIndex].position.x + 130 * scaleFactor, gateData[gateIndex].position.y + 25 * scaleFactor};
+            gateData[gateIndex].connectionPoints[0].point = {(int)(gateData[gateIndex].position.x + 130 * scaleFactor), (int)(gateData[gateIndex].position.y + 25 * scaleFactor)};
             //For every output connection
             for (int i = 1; i < gateData[gateIndex].connectionPoints.size (); i++) {
-                gateData[gateIndex].connectionPoints[i].point = {gateData[gateIndex].position.x + 130 * scaleFactor, gateData[gateIndex].position.y + 25 * scaleFactor};
+                gateData[gateIndex].connectionPoints[i].point = {(int)(gateData[gateIndex].position.x + 130 * scaleFactor), (int)(gateData[gateIndex].position.y + 25 * scaleFactor)};
             }
             gateData[gateIndex].initialConnections = 1;
         break;
         case OUTPUTGATE: case OUTPUTGATEON:
-            gateData[gateIndex].connectionPoints[0].point = {gateData[gateIndex].position.x + 75 * scaleFactor, gateData[gateIndex].position.y + 28 * scaleFactor};
+            gateData[gateIndex].connectionPoints[0].point = {(int)(gateData[gateIndex].position.x + 75 * scaleFactor), (int)(gateData[gateIndex].position.y + 28 * scaleFactor)};
             gateData[gateIndex].initialConnections = 1;
         break;
     }
@@ -198,6 +210,9 @@ void UpdatePanningPosition () {
 
 //Creates a callback to listen for the escape key, it will work on press down or up (down in this case)
 void KeyCallback (GLFWwindow* window, int key, int scancode, int action, int mods) {
+    if (isTypingInUI) {
+        return;
+    }
     KeyboardCallback (window, key, action, isOverGate, isDraggingGate, gateData, gateDragIndex, redrawSprites, isResetPanning, isPanningScreen);
 }
 
@@ -210,13 +225,18 @@ static void CursorCallback (GLFWwindow* window, double x, double y) {
 
 
 static void MouseButtonCallback (GLFWwindow* window, int button, int action, int mods) {
-    MouseButtonsCallback (button, action, placingGate, isConnectingGates, isOverGateConnection, isOverInputConnection, connectionPoint, gateDataConnectionStartIndex, gateDataHoverIndex, gateConnectionIndex, isOverManualInput, isDraggingGate, redrawSprites, isOverGate, oldGateDragIndex, gateDragIndex, isPanningScreen, mousePositionOnStartDrag, updateConnectionPointIndex, gateData, isOrderGatesIndex, secondOrderGates, mouseX, mouseY);
+    if (isMouseHoveringUI) {
+        return;
+    }
+    MouseButtonsCallback (button, action, placingGate, isConnectingGates, isOverGateConnection, isOverInputConnection, connectionPoint, gateDataConnectionStartIndex, gateDataHoverIndex, gateConnectionIndex, isOverManualInput, isDraggingGate, redrawSprites, isOverGate, oldGateDragIndex, gateDragIndex, isPanningScreen, mousePositionOnStartDrag, updateConnectionPointIndex, gateData, isOrderGatesIndex, secondOrderGates, mouseX, mouseY, isCreatingFunction, functionPointA, functionPointB, placingFunction);
 }
 
 
 
 void ScrollCallback (GLFWwindow* window, double xOffset, double yOffset) {
-    ScrollingCallback (yOffset, redrawSprites, scaleFactor);
+    if (!isCreatingFunction) {
+        ScrollingCallback (yOffset, redrawSprites, scaleFactor);
+    }
 }
 
 
@@ -226,12 +246,12 @@ int main () {
     //Setup GLFW
     glfwInit ();
     glfwWindowHint (GLFW_RESIZABLE, GL_FALSE);
+
+    window = glfwCreateWindow (screenWidth, screenHeight, windowName, NULL, NULL);
     if (!window) {
         glfwTerminate ();
         return -1;
     }
-
-    window = glfwCreateWindow (screenWidth, screenHeight, windowName, NULL, NULL);
     //Set window context to current
     glfwMakeContextCurrent (window);
     glfwSwapInterval (1);
@@ -331,6 +351,24 @@ int main () {
             redrawSprites = true;
         }
 
+        if (placingFunction) {
+            //Create a rough offset that accounts for total width and height of function
+            //Apply that offset to all gates in the function
+            if (oldGatePositions.size () == 0) {
+                for (int i = 0; i < functionLength; i++) {
+                    oldGatePositions.push_back (gateData[gateData.size () - 1 - i].position);
+                }
+            }
+            for (int i = 0; i < functionLength; i++) {
+                gateData[gateData.size () - 1 - i].position = {mouseX + oldGatePositions[i].x - functions[functionID].pointA.x - (functions[functionID].middle.x / 2), mouseY + oldGatePositions[i].y - functions[functionID].pointA.y - (functions[functionID].middle.y / 2)};
+            }
+            //Fix for when function only has one gate
+            if (functionLength == 1) {
+                gateData[gateData.size () - 1].position = {mouseX - 100, mouseY - 38};
+            }
+            redrawSprites = true;
+        }
+
         //Set background
         glClearColor (0.2f, 0.2f, 0.3f, 1.0f);
         glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -343,7 +381,7 @@ int main () {
         }
 
         //Grid lines
-        glPointSize (1);
+        /*glPointSize (1);
         glLineWidth (1); 
         for (int i = -screenWidth; i < screenWidth * 10 / 50; i++) {
             glBegin (GL_LINES);
@@ -356,11 +394,38 @@ int main () {
             glVertex3f (0, i * (50 * scaleFactor) + masterYPanOffset, 0);
             glVertex3f (screenWidth, i * (50 * scaleFactor) + masterYPanOffset, 0);
             glEnd ();
-        }
+        }*/
 
         //Change line settings
         glPointSize (10);
         glLineWidth (4 * scaleFactor);
+
+        //Draw function lines
+        if (isCreatingFunction && functionPointA.x != -1) {
+            if (functionPointB.x == -1) {
+                glBegin (GL_LINES);
+                glVertex3f (functionPointA.x * scaleFactor, functionPointA.y * scaleFactor, 0);
+                glVertex3f (mouseX, functionPointA.y * scaleFactor, 0);
+                glVertex3f (mouseX, functionPointA.y * scaleFactor, 0);
+                glVertex3f (mouseX, mouseY, 0);
+                glVertex3f (mouseX, mouseY, 0);
+                glVertex3f (functionPointA.x * scaleFactor, mouseY, 0);
+                glVertex3f (functionPointA.x * scaleFactor, mouseY, 0);
+                glVertex3f (functionPointA.x * scaleFactor, functionPointA.y * scaleFactor, 0);
+                glEnd ();
+            } else {
+                glBegin (GL_LINES);
+                glVertex3f (functionPointA.x * scaleFactor, functionPointA.y * scaleFactor, 0);
+                glVertex3f (functionPointB.x, functionPointA.y * scaleFactor, 0);
+                glVertex3f (functionPointB.x, functionPointA.y * scaleFactor, 0);
+                glVertex3f (functionPointB.x, functionPointB.y, 0);
+                glVertex3f (functionPointB.x, functionPointB.y, 0);
+                glVertex3f (functionPointA.x * scaleFactor, functionPointB.y, 0);
+                glVertex3f (functionPointA.x * scaleFactor, functionPointB.y, 0);
+                glVertex3f (functionPointA.x * scaleFactor, functionPointA.y * scaleFactor, 0);
+                glEnd ();
+            }
+        }
 
         //Show existing connections
         for (int i = 0; i < gateData.size (); i++) {
@@ -444,10 +509,22 @@ int main () {
         ImGui_ImplGlfw_NewFrame ();
         ImGui::NewFrame ();
 
+        //Stop GLFW from reading mouse and/or keyboard if ImGUI is reading it
+        if (io.WantCaptureMouse) {
+            isMouseHoveringUI = true;
+        } else {
+            isMouseHoveringUI = false;
+        }
+        if (io.WantCaptureKeyboard) {
+            isTypingInUI = true;
+        } else {
+            isTypingInUI = false;
+        }
+
         DebugWindow (gateData, redrawSprites);
 
         ImGui::Begin ("Place Gates", &trueBool, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-        ImGui::SetWindowSize (ImVec2 ((float)150.0f, (float)130.0f));
+        ImGui::SetWindowSize (ImVec2 ((float)150.0f, (float)150.0f));
         ImGui::SetWindowPos (ImVec2 (-1, 0));
         ImGui::Text ("Place Gates");
         if (ImGui::Button ("NOT")) {
@@ -474,6 +551,100 @@ int main () {
             gateData.push_back ({{0, -100}, OR, std::vector<ConnectorData> {{{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, false, false}}, false, 3});
             placingGate = true;
             redrawSprites = true;
+        }
+        ImGui::End ();
+
+        ImGui::Begin ("Function Creation", &trueBool, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+        ImGui::SetWindowSize (ImVec2 ((float)220.0f, (float)120.0f));
+        ImGui::SetWindowPos (ImVec2 (-1, 300));
+        ImGui::Text ("Function Creation");
+        if (isCreatingFunction) {
+            ImGui::SetWindowSize (ImVec2 ((float)300.0f, (float)120.0f));
+            ImGui::InputText ("Function Name", &functionName);
+            if (ImGui::Button ("Save Function")) {
+                if (functionName != "") {
+                    //Check if function name already exists
+                    bool exists = false;
+                    for (int i = 0; i < functions.size (); i++) {
+                        if (functionName == functions[i].name) {
+                            exists = true;
+                            break;
+                        }
+                    }
+                    if (!exists) {
+                        isCreatingFunction = false;
+                        std::vector<Gate> g;
+                        //X = gateID, Y = gate index in function
+                        std::vector<Point> gateIDs;
+                        int functionID = 0;
+                        //Scan inside of box for gates and save them
+                        for (int i = 0; i < gateData.size (); i++) {
+                            if (gateData[i].position.x >= functionPointA.x && gateData[i].position.x <= functionPointB.x) {
+                                if (gateData[i].position.y <= functionPointA.y && gateData[i].position.y >= functionPointB.y) {
+                                    g.push_back (gateData[i]);
+                                    gateIDs.push_back ({i, functionID});
+                                    functionID++;
+                                }
+                            }
+                        }
+                        //Check connections and remove those that leave the function
+                        for (int i = 0; i < g.size (); i++) {
+                            for (int j = 0; j < g[i].connectionPoints.size (); j++) {
+                                bool found = false;
+                                for (int k = 0; k < gateIDs.size (); k++) {
+                                    if (g[i].connectionPoints[j].connectedGateData.x == gateIDs[k].x) {
+                                        found = true;
+                                        //Change id to be based off of function index
+                                        //Makes it possible to keep gates connected when placing later
+                                        g[i].connectionPoints[j].connectedGateData.x = gateIDs[k].y;
+                                        break;
+                                    }
+                                }
+                                if (!found) {
+                                    g[i].connectionPoints[j].connectedGateData = {-1, 0};
+                                }
+                            }
+                        }
+                        functions.push_back ({functionName, g, functionPointA, {functionPointB.x - functionPointA.x, functionPointB.y - functionPointA.y}});
+                    }
+                }
+            }
+            if (ImGui::Button ("Cancel Function")) {
+                isCreatingFunction = false;
+            }
+        } else {
+            if (ImGui::Button ("Create Function")) {
+                isCreatingFunction = true;
+                functionPointA = {-1, -1};
+                functionPointB = {-1, -1};
+                functionName = "";
+            }
+        }
+        ImGui::End ();
+
+        ImGui::Begin ("Functions", &trueBool, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+        ImGui::SetWindowSize (ImVec2 ((float)220.0f, (float)150.0f));
+        ImGui::SetWindowPos (ImVec2 (-1, 430));
+        ImGui::Text ("Saved Functions");
+        for (int i = 0; i < functions.size (); i++) {
+            if (ImGui::Button (functions[i].name.c_str ())) {
+                functionLength = functions[i].gates.size ();
+                functionID = i;
+                for (int j = 0; j < functionLength; j++) {
+                    gateData.push_back (functions[i].gates[j]);
+                }
+                //Update connection points that are being placed to only point to gates inside the function
+                for (int j = 0; j < functionLength; j++) {
+                    for (int k = 0; k < gateData [gateData.size () - functionLength + j].connectionPoints.size (); k++) {
+                        if (gateData [gateData.size () - functionLength + j].connectionPoints[k].connectedGateData.x != -1) {
+                            gateData [gateData.size () - functionLength + j].connectionPoints[k].connectedGateData.x = gateData.size () - functionLength + gateData[gateData.size () - functionLength + j].connectionPoints[k].connectedGateData.x;
+                        }
+                    }
+                }
+                placingFunction = true;
+                oldGatePositions.clear ();
+                redrawSprites = true;
+            }
         }
         ImGui::End ();
 
