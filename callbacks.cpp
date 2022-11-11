@@ -137,6 +137,27 @@ void MouseCallback (double x, double y, int& rawMouseX, int& rawMouseY, int& mou
                     gateConnectionIndex = 0;
                 }
             break;
+            case EIGHTBUS:
+                if ((rawMouseX <= gateData[i].position.x + 70 * scaleFactor && rawMouseX >= gateData[i].position.x + 40 * scaleFactor) && (rawMouseY >= gateData[i].position.y && rawMouseY <= gateData[i].position.y + 50 * scaleFactor)) {
+                    //Mouse over input A
+                    isOverGateConnection = true;
+                    isOverInputConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 0;
+                }
+                if ((rawMouseX <= gateData[i].position.x + 70 * scaleFactor && rawMouseX >= gateData[i].position.x + 40 * scaleFactor) && (rawMouseY >= gateData[i].position.y + 55 * scaleFactor && rawMouseY <= gateData[i].position.y + 105 * scaleFactor)) {
+                    //Mouse over input B
+                    isOverGateConnection = true;
+                    isOverInputConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 1;
+                }
+                if ((rawMouseX <= gateData[i].position.x + 170 * scaleFactor && rawMouseX >= gateData[i].position.x + 140 * scaleFactor) && (rawMouseY >= gateData[i].position.y + 25 * scaleFactor && rawMouseY <= gateData[i].position.y + 75 * scaleFactor)) {
+                    //Mouse over output
+                    isOverGateConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 2;
+                }
         }
 
         //Check for gate hover

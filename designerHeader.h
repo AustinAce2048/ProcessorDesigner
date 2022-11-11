@@ -22,7 +22,8 @@ enum gateType {
     INPUTGATEON = 3,
     OUTPUTGATE = 4,
     OUTPUTGATEON = 5,
-    OR = 6
+    OR = 6,
+    EIGHTBUS = 7
 };
 //ConnectorData is ordered inputs first, then ordered outputs
 struct Gate {Point position; gateType gateType; std::vector<ConnectorData> connectionPoints; bool isOn; int initialConnections;};

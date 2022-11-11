@@ -25,13 +25,14 @@ const char* fragmentShader =
     "}\n";
 
 //For corners, (u1, v1) is the top left and (u2, v2) is bottom right. (0, 0) is top left corner
-Texture notGate = {200, 100, 0.0f, 0.0f, 1.0f, 0.2463f};
-Texture andGate = {200, 100, 0.0f, 0.2463f, 1.0f, 0.4879f};
-Texture manualInputOff = {200, 53, 0.0f, 0.4879f, 1.0f, 0.6232f};
-Texture manualInputOn = {200, 53, 0.0f, 0.6232f, 1.0f, 0.7562f};
-Texture orGate = {200, 100, 0.0f, 0.7537f, 1.0f, 1.0f};
+Texture notGate = {200, 100, 0.0f, 0.0f, 1.0f, 0.148f};
+Texture andGate = {200, 100, 0.0f, 0.149f, 1.0f, 0.292f};
+Texture manualInputOff = {200, 53, 0.0f, 0.294f, 1.0f, 0.374f};
+Texture manualInputOn = {200, 53, 0.0f, 0.374f, 1.0f, 0.454f};
+Texture orGate = {200, 100, 0.0f, 0.454f, 1.0f, 0.598f};
+Texture eightBus = {200, 270, 0.0f, 0.599f, 1.0f, 1.0f};
 
-Texture textures[5] = {notGate, andGate, manualInputOff, manualInputOn, orGate};
+Texture textures[6] = {notGate, andGate, manualInputOff, manualInputOn, orGate, eightBus};
 
 
 

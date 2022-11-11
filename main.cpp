@@ -171,6 +171,21 @@ void UpdateConnectionPoints (int gateIndex) {
             gateData[gateIndex].connectionPoints[0].point = {(int)(gateData[gateIndex].position.x + 75 * scaleFactor), (int)(gateData[gateIndex].position.y + 28 * scaleFactor)};
             gateData[gateIndex].initialConnections = 1;
         break;
+        case EIGHTBUS:
+            gateData[gateIndex].connectionPoints[0].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 32 * scaleFactor)};
+            gateData[gateIndex].connectionPoints[1].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 63 * scaleFactor)};
+            gateData[gateIndex].connectionPoints[2].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 63 * scaleFactor)};
+            gateData[gateIndex].connectionPoints[3].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 63 * scaleFactor)};
+            gateData[gateIndex].connectionPoints[4].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 63 * scaleFactor)};
+            gateData[gateIndex].connectionPoints[5].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 63 * scaleFactor)};
+            gateData[gateIndex].connectionPoints[6].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 63 * scaleFactor)};
+            gateData[gateIndex].connectionPoints[7].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 63 * scaleFactor)};
+            //For every output connection
+            for (int i = 8; i < gateData[gateIndex].connectionPoints.size (); i++) {
+                gateData[gateIndex].connectionPoints[i].point = {(int)(gateData[gateIndex].position.x + 145 * scaleFactor), (int)(gateData[gateIndex].position.y + 49 * scaleFactor)};
+            }
+            gateData[gateIndex].initialConnections = 9;
+        break;
     }
 }
 
@@ -234,7 +249,7 @@ static void MouseButtonCallback (GLFWwindow* window, int button, int action, int
 
 
 void ScrollCallback (GLFWwindow* window, double xOffset, double yOffset) {
-    if (!isCreatingFunction) {
+    if (!isCreatingFunction && !isMouseHoveringUI) {
         ScrollingCallback (yOffset, redrawSprites, scaleFactor);
     }
 }
@@ -346,6 +361,9 @@ int main () {
                 break;
                 case INPUTGATE: case OUTPUTGATE:
                     gateData.back () = {mouseX - 100, mouseY - 27, gateData.back ().gateType, gateData.back ().connectionPoints};
+                break;
+                case EIGHTBUS:
+                    gateData.back () = {mouseX - 100, mouseY - 135, gateData.back ().gateType, gateData.back ().connectionPoints};
                 break;
             }
             redrawSprites = true;
@@ -490,6 +508,9 @@ int main () {
                 case INPUTGATE: case OUTPUTGATE: case INPUTGATEON: case OUTPUTGATEON:
                     gateData[gateDragIndex].position = {mouseX - 100, mouseY - 27};
                 break;
+                case EIGHTBUS:
+                    gateData[gateDragIndex].position = {mouseX - 100, mouseY - 135};
+                break;
             }
             for (int i = 0; i < gateData[gateDragIndex].connectionPoints.size (); i++) {
                 if (gateData[gateDragIndex].connectionPoints[i].connectedGateData.x != -1) {
@@ -524,7 +545,7 @@ int main () {
         DebugWindow (gateData, redrawSprites);
 
         ImGui::Begin ("Place Gates", &trueBool, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-        ImGui::SetWindowSize (ImVec2 ((float)150.0f, (float)150.0f));
+        ImGui::SetWindowSize (ImVec2 ((float)150.0f, (float)180.0f));
         ImGui::SetWindowPos (ImVec2 (-1, 0));
         ImGui::Text ("Place Gates");
         if (ImGui::Button ("NOT")) {
@@ -549,6 +570,11 @@ int main () {
         }
         if (ImGui::Button ("OR")) {
             gateData.push_back ({{0, -100}, OR, std::vector<ConnectorData> {{{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, false, false}}, false, 3});
+            placingGate = true;
+            redrawSprites = true;
+        }
+        if (ImGui::Button ("8-BIT BUS INPUT")) {
+            gateData.push_back ({{0, -100}, EIGHTBUS, std::vector<ConnectorData> {{{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, false, false}}, false, 9});
             placingGate = true;
             redrawSprites = true;
         }
