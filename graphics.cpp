@@ -25,33 +25,39 @@ const char* fragmentShader =
     "}\n";
 
 //For corners, (u1, v1) is the top left and (u2, v2) is bottom right. (0, 0) is top left corner
-Texture notGate = {200, 100, 0.0f, 0.0f, 1.0f, 0.2463f};
-Texture andGate = {200, 100, 0.0f, 0.2463f, 1.0f, 0.4879f};
-Texture manualInputOff = {200, 53, 0.0f, 0.4879f, 1.0f, 0.6232f};
-Texture manualInputOn = {200, 53, 0.0f, 0.6232f, 1.0f, 0.7562f};
-Texture orGate = {200, 100, 0.0f, 0.7537f, 1.0f, 1.0f};
+Texture notGate = {200, 100, 0.0f, 0.0f, 1.0f, 0.148f};
+Texture andGate = {200, 100, 0.0f, 0.149f, 1.0f, 0.292f};
+Texture manualInputOff = {200, 53, 0.0f, 0.294f, 1.0f, 0.374f};
+Texture manualInputOn = {200, 53, 0.0f, 0.374f, 1.0f, 0.454f};
+Texture orGate = {200, 100, 0.0f, 0.454f, 1.0f, 0.598f};
+Texture eightBus = {200, 270, 0.0f, 0.599f, 1.0f, 1.0f};
 
-Texture textures[5] = {notGate, andGate, manualInputOff, manualInputOn, orGate};
+Texture textures[6] = {notGate, andGate, manualInputOff, manualInputOn, orGate, eightBus};
 
 
 
 void DrawSprites (std::vector<Object>& objects, std::vector<short>& vertices, std::vector<float>& uvs, std::vector<Gate>& gateData, float scaleFactor) {
     for (int i = 0; i < gateData.size (); i++) {
         Texture t;
-        if (gateData[i].gateType == OUTPUTGATE) {
-            t = textures[2];
-        } else if (gateData[i].gateType == OUTPUTGATEON) {
-            t = textures[3];
-        } else if (gateData[i].gateType == NOT) {
-            t = textures[0];
-        } else if (gateData[i].gateType == AND) {
-            t = textures[1];
-        } else if (gateData[i].gateType == INPUTGATE) {
-            t = textures[2];
-        } else if (gateData[i].gateType == INPUTGATEON) {
-            t = textures[3];
-        } else {
-            t = textures[gateData[i].gateType - 2];
+        switch (gateData[i].gateType) {
+            case NOT:
+                t = textures[0];
+            break;
+            case AND:
+                t = textures[1];
+            break;
+            case INPUTGATE: case OUTPUTGATE:
+                t = textures[2];
+            break;
+            case INPUTGATEON: case OUTPUTGATEON:
+                t = textures[3];
+            break;
+            case OR:
+                t = textures[4];
+            break;
+            case EIGHTBUS: case EIGHTBUSOUT:
+                t = textures[5];
+            break;
         }
         objects[i] = {gateData[i].position.x, gateData[i].position.y, t};
 
@@ -82,7 +88,7 @@ void DrawSprites (std::vector<Object>& objects, std::vector<short>& vertices, st
 
         //UVs
         //First check if sprite should be flipped
-        if (gateData[i].gateType == OUTPUTGATE || gateData[i].gateType == OUTPUTGATEON) {
+        if (gateData[i].gateType == OUTPUTGATE || gateData[i].gateType == OUTPUTGATEON || gateData[i].gateType == EIGHTBUSOUT) {
             //Top right
             uvs[i * 12] = objects[i].texture.u1;
             uvs[i * 12 + 1] = objects[i].texture.v1;

@@ -15,6 +15,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Projects/ProcessorDesigner/imgui/imgui_impl_opengl3.cpp" "CMakeFiles/IMGUI.dir/imgui/imgui_impl_opengl3.cpp.obj" "gcc" "CMakeFiles/IMGUI.dir/imgui/imgui_impl_opengl3.cpp.obj.d"
   "C:/Projects/ProcessorDesigner/imgui/imgui_tables.cpp" "CMakeFiles/IMGUI.dir/imgui/imgui_tables.cpp.obj" "gcc" "CMakeFiles/IMGUI.dir/imgui/imgui_tables.cpp.obj.d"
   "C:/Projects/ProcessorDesigner/imgui/imgui_widgets.cpp" "CMakeFiles/IMGUI.dir/imgui/imgui_widgets.cpp.obj" "gcc" "CMakeFiles/IMGUI.dir/imgui/imgui_widgets.cpp.obj.d"
+  "C:/Projects/ProcessorDesigner/imgui/misc/cpp/imgui_stdlib.cpp" "CMakeFiles/IMGUI.dir/imgui/misc/cpp/imgui_stdlib.cpp.obj" "gcc" "CMakeFiles/IMGUI.dir/imgui/misc/cpp/imgui_stdlib.cpp.obj.d"
   )
 
 # Targets to which this target links.

@@ -173,6 +173,21 @@ CMakeFiles/IMGUI.dir/imgui/imgui_impl_glfw.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/IMGUI.dir/imgui/imgui_impl_glfw.cpp.s"
 	C:\msys64\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Projects\ProcessorDesigner\imgui\imgui_impl_glfw.cpp -o CMakeFiles\IMGUI.dir\imgui\imgui_impl_glfw.cpp.s
 
+CMakeFiles/IMGUI.dir/imgui/misc/cpp/imgui_stdlib.cpp.obj: CMakeFiles/IMGUI.dir/flags.make
+CMakeFiles/IMGUI.dir/imgui/misc/cpp/imgui_stdlib.cpp.obj: CMakeFiles/IMGUI.dir/includes_CXX.rsp
+CMakeFiles/IMGUI.dir/imgui/misc/cpp/imgui_stdlib.cpp.obj: imgui/misc/cpp/imgui_stdlib.cpp
+CMakeFiles/IMGUI.dir/imgui/misc/cpp/imgui_stdlib.cpp.obj: CMakeFiles/IMGUI.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Projects\ProcessorDesigner\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/IMGUI.dir/imgui/misc/cpp/imgui_stdlib.cpp.obj"
+	C:\msys64\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/IMGUI.dir/imgui/misc/cpp/imgui_stdlib.cpp.obj -MF CMakeFiles\IMGUI.dir\imgui\misc\cpp\imgui_stdlib.cpp.obj.d -o CMakeFiles\IMGUI.dir\imgui\misc\cpp\imgui_stdlib.cpp.obj -c C:\Projects\ProcessorDesigner\imgui\misc\cpp\imgui_stdlib.cpp
+
+CMakeFiles/IMGUI.dir/imgui/misc/cpp/imgui_stdlib.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/IMGUI.dir/imgui/misc/cpp/imgui_stdlib.cpp.i"
+	C:\msys64\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Projects\ProcessorDesigner\imgui\misc\cpp\imgui_stdlib.cpp > CMakeFiles\IMGUI.dir\imgui\misc\cpp\imgui_stdlib.cpp.i
+
+CMakeFiles/IMGUI.dir/imgui/misc/cpp/imgui_stdlib.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/IMGUI.dir/imgui/misc/cpp/imgui_stdlib.cpp.s"
+	C:\msys64\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Projects\ProcessorDesigner\imgui\misc\cpp\imgui_stdlib.cpp -o CMakeFiles\IMGUI.dir\imgui\misc\cpp\imgui_stdlib.cpp.s
+
 # Object files for target IMGUI
 IMGUI_OBJECTS = \
 "CMakeFiles/IMGUI.dir/imgui/imgui_demo.cpp.obj" \
@@ -181,7 +196,8 @@ IMGUI_OBJECTS = \
 "CMakeFiles/IMGUI.dir/imgui/imgui_widgets.cpp.obj" \
 "CMakeFiles/IMGUI.dir/imgui/imgui.cpp.obj" \
 "CMakeFiles/IMGUI.dir/imgui/imgui_impl_opengl3.cpp.obj" \
-"CMakeFiles/IMGUI.dir/imgui/imgui_impl_glfw.cpp.obj"
+"CMakeFiles/IMGUI.dir/imgui/imgui_impl_glfw.cpp.obj" \
+"CMakeFiles/IMGUI.dir/imgui/misc/cpp/imgui_stdlib.cpp.obj"
 
 # External object files for target IMGUI
 IMGUI_EXTERNAL_OBJECTS =
@@ -193,9 +209,10 @@ libIMGUI.a: CMakeFiles/IMGUI.dir/imgui/imgui_widgets.cpp.obj
 libIMGUI.a: CMakeFiles/IMGUI.dir/imgui/imgui.cpp.obj
 libIMGUI.a: CMakeFiles/IMGUI.dir/imgui/imgui_impl_opengl3.cpp.obj
 libIMGUI.a: CMakeFiles/IMGUI.dir/imgui/imgui_impl_glfw.cpp.obj
+libIMGUI.a: CMakeFiles/IMGUI.dir/imgui/misc/cpp/imgui_stdlib.cpp.obj
 libIMGUI.a: CMakeFiles/IMGUI.dir/build.make
 libIMGUI.a: CMakeFiles/IMGUI.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Projects\ProcessorDesigner\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX static library libIMGUI.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Projects\ProcessorDesigner\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX static library libIMGUI.a"
 	$(CMAKE_COMMAND) -P CMakeFiles\IMGUI.dir\cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\IMGUI.dir\link.txt --verbose=$(VERBOSE)
 

@@ -138,19 +138,147 @@ void MouseCallback (double x, double y, int& rawMouseX, int& rawMouseY, int& mou
                     gateConnectionIndex = 0;
                 }
             break;
+            case EIGHTBUS:
+                if ((rawMouseX <= gateData[i].position.x + 70 * scaleFactor && rawMouseX >= gateData[i].position.x + 40 * scaleFactor) && (rawMouseY >= gateData[i].position.y + 220 * scaleFactor && rawMouseY <= gateData[i].position.y + 260 * scaleFactor)) {
+                    //Mouse over input 1
+                    isOverGateConnection = true;
+                    isOverInputConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 0;
+                }
+                if ((rawMouseX <= gateData[i].position.x + 70 * scaleFactor && rawMouseX >= gateData[i].position.x + 40 * scaleFactor) && (rawMouseY >= gateData[i].position.y + 190 * scaleFactor && rawMouseY <= gateData[i].position.y + 220 * scaleFactor)) {
+                    //Mouse over input 2
+                    isOverGateConnection = true;
+                    isOverInputConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 1;
+                }
+                if ((rawMouseX <= gateData[i].position.x + 70 * scaleFactor && rawMouseX >= gateData[i].position.x + 40 * scaleFactor) && (rawMouseY >= gateData[i].position.y + 160 * scaleFactor && rawMouseY <= gateData[i].position.y + 190 * scaleFactor)) {
+                    //Mouse over input 3
+                    isOverGateConnection = true;
+                    isOverInputConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 2;
+                }
+                if ((rawMouseX <= gateData[i].position.x + 70 * scaleFactor && rawMouseX >= gateData[i].position.x + 40 * scaleFactor) && (rawMouseY >= gateData[i].position.y + 130 * scaleFactor && rawMouseY <= gateData[i].position.y + 160 * scaleFactor)) {
+                    //Mouse over input 4
+                    isOverGateConnection = true;
+                    isOverInputConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 3;
+                }
+                if ((rawMouseX <= gateData[i].position.x + 70 * scaleFactor && rawMouseX >= gateData[i].position.x + 40 * scaleFactor) && (rawMouseY >= gateData[i].position.y + 100 * scaleFactor && rawMouseY <= gateData[i].position.y + 130 * scaleFactor)) {
+                    //Mouse over input 5
+                    isOverGateConnection = true;
+                    isOverInputConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 4;
+                }
+                if ((rawMouseX <= gateData[i].position.x + 70 * scaleFactor && rawMouseX >= gateData[i].position.x + 40 * scaleFactor) && (rawMouseY >= gateData[i].position.y + 70 * scaleFactor && rawMouseY <= gateData[i].position.y + 100 * scaleFactor)) {
+                    //Mouse over input 6
+                    isOverGateConnection = true;
+                    isOverInputConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 5;
+                }
+                if ((rawMouseX <= gateData[i].position.x + 70 * scaleFactor && rawMouseX >= gateData[i].position.x + 40 * scaleFactor) && (rawMouseY >= gateData[i].position.y + 40 * scaleFactor && rawMouseY <= gateData[i].position.y + 70 * scaleFactor)) {
+                    //Mouse over input 7
+                    isOverGateConnection = true;
+                    isOverInputConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 6;
+                }
+                if ((rawMouseX <= gateData[i].position.x + 70 * scaleFactor && rawMouseX >= gateData[i].position.x + 40 * scaleFactor) && (rawMouseY >= gateData[i].position.y + 10 * scaleFactor && rawMouseY <= gateData[i].position.y + 40 * scaleFactor)) {
+                    //Mouse over input 8
+                    isOverGateConnection = true;
+                    isOverInputConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 7;
+                }
+                if ((rawMouseX <= gateData[i].position.x + 130 * scaleFactor && rawMouseX >= gateData[i].position.x + 100 * scaleFactor) && (rawMouseY >= gateData[i].position.y + 220 * scaleFactor && rawMouseY <= gateData[i].position.y + 260 * scaleFactor)) {
+                    //Mouse over output
+                    isOverGateConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 8;
+                }
+            break;
+            case EIGHTBUSOUT:
+                if ((rawMouseX <= gateData[i].position.x + 100 * scaleFactor && rawMouseX >= gateData[i].position.x + 70 * scaleFactor) && (rawMouseY >= gateData[i].position.y + 20 * scaleFactor && rawMouseY <= gateData[i].position.y + 50 * scaleFactor)) {
+                    //Mouse over input
+                    isOverGateConnection = true;
+                    isOverInputConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 0;
+                }
+                if ((rawMouseX <= gateData[i].position.x + 160 * scaleFactor && rawMouseX >= gateData[i].position.x + 130 * scaleFactor) && (rawMouseY >= gateData[i].position.y + 10 * scaleFactor && rawMouseY <= gateData[i].position.y + 40 * scaleFactor)) {
+                    //Mouse over output 1
+                    isOverGateConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 1;
+                }
+                if ((rawMouseX <= gateData[i].position.x + 160 * scaleFactor && rawMouseX >= gateData[i].position.x + 130 * scaleFactor) && (rawMouseY >= gateData[i].position.y + 40 * scaleFactor && rawMouseY <= gateData[i].position.y + 70 * scaleFactor)) {
+                    //Mouse over output 2
+                    isOverGateConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 2;
+                }
+                if ((rawMouseX <= gateData[i].position.x + 160 * scaleFactor && rawMouseX >= gateData[i].position.x + 130 * scaleFactor) && (rawMouseY >= gateData[i].position.y + 70 * scaleFactor && rawMouseY <= gateData[i].position.y + 100 * scaleFactor)) {
+                    //Mouse over output 3
+                    isOverGateConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 3;
+                }
+                if ((rawMouseX <= gateData[i].position.x + 160 * scaleFactor && rawMouseX >= gateData[i].position.x + 130 * scaleFactor) && (rawMouseY >= gateData[i].position.y + 100 * scaleFactor && rawMouseY <= gateData[i].position.y + 130 * scaleFactor)) {
+                    //Mouse over output 4
+                    isOverGateConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 4;
+                }
+                if ((rawMouseX <= gateData[i].position.x + 160 * scaleFactor && rawMouseX >= gateData[i].position.x + 130 * scaleFactor) && (rawMouseY >= gateData[i].position.y + 130 * scaleFactor && rawMouseY <= gateData[i].position.y + 160 * scaleFactor)) {
+                    //Mouse over output 5
+                    isOverGateConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 5;
+                }
+                if ((rawMouseX <= gateData[i].position.x + 160 * scaleFactor && rawMouseX >= gateData[i].position.x + 130 * scaleFactor) && (rawMouseY >= gateData[i].position.y + 160 * scaleFactor && rawMouseY <= gateData[i].position.y + 190 * scaleFactor)) {
+                    //Mouse over output 6
+                    isOverGateConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 6;
+                }
+                if ((rawMouseX <= gateData[i].position.x + 160 * scaleFactor && rawMouseX >= gateData[i].position.x + 130 * scaleFactor) && (rawMouseY >= gateData[i].position.y + 190 * scaleFactor && rawMouseY <= gateData[i].position.y + 220 * scaleFactor)) {
+                    //Mouse over output 7
+                    isOverGateConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 7;
+                }
+                if ((rawMouseX <= gateData[i].position.x + 160 * scaleFactor && rawMouseX >= gateData[i].position.x + 130 * scaleFactor) && (rawMouseY >= gateData[i].position.y + 220 * scaleFactor && rawMouseY <= gateData[i].position.y + 260 * scaleFactor)) {
+                    //Mouse over output 8
+                    isOverGateConnection = true;
+                    gateDataHoverIndex = i;
+                    gateConnectionIndex = 8;
+                }
+            break;
         }
 
         //Check for gate hover
-        if ((rawMouseX <= gateData[i].position.x + 125 * scaleFactor && rawMouseX >= gateData[i].position.x + 75 * scaleFactor) && (rawMouseY >= gateData[i].position.y - 10 * scaleFactor && rawMouseY <= gateData[i].position.y + 60 * scaleFactor) && !placingGate) {
-            isOverGate = true;
-            gateDragIndex = i;
+        if (gateData[i].gateType == EIGHTBUS || gateData[i].gateType == EIGHTBUSOUT) {
+            if ((rawMouseX <= gateData[i].position.x + 150 * scaleFactor && rawMouseX >= gateData[i].position.x + 50 * scaleFactor) && (rawMouseY >= gateData[i].position.y * scaleFactor && rawMouseY <= gateData[i].position.y + 250 * scaleFactor) && !placingGate) {
+                isOverGate = true;
+                gateDragIndex = i;
+            }
+        } else {
+            if ((rawMouseX <= gateData[i].position.x + 125 * scaleFactor && rawMouseX >= gateData[i].position.x + 75 * scaleFactor) && (rawMouseY >= gateData[i].position.y + 15 * scaleFactor && rawMouseY <= gateData[i].position.y + 85 * scaleFactor) && !placingGate) {
+                isOverGate = true;
+                gateDragIndex = i;
+            }
         }
     }
 }
 
 
 
-void MouseButtonsCallback (int button, int action, bool& placingGate, bool& isConnectingGates, bool& isOverGateConnection, bool& isOverInputConnection, Point& connectionPoint, int& gateDataConnectionStartIndex, int& gateDataHoverIndex, int& gateConnectionIndex, bool isOverManualInput, bool& isDraggingGate, bool& redrawSprites, bool& isOverGate, int& oldGateDragIndex, int& gateDragIndex, bool& isPanningScreen, Point& mousePositionOnStartDrag, int& updateConnectionPointIndex, std::vector<Gate>& gateData, int mouseX, int mouseY) {
+void MouseButtonsCallback (int button, int action, bool& placingGate, bool& isConnectingGates, bool& isOverGateConnection, bool& isOverInputConnection, Point& connectionPoint, int& gateDataConnectionStartIndex, int& gateDataHoverIndex, int& gateConnectionIndex, bool isOverManualInput, bool& isDraggingGate, bool& redrawSprites, bool& isOverGate, int& oldGateDragIndex, int& gateDragIndex, bool& isPanningScreen, Point& mousePositionOnStartDrag, int& updateConnectionPointIndex, std::vector<Gate>& gateData, int& isOrderGatesIndex, int& secondOrderGates, int mouseX, int mouseY, bool isCreatingFunction, Point& functionPointA, Point& functionPointB, bool& placingFunction) {
     bool registerOneClick = false;
 
     //Place the gate
@@ -158,6 +286,12 @@ void MouseButtonsCallback (int button, int action, bool& placingGate, bool& isCo
         placingGate = false;
         //Set connection location data
         updateConnectionPointIndex = gateData.size () - 1;
+        registerOneClick = true;
+    }
+
+    //Place the function
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && placingFunction && !registerOneClick) {
+        placingFunction = false;
         registerOneClick = true;
     }
 
@@ -245,15 +379,29 @@ void MouseButtonsCallback (int button, int action, bool& placingGate, bool& isCo
         registerOneClick = true;
     }
 
+    //Set first function point
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE && !registerOneClick && isCreatingFunction && functionPointA.x == -1) {
+        functionPointA = {mouseX, mouseY};
+        registerOneClick = true;
+    }
+
+    //Set second function point
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE && !registerOneClick && isCreatingFunction && functionPointA.x != -1) {
+        functionPointB = {mouseX, mouseY};
+        registerOneClick = true;
+    }
+
     //Starting to pan screen
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !isOverGate && !registerOneClick && !isPanningScreen && gateData.size () > 0) {
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !isOverGate && !registerOneClick && !isPanningScreen && gateData.size () > 0 && !isCreatingFunction) {
         isPanningScreen = true;
         mousePositionOnStartDrag = {mouseX, mouseY};
+        registerOneClick = true;
     }
 
     //Stop panning screen
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE && !registerOneClick && isPanningScreen) {
         isPanningScreen = false;
+        registerOneClick = true;
     }
 }
 
