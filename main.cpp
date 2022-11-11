@@ -65,6 +65,13 @@ std::vector<Point> oldGatePositions;
 void OrderGates(int dependent, int independent) {
     //Already in the right order
     if (dependent > independent) return;
+    
+    for (int i = 0; i < gateData.size(); ++i) {
+        for (int j = 0; j < gateData[i].connectionPoints.size(); ++j) {
+            std::cout << i << " " << gateData[i].gateType << ": " << gateData[i].connectionPoints[j].connectedGateData.x << " " << gateData[i].connectionPoints[j].connectedGateData.y << " " << gateData[gateData[i].connectionPoints[j].connectedGateData.x].gateType << std::endl;
+        }
+        std::cout << std::endl;
+    }
 
     //Only change the order of elements between dependent and independent
     for (int n = 0; n < independent - dependent + 1; ++n) {
@@ -104,6 +111,12 @@ void OrderGates(int dependent, int independent) {
                 }
             }
         }
+        for (int i = 0; i < gateData.size(); ++i) {
+            for (int j = 0; j < gateData[i].connectionPoints.size(); ++j) {
+                std::cout << i << " " << gateData[i].gateType << ": " << gateData[i].connectionPoints[j].connectedGateData.x << " " << gateData[i].connectionPoints[j].connectedGateData.y << " " << gateData[gateData[i].connectionPoints[j].connectedGateData.x].gateType << std::endl;
+            }
+            std::cout << std::endl;
+        }
     }
 }
 
@@ -117,6 +130,9 @@ void OneSimulation () {
             break;
             case AND:
                 gateData[i].isOn = gateData[gateData[i].connectionPoints[0].connectedGateData.x].isOn && gateData[gateData[i].connectionPoints[1].connectedGateData.x].isOn;
+            break;
+            case OR:
+                gateData[i].isOn = gateData[gateData[i].connectionPoints[0].connectedGateData.x].isOn || gateData[gateData[i].connectionPoints[1].connectedGateData.x].isOn;
             break;
             case OUTPUTGATE: case OUTPUTGATEON:
                 gateData[i].isOn = gateData[gateData[i].connectionPoints[0].connectedGateData.x].isOn;
@@ -358,11 +374,6 @@ int main () {
         if (updateConnectionPointIndex != -1) {
             UpdateConnectionPoints (updateConnectionPointIndex);
             updateConnectionPointIndex = -1;
-        }
-        if (isOrderGatesIndex != -1) {
-            OrderGates (isOrderGatesIndex, secondOrderGates);
-            isOrderGatesIndex = -1;
-            secondOrderGates = -1;
         }
 
         if (placingGate) {
@@ -697,6 +708,7 @@ int main () {
         ImGui::Text ("Simulate");
         if (ImGui::Button ("Run One Cycle")) {
             //Connect to gate logic
+            OrderGates(0, gateData.size() - 1);
             OneSimulation();
         }
         ImGui::SameLine ();
