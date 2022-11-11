@@ -39,20 +39,25 @@ Texture textures[6] = {notGate, andGate, manualInputOff, manualInputOn, orGate, 
 void DrawSprites (std::vector<Object>& objects, std::vector<short>& vertices, std::vector<float>& uvs, std::vector<Gate>& gateData, float scaleFactor) {
     for (int i = 0; i < gateData.size (); i++) {
         Texture t;
-        if (gateData[i].gateType == OUTPUTGATE) {
-            t = textures[2];
-        } else if (gateData[i].gateType == OUTPUTGATEON) {
-            t = textures[3];
-        } else if (gateData[i].gateType == NOT) {
-            t = textures[0];
-        } else if (gateData[i].gateType == AND) {
-            t = textures[1];
-        } else if (gateData[i].gateType == INPUTGATE) {
-            t = textures[2];
-        } else if (gateData[i].gateType == INPUTGATEON) {
-            t = textures[3];
-        } else {
-            t = textures[gateData[i].gateType - 2];
+        switch (gateData[i].gateType) {
+            case NOT:
+                t = textures[0];
+            break;
+            case AND:
+                t = textures[1];
+            break;
+            case INPUTGATE: case OUTPUTGATE:
+                t = textures[2];
+            break;
+            case INPUTGATEON: case OUTPUTGATEON:
+                t = textures[3];
+            break;
+            case OR:
+                t = textures[4];
+            break;
+            case EIGHTBUS: case EIGHTBUSOUT:
+                t = textures[5];
+            break;
         }
         objects[i] = {gateData[i].position.x, gateData[i].position.y, t};
 
@@ -83,7 +88,7 @@ void DrawSprites (std::vector<Object>& objects, std::vector<short>& vertices, st
 
         //UVs
         //First check if sprite should be flipped
-        if (gateData[i].gateType == OUTPUTGATE || gateData[i].gateType == OUTPUTGATEON) {
+        if (gateData[i].gateType == OUTPUTGATE || gateData[i].gateType == OUTPUTGATEON || gateData[i].gateType == EIGHTBUSOUT) {
             //Top right
             uvs[i * 12] = objects[i].texture.u1;
             uvs[i * 12 + 1] = objects[i].texture.v1;

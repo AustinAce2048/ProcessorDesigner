@@ -9,6 +9,7 @@
 #endif
 #include "graphics.cpp"
 #include "callbacks.cpp"
+#include "functionLoader.cpp"
 #include "debug.cpp"
 
 //Window doesn't scale, resolution is hardcoded
@@ -172,17 +173,25 @@ void UpdateConnectionPoints (int gateIndex) {
             gateData[gateIndex].initialConnections = 1;
         break;
         case EIGHTBUS:
-            gateData[gateIndex].connectionPoints[0].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 32 * scaleFactor)};
-            gateData[gateIndex].connectionPoints[1].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 63 * scaleFactor)};
-            gateData[gateIndex].connectionPoints[2].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 63 * scaleFactor)};
-            gateData[gateIndex].connectionPoints[3].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 63 * scaleFactor)};
-            gateData[gateIndex].connectionPoints[4].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 63 * scaleFactor)};
-            gateData[gateIndex].connectionPoints[5].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 63 * scaleFactor)};
-            gateData[gateIndex].connectionPoints[6].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 63 * scaleFactor)};
-            gateData[gateIndex].connectionPoints[7].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 63 * scaleFactor)};
+            gateData[gateIndex].connectionPoints[0].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 237 * scaleFactor)};
+            gateData[gateIndex].connectionPoints[1].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 208 * scaleFactor)};
+            gateData[gateIndex].connectionPoints[2].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 178 * scaleFactor)};
+            gateData[gateIndex].connectionPoints[3].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 148 * scaleFactor)};
+            gateData[gateIndex].connectionPoints[4].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 118 * scaleFactor)};
+            gateData[gateIndex].connectionPoints[5].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 88 * scaleFactor)};
+            gateData[gateIndex].connectionPoints[6].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 58 * scaleFactor)};
+            gateData[gateIndex].connectionPoints[7].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 28 * scaleFactor)};
             //For every output connection
             for (int i = 8; i < gateData[gateIndex].connectionPoints.size (); i++) {
-                gateData[gateIndex].connectionPoints[i].point = {(int)(gateData[gateIndex].position.x + 145 * scaleFactor), (int)(gateData[gateIndex].position.y + 49 * scaleFactor)};
+                gateData[gateIndex].connectionPoints[i].point = {(int)(gateData[gateIndex].position.x + 115 * scaleFactor), (int)(gateData[gateIndex].position.y + 237 * scaleFactor)};
+            }
+            gateData[gateIndex].initialConnections = 9;
+        break;
+        case EIGHTBUSOUT:
+            gateData[gateIndex].connectionPoints[0].point = {(int)(gateData[gateIndex].position.x + 85 * scaleFactor), (int)(gateData[gateIndex].position.y + 35 * scaleFactor)};
+            //For every output connection
+            for (int i = 1; i < gateData[gateIndex].connectionPoints.size (); i++) {
+                gateData[gateIndex].connectionPoints[i].point = {(int)(gateData[gateIndex].position.x + 145 * scaleFactor), (int)(gateData[gateIndex].position.y + (i * 30) * scaleFactor)};
             }
             gateData[gateIndex].initialConnections = 9;
         break;
@@ -319,6 +328,9 @@ int main () {
     glfwSetCursorPosCallback (window, CursorCallback);
     glfwSetScrollCallback (window, ScrollCallback);
 
+    //Load pre-saved functions
+    LoadPreSavedFunctions (functions);
+
     //Create ImGui environment
     IMGUI_CHECKVERSION ();
     ImGui::CreateContext ();
@@ -362,7 +374,7 @@ int main () {
                 case INPUTGATE: case OUTPUTGATE:
                     gateData.back () = {mouseX - 100, mouseY - 27, gateData.back ().gateType, gateData.back ().connectionPoints};
                 break;
-                case EIGHTBUS:
+                case EIGHTBUS: case EIGHTBUSOUT:
                     gateData.back () = {mouseX - 100, mouseY - 135, gateData.back ().gateType, gateData.back ().connectionPoints};
                 break;
             }
@@ -508,7 +520,7 @@ int main () {
                 case INPUTGATE: case OUTPUTGATE: case INPUTGATEON: case OUTPUTGATEON:
                     gateData[gateDragIndex].position = {mouseX - 100, mouseY - 27};
                 break;
-                case EIGHTBUS:
+                case EIGHTBUS: case EIGHTBUSOUT:
                     gateData[gateDragIndex].position = {mouseX - 100, mouseY - 135};
                 break;
             }
@@ -545,7 +557,7 @@ int main () {
         DebugWindow (gateData, redrawSprites);
 
         ImGui::Begin ("Place Gates", &trueBool, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-        ImGui::SetWindowSize (ImVec2 ((float)150.0f, (float)180.0f));
+        ImGui::SetWindowSize (ImVec2 ((float)150.0f, (float)210.0f));
         ImGui::SetWindowPos (ImVec2 (-1, 0));
         ImGui::Text ("Place Gates");
         if (ImGui::Button ("NOT")) {
@@ -575,6 +587,11 @@ int main () {
         }
         if (ImGui::Button ("8-BIT BUS INPUT")) {
             gateData.push_back ({{0, -100}, EIGHTBUS, std::vector<ConnectorData> {{{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, false, false}}, false, 9});
+            placingGate = true;
+            redrawSprites = true;
+        }
+        if (ImGui::Button ("8-BIT BUS OUTPUT")) {
+            gateData.push_back ({{0, -100}, EIGHTBUSOUT, std::vector<ConnectorData> {{{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, false, false}, {{0, 0}, {-1, 0}, false, false}, {{0, 0}, {-1, 0}, false, false}, {{0, 0}, {-1, 0}, false, false}, {{0, 0}, {-1, 0}, false, false}, {{0, 0}, {-1, 0}, false, false}, {{0, 0}, {-1, 0}, false, false}, {{0, 0}, {-1, 0}, false, false}}, false, 9});
             placingGate = true;
             redrawSprites = true;
         }
