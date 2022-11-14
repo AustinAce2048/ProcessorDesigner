@@ -25,14 +25,15 @@ const char* fragmentShader =
     "}\n";
 
 //For corners, (u1, v1) is the top left and (u2, v2) is bottom right. (0, 0) is top left corner
-Texture notGate = {200, 100, 0.0f, 0.0f, 1.0f, 0.148f};
-Texture andGate = {200, 100, 0.0f, 0.149f, 1.0f, 0.292f};
-Texture manualInputOff = {200, 53, 0.0f, 0.294f, 1.0f, 0.374f};
-Texture manualInputOn = {200, 53, 0.0f, 0.374f, 1.0f, 0.454f};
-Texture orGate = {200, 100, 0.0f, 0.454f, 1.0f, 0.598f};
-Texture eightBus = {200, 270, 0.0f, 0.599f, 1.0f, 1.0f};
+Texture notGate = {200, 100, 0.0f, 0.0f, 1.0f, 0.128f};
+Texture andGate = {200, 100, 0.0f, 0.125f, 1.0f, 0.253f};
+Texture manualInputOff = {200, 53, 0.0f, 0.255f, 1.0f, 0.326f};
+Texture manualInputOn = {200, 53, 0.0f, 0.326f, 1.0f, 0.394f};
+Texture orGate = {200, 100, 0.0f, 0.394f, 1.0f, 0.523f};
+Texture eightBus = {200, 270, 0.0f, 0.523f, 1.0f, 0.874f};
+Texture xorGate = {200, 100, 0.0f, 0.874f, 1.0f, 1.0f};
 
-Texture textures[6] = {notGate, andGate, manualInputOff, manualInputOn, orGate, eightBus};
+Texture textures[7] = {notGate, andGate, manualInputOff, manualInputOn, orGate, eightBus, xorGate};
 
 
 
@@ -58,6 +59,8 @@ void DrawSprites (std::vector<Object>& objects, std::vector<short>& vertices, st
             case EIGHTBUS: case EIGHTBUSOUT:
                 t = textures[5];
             break;
+            case XOR:
+                t = textures[6];
         }
         objects[i] = {gateData[i].position.x, gateData[i].position.y, t};
 

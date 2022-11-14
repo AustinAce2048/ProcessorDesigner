@@ -9,7 +9,7 @@
 #endif
 #include "graphics.cpp"
 #include "callbacks.cpp"
-#include "functionLoader.cpp"
+#include "loader.cpp"
 #include "debug.cpp"
 
 //Window doesn't scale, resolution is hardcoded
@@ -159,11 +159,11 @@ void UpdateConnectionPoints (int gateIndex) {
             gateData[gateIndex].initialConnections = 2;
         break;
         case AND:
-            gateData[gateIndex].connectionPoints[0].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 32 * scaleFactor)};
+            gateData[gateIndex].connectionPoints[0].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 31 * scaleFactor)};
             gateData[gateIndex].connectionPoints[1].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 63 * scaleFactor)};
             //For every output connection
             for (int i = 2; i < gateData[gateIndex].connectionPoints.size (); i++) {
-                gateData[gateIndex].connectionPoints[i].point = {(int)(gateData[gateIndex].position.x + 145 * scaleFactor), (int)(gateData[gateIndex].position.y + 49 * scaleFactor)};
+                gateData[gateIndex].connectionPoints[i].point = {(int)(gateData[gateIndex].position.x + 155 * scaleFactor), (int)(gateData[gateIndex].position.y + 47 * scaleFactor)};
             }
             gateData[gateIndex].initialConnections = 3;
         break;
@@ -172,7 +172,7 @@ void UpdateConnectionPoints (int gateIndex) {
             gateData[gateIndex].connectionPoints[1].point = {(int)(gateData[gateIndex].position.x + 60 * scaleFactor), (int)(gateData[gateIndex].position.y + 75 * scaleFactor)};
             //For every output connection
             for (int i = 2; i < gateData[gateIndex].connectionPoints.size (); i++) {
-                gateData[gateIndex].connectionPoints[i].point = {(int)(gateData[gateIndex].position.x + 150 * scaleFactor), (int)(gateData[gateIndex].position.y + 49 * scaleFactor)};
+                gateData[gateIndex].connectionPoints[i].point = {(int)(gateData[gateIndex].position.x + 155 * scaleFactor), (int)(gateData[gateIndex].position.y + 49 * scaleFactor)};
             }
             gateData[gateIndex].initialConnections = 3;
         break;
@@ -210,6 +210,15 @@ void UpdateConnectionPoints (int gateIndex) {
                 gateData[gateIndex].connectionPoints[i].point = {(int)(gateData[gateIndex].position.x + 145 * scaleFactor), (int)(gateData[gateIndex].position.y + (i * 30) * scaleFactor)};
             }
             gateData[gateIndex].initialConnections = 9;
+        break;
+        case XOR:
+            gateData[gateIndex].connectionPoints[0].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 29 * scaleFactor)};
+            gateData[gateIndex].connectionPoints[1].point = {(int)(gateData[gateIndex].position.x + 55 * scaleFactor), (int)(gateData[gateIndex].position.y + 79 * scaleFactor)};
+            //For every output connection
+            for (int i = 2; i < gateData[gateIndex].connectionPoints.size (); i++) {
+                gateData[gateIndex].connectionPoints[i].point = {(int)(gateData[gateIndex].position.x + 150 * scaleFactor), (int)(gateData[gateIndex].position.y + 54 * scaleFactor)};
+            }
+            gateData[gateIndex].initialConnections = 3;
         break;
     }
 }
@@ -379,7 +388,7 @@ int main () {
         if (placingGate) {
             //Account for offest due to different size sprites
             switch (gateData.back ().gateType) {
-                case NOT: case AND: case OR:
+                case NOT: case AND: case OR: case XOR:
                     gateData.back () = {mouseX - 100, mouseY - 50, gateData.back ().gateType, gateData.back ().connectionPoints};
                 break;
                 case INPUTGATE: case OUTPUTGATE:
@@ -525,7 +534,7 @@ int main () {
                 mouseY = 50;
             }
             switch (gateData[gateDragIndex].gateType) {
-                case NOT: case AND: case OR:
+                case NOT: case AND: case OR: case XOR:
                     gateData[gateDragIndex].position = {mouseX - 100, mouseY - 50};
                 break;
                 case INPUTGATE: case OUTPUTGATE: case INPUTGATEON: case OUTPUTGATEON:
@@ -568,7 +577,7 @@ int main () {
         DebugWindow (gateData, redrawSprites);
 
         ImGui::Begin ("Place Gates", &trueBool, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-        ImGui::SetWindowSize (ImVec2 ((float)150.0f, (float)210.0f));
+        ImGui::SetWindowSize (ImVec2 ((float)150.0f, (float)240.0f));
         ImGui::SetWindowPos (ImVec2 (-1, 0));
         ImGui::Text ("Place Gates");
         if (ImGui::Button ("NOT")) {
@@ -603,6 +612,11 @@ int main () {
         }
         if (ImGui::Button ("8-BIT BUS OUTPUT")) {
             gateData.push_back ({{0, -100}, EIGHTBUSOUT, std::vector<ConnectorData> {{{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, false, false}, {{0, 0}, {-1, 0}, false, false}, {{0, 0}, {-1, 0}, false, false}, {{0, 0}, {-1, 0}, false, false}, {{0, 0}, {-1, 0}, false, false}, {{0, 0}, {-1, 0}, false, false}, {{0, 0}, {-1, 0}, false, false}, {{0, 0}, {-1, 0}, false, false}}, false, 9});
+            placingGate = true;
+            redrawSprites = true;
+        }
+        if (ImGui::Button ("XOR")) {
+            gateData.push_back ({{0, -100}, XOR, std::vector<ConnectorData> {{{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, true, false}, {{0, 0}, {-1, 0}, false, false}}, false, 3});
             placingGate = true;
             redrawSprites = true;
         }
