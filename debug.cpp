@@ -371,6 +371,35 @@ void DrawConnectionBoxes (std::vector<Gate> gateData, float scaleFactor) {
                 clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y + 20 * scaleFactor});
                 clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y + 50 * scaleFactor});
             break;
+            case XOR:
+                //XOR A input
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 40 * scaleFactor, gateData[i].position.y + 50 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y + 50 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y + 50 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 40 * scaleFactor, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 40 * scaleFactor, gateData[i].position.y});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 40 * scaleFactor, gateData[i].position.y + 50 * scaleFactor});
+                //XOR B input
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 40 * scaleFactor, gateData[i].position.y + 105 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y + 105 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y + 105 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y + 55 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 70 * scaleFactor, gateData[i].position.y + 55 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 40 * scaleFactor, gateData[i].position.y + 55 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 40 * scaleFactor, gateData[i].position.y + 55 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 40 * scaleFactor, gateData[i].position.y + 105 * scaleFactor});
+                //XOR output
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 140 * scaleFactor, gateData[i].position.y + 75 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 170 * scaleFactor, gateData[i].position.y + 75 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 170 * scaleFactor, gateData[i].position.y + 75 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 170 * scaleFactor, gateData[i].position.y + 25 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 170 * scaleFactor, gateData[i].position.y + 25 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 140 * scaleFactor, gateData[i].position.y + 25 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 140 * scaleFactor, gateData[i].position.y + 25 * scaleFactor});
+                clickableAreaBoxes.push_back ({gateData[i].position.x + 140 * scaleFactor, gateData[i].position.y + 75 * scaleFactor});
+            break;
         }
     }
 
